@@ -13,7 +13,8 @@
         "no-with": 2,
         "no-fallthrough": 2,
         "no-floating-decimal": 2,
-        "comma-dangle": 0
+        "comma-dangle": 0,
+        "no-unused-vars": [2, {"vars": "all", "args": "after-used", "varsIgnorePattern":"React"}]
     },
     "env": {
         "es6": true,
