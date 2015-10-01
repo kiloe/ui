@@ -18,10 +18,10 @@ import ColorLensIcon from '../../src/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../src/icons/ViewAgendaIcon';
 import viewport from '../../src/utils/viewport';
 
-
 import ButtonsDemoView from './ButtonsDemoView';
 import PaletteDemoView from './PaletteDemoView';
 import ListDemoView from './ListDemoView';
+import IconDemo from './IconDemo';
 
 export default class DemoView extends React.Component {
 
@@ -102,6 +102,9 @@ export default class DemoView extends React.Component {
       case 'lists':
         page = <ListDemoView />;
         break;
+      case 'icons':
+        page = <IconDemo />;
+        break;
       case undefined:
         page = <ListDemoView />;
         break;
@@ -121,7 +124,7 @@ export default class DemoView extends React.Component {
             <ButtonView icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.openPage.bind(this,'buttons')} />
             <ButtonView icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.openPage.bind(this, 'palette')} />
             <ButtonView icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.openPage.bind(this, 'lists')} />
-            <ButtonView icon={<AddCircleIcon/>} align="left" label="Circluar Adding" />
+            <ButtonView icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.openPage.bind(this, 'icons')} />
             <ButtonView icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
             <View/>
             <ButtonView icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />

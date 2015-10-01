@@ -24,7 +24,11 @@ function render(filename){
   var js = TEMPLATE
     .replace('CLASS_NAME', name)
     .replace('SVG_DATA', fs.readFileSync(filename))
-    .replace(/\b\w+:(\w+=)/g, '$1'); // strip namespaces
+    .replace(/\bxmlns:xlink="[^"]+"/g, '') // fix xlink
+    .replace(/\bxlink:href/g, 'xlinkHref') // fix xlink
+    .replace(/clip-path/g, 'clipPath') // fix svg prop
+    .replace(/fill-opacity/g, 'fillOpacity') // fix fill prop
+    ;
   var outname = 'src/icons.build/'+name+'.js';
   fs.writeFileSync(outname, js);
   console.log('created '+outname);
