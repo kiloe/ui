@@ -44,6 +44,7 @@ clean:
 	rm -f demo/public/index.js
 	rm -rf node_modules
 	rm -rf src/icons.build
+	rm -rf lib
 
 distclean: clean
 	rm -rf src/icons
