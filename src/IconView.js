@@ -13,7 +13,6 @@ export default class IconView extends View {
 
   static defaultProps = {
     ...View.defaultProps,
-    size: 1.6,
   }
 
   static styles = {
@@ -50,7 +49,7 @@ export default class IconView extends View {
     if( typeof size == 'number' ){
       return size;
     }
-    return this.getScale();
+    return 1.6 * this.getScale();
   }
 
 
