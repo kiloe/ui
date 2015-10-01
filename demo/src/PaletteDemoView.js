@@ -1,7 +1,6 @@
 import React from 'react';
 import View from '../../src/View';
-
-import PaletteTableView from '../../src/PaletteTableView';
+import PaletteTableView from './PaletteTableView';
 
 export default class PaletteDemoView extends View {
 
@@ -10,9 +9,7 @@ export default class PaletteDemoView extends View {
     ...PaletteTableView.styles,
   }
 
-
   render(){
-
     return (
       <View scroll>
         <View row>
