@@ -25,7 +25,7 @@ export default class Menu extends React.Component {
       }
     };
     return (
-      <View {...viewProps} onClick={this.onClick.bind(this)}>
+      <View {...viewProps}>
         {this.props.children}
       </View>
     );
