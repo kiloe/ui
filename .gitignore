@@ -1,0 +1,12 @@
+node_modules/
+material-design-icons
+demo/public/index.js
+demo/public/index.js.tmp
+demo/public/index.js.map
+src/icons.build
+npm-debug.log
+.vagrant/
+Dockerfile
+*.swp
+debug.log
+lib
