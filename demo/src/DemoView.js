@@ -116,7 +116,7 @@ export default class DemoView extends React.Component {
     return (
       <View row>
         <DrawerView docked="huge" raised={3} hide={this.props.sidebarHidden} active={this.props.sidebarActive}>
-          <ToolbarView primary={'300'} scale={1.5}>
+          <ToolbarView accent scale={2}>
             <View>Demo-crazy</View>
             <ButtonView icon={<ArrowBackIcon/>} align="left" onClick={this.onToggleMenu.bind(this)}/>
           </ToolbarView>
@@ -134,7 +134,7 @@ export default class DemoView extends React.Component {
           </View>
         </DrawerView>
         <View onClickCapture={this.onClickBody.bind(this)}>
-          <ToolbarView primary={'100'} scale={1.5}>
+          <ToolbarView primary={'600'} scale={2}>
             <ButtonView onClick={this.onToggleMenu.bind(this)} icon={<MenuIcon/>} />
             <View>Title</View>
             <ButtonView onClick={this.onDiscoMode.bind(this)} icon={<FormatPaintIcon/>} label="Disco" />
