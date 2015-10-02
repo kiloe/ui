@@ -1,6 +1,34 @@
 import ReactDOM from 'react-dom';
 import CSSPropertyOperations from 'react/lib/CSSPropertyOperations';
 
+// required global browser styles/resets
+var globalStyles = {
+  'html': {
+    fontFamily: `'Roboto', sans-serif`,
+    WebkitTapHighlightColor: 'transparent',
+    fontSize: 12,
+  },
+  '*, *:before, *:after': {
+    WebkitTapHighlightColor: 'inherit',
+  },
+  'html,body,#app': {
+    margin:0,
+    padding: 0,
+    display: 'flex',
+    flex: '0 0 100%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    alignItems: 'stretch',
+    alignContent: 'stretch',
+    position: 'relative',
+    overflow: 'hidden',
+    height: '100%',
+    width: '100%',
+    background: '#ccc'
+  },
+};
+
 // CSS.render will ask the component for any styles it uses, then
 // render a <style> tag into the document.
 // If called multiple times it will replace the previous style.
@@ -25,8 +53,12 @@ export function render(component){
 // CSS.createMarkupForComponent will ask the component for any styles it uses,
 // and return the CSS markup.
 export function createMarkupForComponent(component){
-  return Object.keys(component.styles).map(selector => {
-    let props = component.styles[selector];
+  let styles = {
+    ...globalStyles,
+    ...component.styles,
+  };
+  return Object.keys(styles).map(selector => {
+    let props = styles[selector];
     if( typeof props == 'object' ){
       props = expandTransitionStyle(props);
       props = CSSPropertyOperations.createMarkupForStyles(props);
@@ -40,11 +72,11 @@ function expandTransitionStyle(props){
   return Object.keys(props).reduce( (o,k) => {
     if( k == 'transition' && typeof props[k] == 'object' ){
       o[k] = Object.keys(props[k]).map( propName => {
-        return `${propName} ${props[k][propName]}`
+        return `${propName} ${props[k][propName]}`;
       }).join(',');
     }
     return o;
-  },props)
+  },props);
 }
 
 // like calling getComputedStyle(node).getPropertyValue(cssProp)
@@ -59,7 +91,7 @@ export function getProperty(component, prop){
     throw new Error('no computed style for component');
   }
   if( !prop ){
-    throw new Error('missing style propety argument')
+    throw new Error('missing style propety argument');
   }
   return style.getPropertyValue(prop);
 }
@@ -79,7 +111,7 @@ export function toRGBA(color){
 const transitions = {
   swift: '300ms cubic-bezier(0.23, 1, 0.32, 1)',
   smooth: '500ms cubic-bezier(1, 0, 0, 1)'
-}
+};
 
 const CSS = {
   render,

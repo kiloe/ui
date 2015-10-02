@@ -1,12 +1,12 @@
 import React from 'react';
 import View from '../../src/View';
-import PaletteTableView from './PaletteTableView';
+import PaletteTable from './PaletteTable';
 
 export default class PaletteDemoView extends View {
 
   static styles = {
     ...View.styles,
-    ...PaletteTableView.styles,
+    ...PaletteTable.styles,
   }
 
   render(){
@@ -15,7 +15,7 @@ export default class PaletteDemoView extends View {
         <View row>
           <h2>Colour Palette Tables</h2>
         </View>
-        <PaletteTableView row raised />
+        <PaletteTable row raised />
       </View>
     );
   }
