@@ -1,27 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import {COLORS} from '../../src/utils/colors';
-import CSS from '../../src/utils/css';
-import {defaultTheme} from '../../src/utils/themeManager';
-import viewport from '../../src/utils/viewport';
+import {COLORS} from '../../lib/utils/colors';
+import UI from '../../lib';
 
-import View from '../../src/View';
-import DrawerView from '../../src/DrawerView';
-import ToolbarView from '../../src/ToolbarView';
-import ButtonView from '../../src/ButtonView';
-import Menu from '../../src/Menu';
-import MenuItemView from '../../src/MenuItemView';
-import NotificationsActiveIcon from '../../src/icons/NotificationsActiveIcon';
-import CloudIcon from '../../src/icons/CloudIcon';
-import FormatPaintIcon from '../../src/icons/FormatPaintIcon';
-import InvertColorsIcon from '../../src/icons/InvertColorsIcon';
-import MenuIcon from '../../src/icons/MenuIcon';
-import AddCircleIcon from '../../src/icons/AddCircleIcon';
-import ArrowBackIcon from '../../src/icons/ArrowBackIcon';
-import FullscreenIcon from '../../src/icons/FullscreenIcon';
-import ColorLensIcon from '../../src/icons/ColorLensIcon';
-import ViewAgendaIcon from '../../src/icons/ViewAgendaIcon';
+import View from '../../lib/View';
+import DrawerView from '../../lib/DrawerView';
+import ToolbarView from '../../lib/ToolbarView';
+import ButtonView from '../../lib/ButtonView';
+import Menu from '../../lib/Menu';
+import MenuItemView from '../../lib/MenuItemView';
+import NotificationsActiveIcon from '../../lib/icons/NotificationsActiveIcon';
+import CloudIcon from '../../lib/icons/CloudIcon';
+import FormatPaintIcon from '../../lib/icons/FormatPaintIcon';
+import InvertColorsIcon from '../../lib/icons/InvertColorsIcon';
+import MenuIcon from '../../lib/icons/MenuIcon';
+import AddCircleIcon from '../../lib/icons/AddCircleIcon';
+import ArrowBackIcon from '../../lib/icons/ArrowBackIcon';
+import FullscreenIcon from '../../lib/icons/FullscreenIcon';
+import ColorLensIcon from '../../lib/icons/ColorLensIcon';
+import ViewAgendaIcon from '../../lib/icons/ViewAgendaIcon';
 
 import Buttons from './Buttons';
 import Palette from './Palette';
@@ -45,13 +42,18 @@ export default class App extends React.Component {
 
   constructor(...args){
     super(...args);
+    // Initial state
     this.state = {
       page: localStorage.getItem('page') || 'lists',
     };
+    // Trigger update on browser resize
+    UI.viewport.on('change', () => {
+      this.forceUpdate();
+    });
   }
 
   toggleMenu(){
-    if( viewport.width.huge ){
+    if( UI.viewport.width.huge ){
       this.toggleSidebar();
     }else{
       if( this.state.sidebarHidden ){
@@ -62,7 +64,7 @@ export default class App extends React.Component {
   }
 
   toggleFullscreen(){
-    viewport.toggleFullscreen();
+    UI.viewport.toggleFullscreen();
   }
 
   clickBody(){
@@ -80,8 +82,8 @@ export default class App extends React.Component {
         let notAccent = ['brown', 'grey', 'blue-grey'];
         let primaryColors = Object.keys(COLORS);
         let accentColors = Object.keys(COLORS).filter(c => notAccent.indexOf(c) === -1 );
-        defaultTheme.primaryPalette = primaryColors[Math.floor(Math.random()*primaryColors.length)];
-        defaultTheme.accentPalette = accentColors[Math.floor(Math.random()*accentColors.length)];
+        UI.theme.primaryPalette = primaryColors[Math.floor(Math.random()*primaryColors.length)];
+        UI.theme.accentPalette = accentColors[Math.floor(Math.random()*accentColors.length)];
         this.forceUpdate();
       },1000)});
     }
@@ -95,9 +97,9 @@ export default class App extends React.Component {
   }
 
   toggleThemeMode(){
-    defaultTheme.mode = defaultTheme.mode=='light' ? 'dark' : 'light';
+    UI.theme.mode = UI.theme.mode=='light' ? 'dark' : 'light';
     this.forceUpdate();
-    console.log('Changed theme to:', defaultTheme.mode);
+    console.log('Changed theme to:', UI.theme.mode);
   }
 
   closeDrawer(){
@@ -172,5 +174,4 @@ export default class App extends React.Component {
   }
 }
 
-CSS.render(App);
-ReactDOM.render(<App/>, document.getElementById('app'));
+UI.render(<App/>, document.getElementById('app'));

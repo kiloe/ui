@@ -1,25 +1,32 @@
-default: all
+default: lib $(ES5)
 
 #--------------------------------------
 
 SHELL := /bin/bash
 PWD := $(shell pwd)
+ES6 := $(wildcard src/**/*.js)
+ES5 := $(addprefix lib/,$(ES6:src/%=%))
+BABEL := ./node_modules/.bin/babel
+BROWSERIFY := ./node_modules/.bin/browserifyinc --cachefile .browserifycache
+DEMO_SRCS = $(filter-out demo/src/IconList.js, $(wildcard demo/src/**/*.js))
 
 #--------------------------------------
 
-all: lib
+# es6 -> es5
+lib/%.js: src/%.js src/icons | node_modules
+	@mkdir -p $(dir $@)
+	$(BABEL) -o $@ $<
 
-#--------------------------------------
+lib: src/icons | node_modules
+	$(BABEL) -d lib/ src/
+
+#---------------------------------------
 
 # install node_modules
 node_modules: package.json
 	npm install
 
-# compile
-lib: node_modules src/icons
-	npm run compile
-
-#---------------------------------------
+#--------------------------------------
 
 material-design-icons:
 	git clone https://github.com/google/material-design-icons.git
@@ -35,23 +42,28 @@ src/icons: material-design-icons svg_to_icon.js | node_modules
 #--------------------------------------
 
 demo/src/IconList.js: src/icons
-	for filename in `ls src/icons/`; do \
+	echo '' > $@.tmp
+	for filename in `ls $</`; do \
 		klass=`basename $$filename .js`; \
-		echo "import $$klass from '../../src/icons/$$filename';" >> $@; \
+		echo "import $$klass from '../../src/icons/$$filename';" >> $@.tmp; \
 	done
-	echo "" >> $@
-	echo "export const ICONS = [" >> $@
-	for klass in `ls src/icons/ | sed 's/\.js//'`; do \
-		echo "  $$klass," >> $@; \
+	echo "" >> $@.tmp
+	echo "export const ICONS = [" >> $@.tmp
+	for klass in `ls $</ | sed 's/\.js//'`; do \
+		echo "  $$klass," >> $@.tmp; \
 	done
-	echo "]" >> $@
+	echo "]" >> $@.tmp
+	mv $@.tmp $@
 
-demo: node_modules src/icons demo/src/IconList.js
+demo/public/index.js: demo/src/index.js $(DEMO_SRCS) lib $(ES5) demo/src/IconList.js
+	$(BROWSERIFY) -t babelify $< -o $@
+
+demo: demo/public/index.js
 	npm run demo
 
 #--------------------------------------
 
-publish: lib
+publish: lib $(ES5)
 	npm version patch
 	npm publish
 
@@ -61,9 +73,11 @@ clean:
 	rm -f npm-debug.log
 	rm -f demo/public/index.js
 	rm -f demo/src/IconList.js
+	rm -f demo/src/IconList.js.tmp
 	rm -rf node_modules
 	rm -rf src/icons.build
 	rm -rf lib
+	rm -f .browserifycache
 
 distclean: clean
 	rm -rf src/icons
@@ -71,4 +85,4 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean
+.PHONY: default test demo clean distclean publish

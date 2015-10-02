@@ -10,3 +10,5 @@ Dockerfile
 *.swp
 debug.log
 lib
+.browserifycache
+demo/src/IconList.js.tmp
