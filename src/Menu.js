@@ -20,7 +20,7 @@ export default class Menu extends React.Component {
       style: {
         position: 'absolute',
         display: 'flex',
-
+        zIndex: 999,
         ...this.props.style,
       }
     };
