@@ -5,8 +5,9 @@
   "description": "material design style ui components for react",
   "main": "",
   "scripts": {
-    "compile": "babel --stage 0 --modules common -d lib/ src/",
-    "watch-demo": "watchify demo/src/index.js -v -t [ babelify --modules common --stage 0 ] -o demo/public/index.js --debug",
+    "compile": "babel --stage 0 -d lib/ src/",
+    "prepublish": "npm run compile",
+    "watch-demo": "watchify demo/src/index.js -v -t [ babelify --stage 0 ] -o demo/public/index.js --debug",
     "serve-demo": "http-server demo/public",
     "demo": "npm run watch-demo & npm run serve-demo"
   },
