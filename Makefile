@@ -51,6 +51,12 @@ demo: node_modules src/icons demo/src/IconList.js
 
 #--------------------------------------
 
+publish: lib
+	npm version patch
+	npm publish
+
+#--------------------------------------
+
 clean:
 	rm -f npm-debug.log
 	rm -f demo/public/index.js
