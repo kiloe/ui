@@ -35,7 +35,6 @@ src/icons: material-design-icons svg_to_icon.js | node_modules
 #--------------------------------------
 
 demo/src/IconList.js: src/icons
-	echo "import React from 'react';" > $@
 	for filename in `ls src/icons/`; do \
 		klass=`basename $$filename .js`; \
 		echo "import $$klass from '../../src/icons/$$filename';" >> $@; \
@@ -43,7 +42,7 @@ demo/src/IconList.js: src/icons
 	echo "" >> $@
 	echo "export const ICONS = [" >> $@
 	for klass in `ls src/icons/ | sed 's/\.js//'`; do \
-		echo "  <$$klass scale={3}/>," >> $@; \
+		echo "  $$klass," >> $@; \
 	done
 	echo "]" >> $@
 

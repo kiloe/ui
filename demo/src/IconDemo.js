@@ -9,12 +9,11 @@ export default class IconDemo extends View {
       padding: '1rem',
       alignItems: 'center',
     };
-    let icons = ICONS.map(icon => {
-      let name = icon.type.name;
+    let icons = ICONS.map(Icon => {
       return (
-        <View key={name} size={15} style={s}>
-          {icon}
-          <View>{name}</View>
+        <View key={Icon.name} size={15} style={s}>
+          <Icon size={3} />
+          <View>{Icon.name}</View>
         </View>
       );
     });
