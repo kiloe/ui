@@ -9,7 +9,7 @@ import FormatPaintIcon from '../../src/icons/FormatPaintIcon';
 import CloudIcon from '../../src/icons/CloudIcon';
 
 
-export default class ButtonsDemoView extends View {
+export default class ButtonsDemo extends React.Component {
 
   static styles = {
     ...View.styles,

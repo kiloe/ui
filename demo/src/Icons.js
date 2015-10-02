@@ -2,7 +2,7 @@ import React from 'react';
 import View from '../../src/View';
 import {ICONS} from './IconList';
 
-export default class IconDemo extends View {
+export default class IconsDemo extends React.Component {
 
   render(){
     let s = {

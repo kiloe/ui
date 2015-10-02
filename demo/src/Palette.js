@@ -2,7 +2,7 @@ import React from 'react';
 import View from '../../src/View';
 import PaletteTable from './PaletteTable';
 
-export default class PaletteDemoView extends View {
+export default class PaletteDemo extends React.Component {
 
   static styles = {
     ...View.styles,

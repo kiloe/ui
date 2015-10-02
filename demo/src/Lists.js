@@ -13,7 +13,7 @@ import StarIcon from '../../src/icons/StarIcon';
 import IconButtonView from '../../src/IconButtonView';
 
 
-export default class ListDemoView extends View {
+export default class ListDemo extends React.Component {
 
   static styles = {
     ...View.styles,
