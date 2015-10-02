@@ -2,10 +2,7 @@
   "name": "kiloe-ui",
   "version": "0.0.4",
   "description": "material design style ui components for react",
-  "main": "lib/index.js",
-  "scripts": {
-    "demo": "http-server demo/public"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kiloe/ui.git"

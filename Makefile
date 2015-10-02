@@ -1,24 +1,32 @@
-default: lib $(ES5)
+default: package
 
 #--------------------------------------
 
 SHELL := /bin/bash
 PWD := $(shell pwd)
 ES6 := $(wildcard src/**/*.js)
-ES5 := $(addprefix lib/,$(ES6:src/%=%))
+ES5 := $(addprefix package/,$(ES6:src/%=%))
 BABEL := ./node_modules/.bin/babel
 BROWSERIFY := ./node_modules/.bin/browserifyinc --cachefile .browserifycache
+SERVE := ./node_modules/.bin/http-server
 DEMO_SRCS = $(filter-out demo/src/IconList.js, $(wildcard demo/src/**/*.js))
 
 #--------------------------------------
 
-# es6 -> es5
-lib/%.js: src/%.js src/icons | node_modules
+package/%.js: src/%.js src/icons
 	@mkdir -p $(dir $@)
 	$(BABEL) -o $@ $<
 
-lib: src/icons | node_modules
-	$(BABEL) -d lib/ src/
+package/package.json: package.json src/icons
+	@mkdir -p $(dir $@)
+	$(BABEL) -d $(dir $@)/ src/ # this line is not required but drastically speeds up initial build
+	cp $< $@
+
+package/.npmignore: .npmignore
+	@mkdir -p $(dir $@)
+	cp $< $@
+
+package: package/package.json package/.npmignore $(ES5)
 
 #---------------------------------------
 
@@ -45,7 +53,7 @@ demo/src/IconList.js: src/icons
 	echo '' > $@.tmp
 	for filename in `ls $</`; do \
 		klass=`basename $$filename .js`; \
-		echo "import $$klass from '../../src/icons/$$filename';" >> $@.tmp; \
+		echo "import $$klass from '../../package/icons/$$filename';" >> $@.tmp; \
 	done
 	echo "" >> $@.tmp
 	echo "export const ICONS = [" >> $@.tmp
@@ -55,17 +63,18 @@ demo/src/IconList.js: src/icons
 	echo "]" >> $@.tmp
 	mv $@.tmp $@
 
-demo/public/index.js: demo/src/index.js $(DEMO_SRCS) lib $(ES5) demo/src/IconList.js
+demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/IconList.js package
 	$(BROWSERIFY) -t babelify $< -o $@
 
 demo: demo/public/index.js
-	npm run demo
+	$(SERVE) demo/public
 
 #--------------------------------------
 
-publish: lib $(ES5)
-	npm version patch
-	npm publish
+publish: package
+	cd package \
+		&& npm version patch \
+		&& npm publish
 
 #--------------------------------------
 
@@ -76,8 +85,8 @@ clean:
 	rm -f demo/src/IconList.js.tmp
 	rm -rf node_modules
 	rm -rf src/icons.build
-	rm -rf lib
 	rm -f .browserifycache
+	rm -rf package
 
 distclean: clean
 	rm -rf src/icons

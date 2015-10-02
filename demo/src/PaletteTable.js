@@ -1,5 +1,5 @@
 import React from 'react';
-import View from '../../src/View';
+import View from '../../package/View';
 
 export default class PaletteTableView extends View {
 

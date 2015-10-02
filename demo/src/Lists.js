@@ -1,16 +1,16 @@
 import React from 'react';
-import View from '../../src/View';
-import ListView from '../../src/ListView';
-import ListItemView from '../../src/ListItemView';
-import DividerView from '../../src/DividerView';
-import AvatarView from '../../src/AvatarView';
-import TextView from '../../src/TextView';
-import ButtonView from '../../src/ButtonView';
-import PrimaryTextView from '../../src/PrimaryTextView';
-import SecondaryTextView from '../../src/SecondaryTextView';
-import ChatBubbleIcon from '../../src/icons/ChatBubbleIcon';
-import StarIcon from '../../src/icons/StarIcon';
-import IconButtonView from '../../src/IconButtonView';
+import View from '../../package/View';
+import ListView from '../../package/ListView';
+import ListItemView from '../../package/ListItemView';
+import DividerView from '../../package/DividerView';
+import AvatarView from '../../package/AvatarView';
+import TextView from '../../package/TextView';
+import ButtonView from '../../package/ButtonView';
+import PrimaryTextView from '../../package/PrimaryTextView';
+import SecondaryTextView from '../../package/SecondaryTextView';
+import ChatBubbleIcon from '../../package/icons/ChatBubbleIcon';
+import StarIcon from '../../package/icons/StarIcon';
+import IconButtonView from '../../package/IconButtonView';
 
 
 export default class ListDemo extends React.Component {

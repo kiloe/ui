@@ -9,6 +9,6 @@ npm-debug.log
 Dockerfile
 *.swp
 debug.log
-lib
+package
 .browserifycache
 demo/src/IconList.js.tmp

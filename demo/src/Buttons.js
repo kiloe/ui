@@ -1,12 +1,12 @@
 import React from 'react';
-import View from '../../src/View';
+import View from '../../package/View';
 
-import ButtonView from '../../src/ButtonView';
-import IconView from '../../src/IconView';
-import IconButtonView from '../../src/IconButtonView';
-import AddIcon from '../../src/icons/AddIcon';
-import FormatPaintIcon from '../../src/icons/FormatPaintIcon';
-import CloudIcon from '../../src/icons/CloudIcon';
+import ButtonView from '../../package/ButtonView';
+import IconView from '../../package/IconView';
+import IconButtonView from '../../package/IconButtonView';
+import AddIcon from '../../package/icons/AddIcon';
+import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
+import CloudIcon from '../../package/icons/CloudIcon';
 
 
 export default class ButtonsDemo extends React.Component {
