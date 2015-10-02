@@ -72,9 +72,8 @@ demo: demo/public/index.js
 #--------------------------------------
 
 publish: package
-	cd package \
-		&& npm version patch \
-		&& npm publish
+	npm version patch && cp package.json package/
+	cd package && npm publish
 
 #--------------------------------------
 
