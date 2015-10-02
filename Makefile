@@ -20,7 +20,7 @@ package/%.js: src/%.js src/icons
 package/package.json: package.json src/icons
 	@mkdir -p $(dir $@)
 	$(BABEL) -d $(dir $@)/ src/ # this line is not required but drastically speeds up initial build
-	cp $< $@
+	sed '/private/d' < $< > $@
 
 package/.npmignore: .npmignore
 	@mkdir -p $(dir $@)
