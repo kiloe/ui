@@ -9,7 +9,11 @@
     "serve-demo": "http-server demo/public",
     "demo": "npm run watch-demo & npm run serve-demo"
   },
-  "repository": "http://github.com/kiloe/ui",
+  "repository": {
+    "type":"git",
+    "url": "https://github.com/kiloe/ui.git"
+  },
+  "bugs": "https://github.com/kiloe/ui/issues",
   "author": "Chris Farmiloe <chrisfarms@gmail.com> (http://chris.farmiloe.com/)",
   "license": "MIT",
   "peerDependencies": {
