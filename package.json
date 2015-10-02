@@ -9,8 +9,9 @@
     "serve-demo": "http-server demo/public",
     "demo": "npm run watch-demo & npm run serve-demo"
   },
+  "repository": "http://github.com/kiloe/ui",
   "author": "Chris Farmiloe <chrisfarms@gmail.com> (http://chris.farmiloe.com/)",
-  "license": "Private",
+  "license": "MIT",
   "peerDependencies": {
     "react": ">=0.14.0-rc1",
     "react-dom": ">=0.14.0-rc1"
