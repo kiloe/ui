@@ -1,6 +1,35 @@
 import React from 'react';
 import View from './View';
 import IconView from './IconView';
+import CSS from './utils/css';
+
+CSS.register({
+  '.listItem .primaryText': {
+    fontSize: '16px', // XXX: Need to decide what to do about obeying the spec and working with this app's scale, etc
+  },
+  '.listItem .secondaryText': {
+    fontSize: '14px',
+  },
+  '.listItem .right.icon': {
+    width: '24px',
+  },
+  '.listItem .left': {
+    marginLeft: '1.33rem',
+  },
+  '.listItem .content': {
+    margin: '0 1.33rem',
+  },
+  '.listItem .right': {
+    marginRight: '1.33rem',
+  },
+  '.listItem .left.iconButton': {
+    // XXX: when it's an iconButton, it has padding already. How can we generalise this?
+    marginLeft: '0.5rem',
+  },
+  '.listItem .right.iconButton': {
+    marginRight: '0.5rem',
+  }
+});
 
 // Note: A List Item / Tile should have a maximum of 3 lines of text.
 // If more are needed, use a card (according to the Material spec).
@@ -23,35 +52,6 @@ export default class ListItemView extends View {
     size: 'fill',
     align: 'center',
     scroll: false,
-  }
-
-  static styles = {
-    '.listItem .primaryText': {
-      fontSize: '16px', // XXX: Need to decide what to do about obeying the spec and working with this app's scale, etc
-    },
-    '.listItem .secondaryText': {
-      fontSize: '14px',
-    },
-    '.listItem .right.icon': {
-      width: '24px',
-    },
-    '.listItem .left': {
-      marginLeft: '1.33rem',
-    },
-    '.listItem .content': {
-      margin: '0 1.33rem',
-    },
-    '.listItem .right': {
-      marginRight: '1.33rem',
-    },
-    '.listItem .left.iconButton': {
-      // XXX: when it's an iconButton, it has padding already. How can we generalise this?
-      marginLeft: '0.5rem',
-    },
-    '.listItem .right.iconButton': {
-      marginRight: '0.5rem',
-    }
-
   }
 
   getClassNames(){

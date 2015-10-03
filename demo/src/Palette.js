@@ -4,11 +4,6 @@ import PaletteTable from './PaletteTable';
 
 export default class PaletteDemo extends React.Component {
 
-  static styles = {
-    ...View.styles,
-    ...PaletteTable.styles,
-  }
-
   render(){
     return (
       <View scroll>

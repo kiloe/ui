@@ -1,5 +1,13 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.image img': {
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+});
 
 export default class ImageView extends View {
 
@@ -15,14 +23,6 @@ export default class ImageView extends View {
     align: 'center',
     size: 'intrinsic',
     top: false,
-  }
-
-  static styles = {
-    ...View.styles,
-    '.image img': {
-      maxWidth: '100%',
-      maxHeight: '100%',
-    },
   }
 
   getClassNames(){

@@ -9,10 +9,6 @@ export default class SecondaryTextView extends TextView {
     theme: { textMode: 'secondary' },
   }
 
-  static styles = {
-    ...TextView.styles,
-  }
-
   getClassNames(){
     let cs = super.getClassNames();
     cs.secondaryText = true;

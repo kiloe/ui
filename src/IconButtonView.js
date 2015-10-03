@@ -1,11 +1,24 @@
 import React from 'react';
 import View from './View';
 import ButtonView from './ButtonView';
+import CSS from './utils/css';
+
+CSS.register({
+  ...ButtonView.styles,
+  '.button.iconButton .button-hover, .button.iconButton .button-focus, .button.iconButton .button-press': {
+    opacity: '0',
+  },
+  '.button.iconButton:active .button-press': {
+    opacity: '0.3',
+  },
+  '.button.iconButton:focus .button-press': {
+    opacity: '0.2',
+  }
+});
 
 // These differ from Buttons with just an icon.
 // The way they appear in the spec is there is no hover state and the background colour is
 // the same as the icon colour but with transparency.
-
 export default class IconButtonView extends ButtonView {
 
   static propTypes = {
@@ -25,18 +38,6 @@ export default class IconButtonView extends ButtonView {
     size: 'intrinsic',
   }
 
-  static styles = {
-    ...ButtonView.styles,
-    '.button.iconButton .button-hover, .button.iconButton .button-focus, .button.iconButton .button-press': {
-      opacity: '0',
-    },
-    '.button.iconButton:active .button-press': {
-      opacity: '0.3',
-    },
-    '.button.iconButton:focus .button-press': {
-      opacity: '0.2',
-    }
-  }
 
   getClassNames(){
     let cs = super.getClassNames();

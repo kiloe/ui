@@ -13,10 +13,6 @@ export default class PrimaryTextView extends TextView {
     theme: { textMode: 'primary' },
   }
 
-  static styles = {
-    ...TextView.styles,
-  }
-
   getClassNames(){
     let cs = super.getClassNames();
     cs.primaryText = true;

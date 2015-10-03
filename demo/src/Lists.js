@@ -4,7 +4,6 @@ import ListView from '../../package/ListView';
 import ListItemView from '../../package/ListItemView';
 import DividerView from '../../package/DividerView';
 import AvatarView from '../../package/AvatarView';
-import TextView from '../../package/TextView';
 import ButtonView from '../../package/ButtonView';
 import PrimaryTextView from '../../package/PrimaryTextView';
 import SecondaryTextView from '../../package/SecondaryTextView';
@@ -14,14 +13,6 @@ import IconButtonView from '../../package/IconButtonView';
 
 
 export default class ListDemo extends React.Component {
-
-  static styles = {
-    ...View.styles,
-    ...ListView.styles,
-    ...ListItemView.styles,
-    ...AvatarView.styles,
-    ...TextView.styles,
-  }
 
   primaryClick(e) {
     e.stopPropagation();

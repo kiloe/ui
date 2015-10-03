@@ -1,21 +1,22 @@
 import React from 'react';
 import View from './View';
 import {viewport,Viewport} from './utils/viewport';
+import CSS from './utils/css';
 
 const TOP = -1;
 const BOTTOM = 1;
 const LEFT = -1;
 const RIGHT = 1;
 
+CSS.register({
+  '.drawer': {
+    zIndex: 100,
+    transform: 'translateZ(0)', // enable GPU
+  },
+});
+
 export default class DrawerView extends View {
 
-  static styles = {
-    '.drawer': {
-      zIndex: 100,
-      transform: 'translateZ(0)', // enable GPU
-    },
-    ...View.styles
-  }
 
   static propTypes = {
     // Set to the name of a breakpoint at which the drawer should

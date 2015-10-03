@@ -8,10 +8,6 @@ export default class Menu extends React.Component {
     style: React.PropTypes.object,
   }
 
-  static styles = {
-    ...View.styles,
-  }
-
   render(){
     let viewProps = {
       raised: 1,

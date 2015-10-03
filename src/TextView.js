@@ -1,5 +1,30 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.text span': {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+  },
+  '.text.rowOf1 span': {
+    WebkitLineClamp: 1,
+  },
+  '.text.rowOf2 span': {
+    WebkitLineClamp: 2,
+  },
+  '.text.rowOf3 span': {
+    WebkitLineClamp: 3,
+  },
+  '.text.rowOf4 span': {
+    WebkitLineClamp: 4,
+  },
+  '.text.rowOf5 span': {
+    WebkitLineClamp: 5,
+  },
+});
 
 export default class TextView extends View {
 
@@ -13,30 +38,6 @@ export default class TextView extends View {
     lines: 0, // 0 means no limit
   }
 
-  static styles = {
-    ...View.styles,
-    '.text span': {
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      display: '-webkit-box',
-      WebkitBoxOrient: 'vertical',
-    },
-    '.text.rowOf1 span': {
-      WebkitLineClamp: 1,
-    },
-    '.text.rowOf2 span': {
-      WebkitLineClamp: 2,
-    },
-    '.text.rowOf3 span': {
-      WebkitLineClamp: 3,
-    },
-    '.text.rowOf4 span': {
-      WebkitLineClamp: 4,
-    },
-    '.text.rowOf5 span': {
-      WebkitLineClamp: 5,
-    },
-  }
 
   getClassNames(){
     let cs = super.getClassNames();

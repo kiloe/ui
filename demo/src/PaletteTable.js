@@ -1,33 +1,32 @@
 import React from 'react';
 import View from '../../package/View';
+import UI from '../../package/index';
+
+UI.registerCSS({
+  '.palette-table': {
+  },
+  '.palette-table .color-group': {
+    margin: '15px',
+  },
+  '.palette-table .color-header': {
+    marginBottom: '5px',
+  },
+  '.palette-table .color-header .name': {
+    marginBottom: '30px',
+  },
+  '.palette-table .color-group .color-row': {
+    padding: '15px',
+  },
+  '.palette-table .color-group .color-row .hue': {
+    flex: '1',
+  },
+});
 
 export default class PaletteTableView extends View {
-
-
-  static styles = {
-    '.palette-table': {
-    },
-    '.palette-table .color-group': {
-      margin: '15px',
-    },
-    '.palette-table .color-header': {
-      marginBottom: '5px',
-    },
-    '.palette-table .color-header .name': {
-      marginBottom: '30px',
-    },
-    '.palette-table .color-group .color-row': {
-      padding: '15px',
-    },
-    '.palette-table .color-group .color-row .hue': {
-      flex: '1',
-    },
-  }
 
   static defaultProps = {
     ...View.defaultProps,
   }
-
 
   getStyle(){
     let style = super.getStyle();

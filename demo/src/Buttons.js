@@ -2,7 +2,6 @@ import React from 'react';
 import View from '../../package/View';
 
 import ButtonView from '../../package/ButtonView';
-import IconView from '../../package/IconView';
 import IconButtonView from '../../package/IconButtonView';
 import AddIcon from '../../package/icons/AddIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
@@ -10,14 +9,6 @@ import CloudIcon from '../../package/icons/CloudIcon';
 
 
 export default class ButtonsDemo extends React.Component {
-
-  static styles = {
-    ...View.styles,
-    ...ButtonView.styles,
-    ...IconButtonView.styles,
-    ...IconView.styles,
-  }
-
 
   render(){
 

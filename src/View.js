@@ -7,10 +7,75 @@ const SIZES = ['fill', 'intrinsic'];
 const THEME_MODES = ['light', 'dark'];
 const PALETTE_MODES = ['primary','accent','grey'];
 
+CSS.register({
+  '.view': {
+    boxSizing: 'content-box',
+    display: 'flex',
+    flex: '1 0 auto',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    alignItems: 'stretch',
+    alignContent: 'stretch',
+    borderRadius: 1,
+    // overflow: 'hidden',
+    transition: {
+      left: CSS.transitions.swift,
+      right: CSS.transitions.swift,
+      top: CSS.transitions.swift,
+      bottom: CSS.transitions.swift,
+      width: CSS.transitions.swift,
+      height: CSS.transitions.swift,
+      flexGrow: CSS.transitions.swift,
+      flexShrink: CSS.transitions.swift,
+      flexBasis: CSS.transitions.swift,
+      flex: CSS.transitions.swift,
+    },
+    // zIndex: 1,
+    WebkitUserSelect: 'none',
+    MozUserSelect: 'none',
+    msUserSelect: 'none',
+    UserSelect: 'none',
+  },
+  '.view.scroll': {
+    position: 'absolute',
+    top:0,
+    bottom:0,
+    left:0,
+    right:0,
+    overflow:'auto',
+    WebkitOverflowScrolling: 'touch',
+  },
+  '.view .view:nth-child(1)': {
+    // zIndex:10
+  },
+  '.view.vsplit': {
+    flexDirection: 'row'
+  },
+  '.view.z1': {
+    boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+    zIndex:1,
+  },
+  '.view.z2': {
+    boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+    zIndex:2,
+  },
+  '.view.z3': {
+    boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
+    zIndex:3,
+  },
+  '.view.z4': {
+    boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+    zIndex:4,
+  },
+  '.view.z5': {
+    boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
+    zIndex:5,
+  },
+});
+
+
 // View is a flex-box building block.
 export default class View extends React.Component {
-
-
 
   static propTypes = {
     // when row=false child Views will stack in rows (like a side nav)
@@ -111,72 +176,6 @@ export default class View extends React.Component {
     size: 'fill',
     align: 'center',
     divider: false,
-  }
-
-  static styles = {
-    '.view': {
-      boxSizing: 'content-box',
-      display: 'flex',
-      flex: '1 0 auto',
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
-      alignItems: 'stretch',
-      alignContent: 'stretch',
-      borderRadius: 1,
-      // overflow: 'hidden',
-      transition: {
-        left: CSS.transitions.swift,
-        right: CSS.transitions.swift,
-        top: CSS.transitions.swift,
-        bottom: CSS.transitions.swift,
-        width: CSS.transitions.swift,
-        height: CSS.transitions.swift,
-        flexGrow: CSS.transitions.swift,
-        flexShrink: CSS.transitions.swift,
-        flexBasis: CSS.transitions.swift,
-        flex: CSS.transitions.swift,
-      },
-      // zIndex: 1,
-      WebkitUserSelect: 'none',
-      MozUserSelect: 'none',
-      msUserSelect: 'none',
-      UserSelect: 'none',
-    },
-    '.view.scroll': {
-      position: 'absolute',
-      top:0,
-      bottom:0,
-      left:0,
-      right:0,
-      overflow:'auto',
-      WebkitOverflowScrolling: 'touch',
-    },
-    '.view .view:nth-child(1)': {
-      // zIndex:10
-    },
-    '.view.vsplit': {
-      flexDirection: 'row'
-    },
-    '.view.z1': {
-      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-      zIndex:1,
-    },
-    '.view.z2': {
-      boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-      zIndex:2,
-    },
-    '.view.z3': {
-      boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
-      zIndex:3,
-    },
-    '.view.z4': {
-      boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
-      zIndex:4,
-    },
-    '.view.z5': {
-      boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
-      zIndex:5,
-    },
   }
 
   constructor(...args){

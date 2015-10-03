@@ -8,7 +8,6 @@ import DrawerView from '../../package/DrawerView';
 import ToolbarView from '../../package/ToolbarView';
 import ButtonView from '../../package/ButtonView';
 import Menu from '../../package/Menu';
-import MenuItemView from '../../package/MenuItemView';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
 import CloudIcon from '../../package/icons/CloudIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
@@ -26,19 +25,6 @@ import Lists from './Lists';
 import Icons from './Icons';
 
 export default class App extends React.Component {
-
-  static styles = {
-    ...View.styles,
-    ...DrawerView.styles,
-    ...ToolbarView.styles,
-    ...Menu.styles,
-    ...MenuItemView.styles,
-    ...ButtonView.styles,
-    ...Palette.styles,
-    ...Lists.styles,
-    ...Buttons.styles,
-    ...Icons.styles,
-  }
 
   constructor(...args){
     super(...args);

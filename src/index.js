@@ -3,11 +3,10 @@ import CSS from './utils/css';
 import viewport from './utils/viewport';
 import {defaultTheme,ThemeManager} from './utils/themeManager';
 
-
 export default {
   viewport: viewport,
   render: DOM.render,
-  renderComponentCSS: CSS.render,
+  registerCSS: CSS.register,
   theme: defaultTheme,
   ThemeManager: ThemeManager,
 };

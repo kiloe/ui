@@ -1,5 +1,17 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.view.menuitem': {
+    display: 'block',
+    padding: 8,
+    margin: 8,
+  },
+  '.view.menuitem:hover': {
+    background: 'blue'
+  }
+});
 
 export default class MenuItemView extends View {
 
@@ -7,18 +19,6 @@ export default class MenuItemView extends View {
     ...View.defaultProps,
     raised: 1,
     theme: {mode: 'transparent'}
-  }
-
-  static styles = {
-    ...View.styles,
-    '.view.menuitem': {
-      display: 'block',
-      padding: 8,
-      margin: 8,
-    },
-    '.view.menuitem:hover': {
-      background: 'blue'
-    }
   }
 
   getClassNames(){

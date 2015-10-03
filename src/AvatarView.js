@@ -1,6 +1,13 @@
 import React from 'react';
 import View from './View';
 import ImageView from './ImageView';
+import CSS from './utils/css';
+
+CSS.register({
+  '.avatar img': {
+    borderRadius: '50%',
+  }
+});
 
 export default class AvatarView extends ImageView {
 
@@ -12,13 +19,6 @@ export default class AvatarView extends ImageView {
   static defaultProps = {
     ...View.defaultProps,
     size: 3.5,
-  }
-
-  static styles = {
-    ...ImageView.styles,
-    '.avatar img': {
-      borderRadius: '50%',
-    }
   }
 
   getClassNames(){

@@ -1,6 +1,67 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
 
+CSS.register({
+  '.button': {
+    border: 'none',
+    borderRadius: 2,
+    textTransform: 'uppercase',
+    letterSpacing: '0',
+    willChange: 'box-shadow, transform',
+    WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
+    transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
+    outline: 'none',
+    textAlign: 'center',
+  },
+  '.button .icon, .button span': {
+    zIndex: '1',
+  },
+  '.button .button-hover, .button .button-focus, .button .button-press': {
+    // visibility: 'hidden',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom:0,
+    transition: 'opacity 0.2s ease-in-out',
+    opacity: '0',
+  },
+  '.button:hover .button-hover': {
+    // visibility: 'visible',
+    opacity:'1',
+  },
+  '.button:focus:not(:active) .button-focus': {
+    // visibility: 'visible',
+    opacity:'1',
+  },
+  '.button:active .button-press': {
+    // visibility: 'visible',
+    opacity:'1',
+  },
+  '.button.circular, .button.circular .button-hover, .button.circular .button-focus, .button.circular .button-press': {
+    borderRadius: '50%',
+    justifyContent: 'center',
+  },
+  '.button.fab': {
+    width: '4.65rem !important',
+    height: '4.65rem !important',
+  },
+  '.button.fab.mini': {
+    width: '3.3rem !important',
+    height: '3.3rem !important',
+  },
+  '.button.iconButton': {
+    width: '2rem !important',
+    height: '2rem !important',
+  },
+  '.button:not(.circular):not(.iconButton):not(.fab)': {
+    minWidth: '5.3rem', // 88dp minimum for normal flat/raised buttons
+  },
+  '.dialog .button.flat:not(.circular):not(.iconButton)': {
+    minWidth: '3.4rem', // 64dp minimum for flat buttons inside dialogs
+  },
+});
 
 export default class ButtonView extends View {
 
@@ -26,69 +87,6 @@ export default class ButtonView extends View {
     //layer: 0,
   }
 
-  static styles = {
-    '.button': {
-      border: 'none',
-      borderRadius: 2,
-      textTransform: 'uppercase',
-      letterSpacing: '0',
-      willChange: 'box-shadow, transform',
-      WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
-      transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
-      outline: 'none',
-      textAlign: 'center',
-    },
-    '.button .icon, .button span': {
-      zIndex: '1',
-    },
-    '.button .button-hover, .button .button-focus, .button .button-press': {
-      // visibility: 'hidden',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom:0,
-      transition: 'opacity 0.2s ease-in-out',
-      opacity: '0',
-    },
-    '.button:hover .button-hover': {
-      // visibility: 'visible',
-      opacity:'1',
-    },
-    '.button:focus:not(:active) .button-focus': {
-      // visibility: 'visible',
-      opacity:'1',
-    },
-    '.button:active .button-press': {
-      // visibility: 'visible',
-      opacity:'1',
-    },
-    '.button.circular, .button.circular .button-hover, .button.circular .button-focus, .button.circular .button-press': {
-      borderRadius: '50%',
-      justifyContent: 'center',
-    },
-    '.button.fab': {
-      width: '4.65rem !important',
-      height: '4.65rem !important',
-    },
-    '.button.fab.mini': {
-      width: '3.3rem !important',
-      height: '3.3rem !important',
-    },
-    '.button.iconButton': {
-      width: '2rem !important',
-      height: '2rem !important',
-    },
-    '.button:not(.circular):not(.iconButton):not(.fab)': {
-      minWidth: '5.3rem', // 88dp minimum for normal flat/raised buttons
-    },
-    '.dialog .button.flat:not(.circular):not(.iconButton)': {
-      minWidth: '3.4rem', // 64dp minimum for flat buttons inside dialogs
-    },
-
-
-  }
-
   getClassNames(){
     let cs = super.getClassNames();
     cs.button = true;
@@ -104,8 +102,6 @@ export default class ButtonView extends View {
   constructor(...args){
     super(...args);
     this.state = {active:false};
-
-
   }
 
   getLayer() {

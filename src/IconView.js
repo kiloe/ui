@@ -1,5 +1,13 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.view.icon': {
+    position: 'relative',
+    alignItems: 'center',
+  }
+});
 
 export default class IconView extends View {
 
@@ -13,14 +21,6 @@ export default class IconView extends View {
 
   static defaultProps = {
     ...View.defaultProps,
-  }
-
-  static styles = {
-    ...View.styles,
-    '.view.icon': {
-      position: 'relative',
-      alignItems: 'center',
-    }
   }
 
   getBackgroundColor(){

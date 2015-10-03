@@ -29,16 +29,26 @@ var globalStyles = {
   },
 };
 
-// CSS.render will ask the component for any styles it uses, then
-// render a <style> tag into the document.
-// If called multiple times it will replace the previous style.
-export function render(component){
+let usedStyles = {
+  ...globalStyles,
+};
+
+export function register(styles){
+  usedStyles = {
+    ...usedStyles,
+    ...styles
+  };
+}
+
+// CSS.render will insert or update a <style> tag into the page
+// containing all the styles used by included components
+export function render(){
   let id = 'app-style';
   let oldStyle = document.getElementById(id);
   if( oldStyle ){
     document.head.removeChild(oldStyle);
   }
-  let css = createMarkupForComponent(component);
+  let css = createMarkupForStyles(usedStyles);
   let style = document.createElement('style');
   style.id = id;
   style.type = 'text/css';
@@ -50,13 +60,8 @@ export function render(component){
   document.head.appendChild(style);
 }
 
-// CSS.createMarkupForComponent will ask the component for any styles it uses,
-// and return the CSS markup.
-export function createMarkupForComponent(component){
-  let styles = {
-    ...globalStyles,
-    ...component.styles,
-  };
+// CSS.createMarkupForStyles will convert js-css to real CSS markup.
+export function createMarkupForStyles(styles){
   return Object.keys(styles).map(selector => {
     let props = styles[selector];
     if( typeof props == 'object' ){
@@ -115,7 +120,8 @@ const transitions = {
 
 const CSS = {
   render,
-  createMarkupForComponent,
+  createMarkupForStyles,
+  register,
   getProperty,
   toRGBA,
   transitions

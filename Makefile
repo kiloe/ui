@@ -93,4 +93,4 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean publish
+.PHONY: default test demo clean distclean publish package
