@@ -4,7 +4,7 @@ default: package
 
 SHELL := /bin/bash
 PWD := $(shell pwd)
-ES6 := $(wildcard src/**/*.js)
+ES6 := $(wildcard src/**.js)
 ES5 := $(addprefix package/,$(ES6:src/%=%))
 BABEL := ./node_modules/.bin/babel
 BROWSERIFY := ./node_modules/.bin/browserifyinc --cachefile .browserifycache
@@ -13,20 +13,19 @@ DEMO_SRCS = $(filter-out demo/src/IconList.js, $(wildcard demo/src/**/*.js))
 
 #--------------------------------------
 
-package/%.js: src/%.js src/icons
+package/%.js: src/%.js | node_modules
 	@mkdir -p $(dir $@)
 	$(BABEL) -o $@ $<
 
-package/package.json: package.json src/icons
+package/package.json: package.json
 	@mkdir -p $(dir $@)
-	$(BABEL) -d $(dir $@)/ src/ # this line is not required but drastically speeds up initial build
 	sed '/private/d' < $< > $@
 
 package/.npmignore: .npmignore
 	@mkdir -p $(dir $@)
 	cp $< $@
 
-package: package/package.json package/.npmignore $(ES5)
+package: package/package.json $(ES5) package/.npmignore
 
 #---------------------------------------
 
@@ -69,6 +68,21 @@ demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/IconList.js packag
 demo: demo/public/index.js
 	$(SERVE) demo/public
 
+watch: demo/public/index.js
+	envsubst < .watchsrc | watchman -j
+	envsubst < .watchdemo | watchman -j
+	@echo
+	@echo "+-------------------------------------------------+"
+	@echo "| watching ./src in background                    |"
+	@echo "| running 'make demo/public/index.js' on change   |"
+	@echo "+-------------------------------------------------+"
+	@echo
+	@echo "Run 'make unwatch' to stop"
+
+unwatch:
+	watchman trigger-del kiloe-ui-src
+	watchman watch-del ./src
+
 #--------------------------------------
 
 publish: package
@@ -93,4 +107,5 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean publish package
+.PHONY: default test demo clean distclean publish watch unwatch package
+
