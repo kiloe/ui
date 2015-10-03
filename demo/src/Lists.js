@@ -9,7 +9,6 @@ import PrimaryTextView from '../../package/PrimaryTextView';
 import SecondaryTextView from '../../package/SecondaryTextView';
 import ChatBubbleIcon from '../../package/icons/ChatBubbleIcon';
 import StarIcon from '../../package/icons/StarIcon';
-import IconButtonView from '../../package/IconButtonView';
 
 
 export default class ListDemo extends React.Component {
@@ -39,7 +38,7 @@ export default class ListDemo extends React.Component {
         <View row style={{ justifyContent: 'space-around' }}>
 
           <ListView raised style={listStyle}>
-            <ListItemView left={<StarIcon accent invert/>} right={Avatar1}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>
+            <ListItemView left={<StarIcon accent invert size={1.6} />} right={Avatar1}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>
             <ListItemView left={<View size={1.6}/>} right={Avatar2}><PrimaryTextView lines={1}>Mary Johnson</PrimaryTextView></ListItemView>
             <ListItemView left={<View size={1.6}/>} right={Avatar1}><PrimaryTextView lines={1}>Peter Carlsson</PrimaryTextView></ListItemView>
             <ListItemView left={<View size={1.6}/>} right={Avatar2}><PrimaryTextView lines={1}>Trevor Hansen</PrimaryTextView></ListItemView>
@@ -49,7 +48,7 @@ export default class ListDemo extends React.Component {
             <ListItemView left={Avatar2}><PrimaryTextView lines={1}>Chris Ward</PrimaryTextView><SecondaryTextView lines={1}>He's alright, I suppose. This is a single line but the text is much longer, see? Yeah!!!!!!!!</SecondaryTextView></ListItemView>
             <ListItemView left={Avatar1}><PrimaryTextView lines={1}>Chris Ward</PrimaryTextView><SecondaryTextView lines={2}>He's alright, I suppose. This is a DOUBLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</SecondaryTextView></ListItemView>
             <ListItemView left={Avatar2}><PrimaryTextView lines={1}>Chris Ward</PrimaryTextView><SecondaryTextView lines={3}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</SecondaryTextView></ListItemView>
-            <ListItemView left={Avatar1} right={<ChatBubbleIcon/>}><PrimaryTextView>Chris Farmiloe</PrimaryTextView><SecondaryTextView>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</SecondaryTextView></ListItemView>
+            <ListItemView left={Avatar1} right={<ButtonView transparent icon={ChatBubbleIcon}/>}><PrimaryTextView>Chris Farmiloe</PrimaryTextView><SecondaryTextView>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</SecondaryTextView></ListItemView>
             <DividerView style={div} />
             <ListItemView left={Avatar2}><PrimaryTextView>Chris Ward</PrimaryTextView></ListItemView>
             <ListItemView left={Avatar1}><PrimaryTextView>Chris Farmiloe</PrimaryTextView></ListItemView>
@@ -60,11 +59,12 @@ export default class ListDemo extends React.Component {
 
           <ListView raised style={listStyle}>
             <ListItemView><SecondaryTextView style={{ fontWeight: 'bold' }}>Recent chat</SecondaryTextView></ListItemView>
-            <ListItemView left={Avatar1} right={<IconButtonView accent icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>
-            <ListItemView left={Avatar2} right={<ButtonView icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>
-            <ListItemView left={<View size={1.6}/>} right={<ChatBubbleIcon accent invert/>}><PrimaryTextView lines={1}>Mary Johnson</PrimaryTextView></ListItemView>
-            <ListItemView left={<View size={1.6}/>} right={<ChatBubbleIcon disabled/>}><PrimaryTextView lines={1}>Peter Carlsson</PrimaryTextView></ListItemView>
-            <ListItemView left={<View size={1.6}/>} right={<ChatBubbleIcon disabled/>}><PrimaryTextView lines={1}>Trevor Hansen</PrimaryTextView></ListItemView>
+            <ListItemView left={Avatar1} right={<ButtonView accent transparent icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>
+            <ListItemView left={Avatar2} right={<ButtonView accent transparent disabled icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Mary Johnson</PrimaryTextView></ListItemView>
+            <ListItemView left={<View size={2.5}/>} right={<ButtonView accent transparent icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Jeff Jefferson</PrimaryTextView></ListItemView>
+            <ListItemView left={<View size={2.5}/>} right={<ButtonView accent transparent icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Jeff Jefferson</PrimaryTextView></ListItemView>
+            <ListItemView left={<View size={2.5}/>} right={<ButtonView accent transparent disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Jeff Jefferson</PrimaryTextView></ListItemView>
+            <ListItemView left={<View size={2.5}/>} right={<ButtonView accent transparent disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryTextView lines={1}>Jeff Jefferson</PrimaryTextView></ListItemView>
             <DividerView/>
             <ListItemView><SecondaryTextView style={{ fontWeight: 'bold' }}>Previous chats</SecondaryTextView></ListItemView>
             <ListItemView left={Avatar1}><PrimaryTextView lines={1}>Janet Perkins</PrimaryTextView></ListItemView>

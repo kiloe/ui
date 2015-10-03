@@ -6,6 +6,9 @@ import CSS from './utils/css';
 CSS.register({
   '.avatar img': {
     borderRadius: '50%',
+  },
+  '.listItem .avatar': {
+    alignSelf: 'flex-start',
   }
 });
 
@@ -18,13 +21,16 @@ export default class AvatarView extends ImageView {
 
   static defaultProps = {
     ...View.defaultProps,
-    size: 3.5,
   }
 
   getClassNames(){
     let cs = super.getClassNames();
     cs.avatar = true;
     return cs;
+  }
+
+  getSize(){
+    return 3.5 * this.getScale();
   }
 
   getStyle(){

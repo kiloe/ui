@@ -31,11 +31,23 @@ export default class IconView extends View {
   }
 
   // getSize of the icon to display. Unless overrided by size prop
-  // icon size is determined by scale
+  // icon size is determined by container size and scale
   getSize(){
+    // user set fixed size
     let size = super.getSize();
     if( typeof size == 'number' ){
-      return size;
+      return size * this.getScale();
+    }
+    // The 'intrinsic' size of an icon is to maintain the aspect ratio
+    // of the cross-axis ie. if container's height=10 then icon's width=10
+    if( this.props.size == 'intrinsic' ){
+      let parent = this.getParent();
+      if( parent ){
+        let parentSize = parent.getSize();
+        if( typeof parentSize == 'number' ){
+          return parentSize;
+        }
+      }
     }
     return 1.6 * this.getScale();
   }

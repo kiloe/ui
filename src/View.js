@@ -262,7 +262,6 @@ export default class View extends React.Component {
 
   getTextColor(){
     let theme = this.getTheme();
-
     return theme.getTextColor(false,this.getLayer(),this.getTopLayer());
   }
 
@@ -311,8 +310,9 @@ export default class View extends React.Component {
         this.props.align == 'right' ? 'flex-end' :
         'center';
     }
-    style.fontSize = this.getScale() + 'rem';
-
+    if( !style.fontSize ){
+      style.fontSize = this.getScale() + 'rem';
+    }
     if ( this.props.divider ) {
       style.borderBottom = '1px solid ' + ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
     }
@@ -352,6 +352,9 @@ export default class View extends React.Component {
       shortcutTheme.invert = true;
     }
     if ( this.props.disabled ){
+      if( this.props.invert && (this.props.primary || this.props.accent) ){
+        shortcutTheme.invert = false;
+      }
       shortcutTheme.textMode = 'disabled';
       shortcutTheme.paletteMode = 'grey'; //Can't have primary or accent if disabled.
     }
@@ -374,7 +377,6 @@ export default class View extends React.Component {
   // getLayer returns the current (or inherited) layer number
   getLayer(){
     let layer = this.props.layer;
-
     if( typeof layer != 'number' ){
       let parent = this.getParent();
       layer = parent ? parent.getLayer() : 0;
@@ -385,7 +387,6 @@ export default class View extends React.Component {
     if( typeof layer != 'number' ){
       layer = 0;
     }
-
     return layer;
   }
 

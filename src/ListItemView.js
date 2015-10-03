@@ -82,8 +82,8 @@ export default class ListItemView extends View {
 
   render(){
 
-    const ICON_SIZE = 1.6;
-    const AVATAR_SIZE = 4;
+    // const ICON_SIZE = 1.6;
+    // const AVATAR_SIZE = 4;
 
     let children = [];
     // TODO: handle when left and right are just set to true
@@ -95,9 +95,9 @@ export default class ListItemView extends View {
 
       };
 
-      let size = "intrinsic";
-      if ( this.props.left.type.prototype instanceof IconView ) size = ICON_SIZE;
-      else if ( this.props.left.props.avatar ) size = AVATAR_SIZE;
+      // let size = "intrinsic";
+      // if ( this.props.left.type.prototype instanceof IconView ) size = ICON_SIZE;
+      // if ( this.props.left.props.avatar ) size = AVATAR_SIZE;
 
       let left = React.cloneElement(this.props.left,{
         //size: size,
@@ -111,14 +111,14 @@ export default class ListItemView extends View {
     // XXX: Quickfix for Flex
     children.push( <View key="content" className="content" style={{flex:'1 0 0'}}>{this.props.children}</View> ); //content
     if( this.props.right ){
-      let s = {
+      // let s = {
         //right style
         //margin: '0 0.5rem',
-      };
+      // };
 
-      let size = "intrinsic";
-      if ( this.props.right.type.prototype instanceof IconView ) size = ICON_SIZE;
-      else if ( this.props.right.props.avatar ) size = AVATAR_SIZE;
+      // let size = "intrinsic";
+      // if ( this.props.right.type.prototype instanceof IconView ) size = ICON_SIZE;
+      // if ( this.props.right.props.avatar ) size = AVATAR_SIZE;
 
       let right = React.cloneElement(this.props.right,{
 

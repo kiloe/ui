@@ -17,7 +17,7 @@ export default class ToolbarView extends View {
     if( typeof size != 'undefined' ){
       return size;
     }
-    return 2 * this.getScale();
+    return 3 * this.getScale();
   }
 
 }

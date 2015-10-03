@@ -7,12 +7,12 @@ import View from '../../package/View';
 import DrawerView from '../../package/DrawerView';
 import ToolbarView from '../../package/ToolbarView';
 import ButtonView from '../../package/ButtonView';
-import Menu from '../../package/Menu';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
-import CloudIcon from '../../package/icons/CloudIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
 import MenuIcon from '../../package/icons/MenuIcon';
+import ZoomInIcon from '../../package/icons/ZoomInIcon';
+import ZoomOutIcon from '../../package/icons/ZoomOutIcon';
 import AddCircleIcon from '../../package/icons/AddCircleIcon';
 import ArrowBackIcon from '../../package/icons/ArrowBackIcon';
 import FullscreenIcon from '../../package/icons/FullscreenIcon';
@@ -31,6 +31,7 @@ export default class App extends React.Component {
     // Initial state
     this.state = {
       page: localStorage.getItem('page') || 'lists',
+      scale: 1.5,
     };
     // Trigger update on browser resize
     UI.viewport.on('change', () => {
@@ -102,6 +103,14 @@ export default class App extends React.Component {
     this.setState({sidebarHidden: !this.state.sidebarHidden});
   }
 
+  scaleUp(){
+    this.setState({scale: this.state.scale + 0.1});
+  }
+
+  scaleDown(){
+    this.setState({scale: this.state.scale - 0.1});
+  }
+
   getPage(){
     switch ( this.state.page ){
       case 'buttons'  :   return <Buttons />;
@@ -112,21 +121,12 @@ export default class App extends React.Component {
   }
 
   render(){
-
-    let cloudMenu = <Menu>
-      <ButtonView align="left" icon={<AddCircleIcon/>} label="Open" />
-      <ButtonView align="left" icon={<AddCircleIcon/>} label="Save file as..." />
-      <ButtonView align="left" icon={<AddCircleIcon/>} label="Quit now" />
-    </Menu>;
-
-    let page = this.getPage();
-
     return (
-      <View row>
+      <View row scale={this.state.scale}>
         <DrawerView docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
-          <ToolbarView accent scale={2}>
+          <ToolbarView accent>
             <View>Demo-crazy</View>
-            <ButtonView icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
+            <ButtonView transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </ToolbarView>
           <View scroll>
             <ButtonView icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.openPage.bind(this,'buttons')} />
@@ -142,18 +142,16 @@ export default class App extends React.Component {
           </View>
         </DrawerView>
         <View onClickCapture={this.clickBody.bind(this)}>
-          <ToolbarView primary={'600'} scale={2}>
-            <ButtonView onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
+          <ToolbarView primary={'600'}>
+            <ButtonView transparent onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
             <View>Title</View>
-            <ButtonView onClick={this.toggleDiscoMode.bind(this)} icon={<FormatPaintIcon/>} label="Disco" />
-            <ButtonView onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>} label="Theme" />
-            <ButtonView menu={cloudMenu} icon={<CloudIcon/>} label="Cloud" />
-            <ButtonView menu={cloudMenu} icon={<NotificationsActiveIcon/>} label="alerts" />
-            <ButtonView onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
+            <ButtonView transparent onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
+            <ButtonView transparent onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
+            <ButtonView transparent onClick={this.toggleDiscoMode.bind(this)} icon={<FormatPaintIcon/>} />
+            <ButtonView transparent onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
+            <ButtonView transparent onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
           </ToolbarView>
-
-          {page}
-
+          {this.getPage()}
         </View>
       </View>
     );

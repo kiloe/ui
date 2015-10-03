@@ -43,55 +43,70 @@ CSS.register({
     borderRadius: '50%',
     justifyContent: 'center',
   },
-  '.button.fab': {
-    width: '4.65rem !important',
-    height: '4.65rem !important',
+  '.button:not(.circular)': {
+    // minWidth: '5.3rem', // 88dp minimum for normal flat/raised buttons
   },
-  '.button.fab.mini': {
-    width: '3.3rem !important',
-    height: '3.3rem !important',
+  '.dialog .button.flat:not(.circular)': {
+    // minWidth: '3.4rem', // 64dp minimum for flat buttons inside dialogs
   },
-  '.button.iconButton': {
-    width: '2rem !important',
-    height: '2rem !important',
+  '.button.transparent:hover .button-hover': {
+    opacity: '0.1',
   },
-  '.button:not(.circular):not(.iconButton):not(.fab)': {
-    minWidth: '5.3rem', // 88dp minimum for normal flat/raised buttons
+  '.button.transparent:active .button-press': {
+    opacity: '0.3',
   },
-  '.dialog .button.flat:not(.circular):not(.iconButton)': {
-    minWidth: '3.4rem', // 64dp minimum for flat buttons inside dialogs
-  },
+  '.button.transparent:focus .button-press': {
+    opacity: '0.2',
+  }
 });
 
 export default class ButtonView extends View {
 
   static propTypes = {
     ...View.propTypes,
+    // Popup menu to active with button //XXX: probably shouldn't live here
     menu: React.PropTypes.element,
-    fab: React.PropTypes.bool, // floating action button
-    mini: React.PropTypes.bool, // FAB mini
-    icon: React.PropTypes.node, // icon element to use
+    // icon to show on button, can be either an icon element or icon class
+    icon: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      React.PropTypes.func,
+    ]),
+    // transparent buttons only have background for the click effects
+    transparent: React.PropTypes.bool,
   }
 
   static defaultProps = {
     ...View.defaultProps,
-    fab: false,
-    mini: false,
     row: true,
     align: 'center',
     size: 'intrinsic',
-    //layer: 0,
+    layer: 0,
+  }
+
+  getRaise(){
+    if( this.props.transparent ){
+      return 0; // can't raise transparent things
+    }
+    return super.getRaise();
   }
 
   getClassNames(){
     let cs = super.getClassNames();
     cs.button = true;
-    if ( this.getRaise() > 0 ) cs.raised = true;
-    if ( this.props.fab ) {
-      cs.fab = true;
-      if ( this.props.mini ) cs.mini = true; //currently just used for FABs
+    if( this.getRaise() > 0 ){
+      cs.raised = true;
     }
-    if ( !this.props.label || this.props.fab ) cs.circular = true; //is circular
+    // buttons without labels are round...
+    // but since 'fill' would cause weird aspect ratios
+    // 'fill' buttons are always square
+    if( !this.props.label && this.props.size != 'fill' ){
+      cs.circular = true;
+    }
+    // a 'transparent' button is one where the background
+    // color only shows for effects
+    if( this.props.transparent ){
+      cs.transparent = true;
+    }
     return cs;
   }
 
@@ -110,29 +125,24 @@ export default class ButtonView extends View {
     if( this.props.align == 'right' ){
       style.flexDirection = 'row-reverse'; //Reverse the order (e.g. label then icon)
     }
-    if( !this.props.fab ){
-      if(this.props.label){
-        style.padding = this.isColumn() ? '0.75rem 1rem' : '0.5rem 0.5rem';
-      }else{
-        style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
-      }
+    if( this.props.label ){
+      style.padding = this.isColumn() ? '0.75rem 1rem' : '0.5rem 0.5rem';
+    }else{
+      style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
+      style.justifyContent = 'center';
     }
-    if ( !this.props.label || this.props.fab ) style.justifyContent = 'center';
     return style;
   }
 
-
-
   getBackgroundColor( hueOffset ) {
-
+    if( this.props.transparent ){
+      return this.getTheme().getTransparent();
+    }
     if ( typeof hueOffset == 'undefined' && this.getRaise() > 0 && this.props.disabled ) {
       hueOffset = ( this.getThemeMode() == 'light' ? 1 : -1 );
     }
-
     return super.getBackgroundColor( hueOffset );
-
   }
-
 
   onClick(e){
     if( this.props.menu ){
@@ -157,6 +167,37 @@ export default class ButtonView extends View {
     return super.isClickable();
   }
 
+  // getIcon returns the icon as an element or undefined if no icon prop
+  getIcon(){
+    if( !this.props.icon ){
+      return;
+    }
+    let props = {
+      key:'icon',
+      style:{
+        padding:
+          this.props.align == 'left' ? '0 0.5rem 0 0' :
+          this.props.align == 'right' ? '0 0 0 0.5rem' :
+          this.props.label ? '0 0.5rem 0 0' :
+          0
+      },
+      size:'intrinsic'
+    };
+    if( this.props.icon instanceof Function ){
+      let Icon = this.props.icon;
+      return <Icon {...props} />;
+    }
+    return React.cloneElement(this.props.icon, props);
+  }
+
+  isInverted(){
+    // primary/accent colors only work inverted when transparent
+    if( this.props.transparent && (this.props.primary || this.props.accent) ){
+      return true;
+    }
+    return super.isInverted();
+  }
+
 
   render(c){
 
@@ -164,18 +205,9 @@ export default class ButtonView extends View {
 
     let children = [];
     if( this.props.icon ){
-      let s = {
-        padding:
-          this.props.align == 'left' ? '0 0.5rem 0 0' :
-          this.props.align == 'right' ? '0 0 0 0.5rem' :
-          this.props.label && !this.props.fab ? '0 0.5rem 0 0' :
-          0
-      };
-      let iconSize = 1.6;
-      if ( this.props.fab ) iconSize = 2; //~24px (from spec)
-      children.push(React.cloneElement(this.props.icon,{key:'icon', style:s,size:iconSize}));
+      children.push(this.getIcon());
     }
-    if( !this.props.fab && this.props.label ){
+    if( this.props.label ){
       let s = {
         cursor: this.isClickable() ? 'pointer' : 'default',
         backgroundColor: 'transparent',
@@ -184,15 +216,25 @@ export default class ButtonView extends View {
           this.props.align == 'right' ? 'flex-end' :
           'stretch'
       };
-
       children.push(<View key="label" style={s}>{this.props.label}</View>);
     }
 
     // :hover. :focus and :active are all handled with hidden backgrounds. I totally came up with this idea on my own and didn't have to ask anyone.
     if ( !this.props.disabled ) { // No other states if it's disabled, yo!
-      let bgOffset1 = { backgroundColor: this.getBackgroundColor( this.getThemeMode() == 'light' ? 1 : -1 ) };
-      let bgOffset2 = { backgroundColor: this.getBackgroundColor( this.getThemeMode() == 'light' ? 2 : -2 ) };
-      children.push(<div key="button-backgrounds"><div className="button-hover" style={bgOffset1}></div><div className="button-focus button-press" style={bgOffset2}></div></div>);
+      let hover = {
+        backgroundColor: this.props.transparent ?
+          'transparent' :
+          this.getBackgroundColor( this.getThemeMode() == 'light' ? 1 : -1 )
+      };
+      let press = {
+        backgroundColor: this.props.transparent ?
+          this.getTextColor() :
+          this.getBackgroundColor( this.getThemeMode() == 'light' ? 2 : -2 )
+      };
+      children.push(<div key="button-backgrounds">
+          <div className="button-hover" style={hover}></div>
+          <div className="button-focus button-press" style={press}></div>
+      </div>);
     }
     return super.render(children);
   }
