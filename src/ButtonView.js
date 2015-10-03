@@ -73,10 +73,6 @@ export default class ButtonView extends View {
     icon: React.PropTypes.node, // icon element to use
   }
 
-  static contextTypes = {
-    ...View.contextTypes
-  }
-
   static defaultProps = {
     ...View.defaultProps,
     fab: false,

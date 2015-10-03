@@ -42,10 +42,6 @@ export default class ListItemView extends View {
     right: React.PropTypes.oneOfType([ React.PropTypes.node, React.PropTypes.bool ]),
   }
 
-  static contextTypes = {
-    ...View.contextTypes
-  }
-
   static defaultProps = {
     ...View.defaultProps,
     row: true,

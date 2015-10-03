@@ -25,10 +25,6 @@ export default class IconButtonView extends ButtonView {
     ...View.propTypes,
   }
 
-  static contextTypes = {
-    ...View.contextTypes
-  }
-
   static defaultProps = {
     ...View.defaultProps,
     fab: false,

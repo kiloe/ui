@@ -11,18 +11,6 @@ CSS.register({
 
 export default class IconView extends View {
 
-  static propTypes = {
-    ...View.propTypes,
-  }
-
-  static contextTypes = {
-    ...View.contextTypes
-  }
-
-  static defaultProps = {
-    ...View.defaultProps,
-  }
-
   getBackgroundColor(){
     return 'transparent';
   }

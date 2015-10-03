@@ -151,21 +151,11 @@ export default class View extends React.Component {
   }
 
   static contextTypes = {
-    row: React.PropTypes.bool,
-    theme: React.PropTypes.object,
-    rootView: React.PropTypes.object,
-    scale: React.PropTypes.number,
-    layer: React.PropTypes.number,
-    topLayer: React.PropTypes.number,
+    parentView: React.PropTypes.object,
   }
 
   static childContextTypes = {
-    row: React.PropTypes.bool,
-    theme: React.PropTypes.object,
-    rootView: React.PropTypes.object,
-    scale: React.PropTypes.number,
-    layer: React.PropTypes.number,
-    topLayer: React.PropTypes.number,
+    parentView: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -183,21 +173,34 @@ export default class View extends React.Component {
     this.state = {};
   }
 
+  // getChildContext returns the context for children
+  getChildContext(){
+    return {
+      parentView: this,
+    };
+  }
+
+  // getParent fetches parent View
+  getParent(){
+    if( !this.context ){
+      return undefined;
+    }
+    return this.context.parentView;
+  }
+
   // The first View to be rendered becomes the "rootView".
   // All descentant Views can tell the rootView to alter it's state.
   // This is how modals work... a child View can setState({modal: component})
   // and that gets rended as a child of the root view.
   getRoot(){
-    if( this.context && this.context.rootView ){
-      return this.context.rootView;
-    }
-    return this;
+    let parent = this.getParent();
+    return !parent ? this : parent;
   }
 
   // isRow returns true if the parent view that this view resides in
   // has been set to show it's children as columns.
   isColumn(){
-    return this.context && this.context.row;
+    return this.getParent().props.row;
   }
 
   // getClassNames builds and returns all CSS classes
@@ -324,26 +327,11 @@ export default class View extends React.Component {
     return !this.props.disabled && this.props.onClick;
   }
 
-  // getChildContext returns the context that all child components
-  // will be assigned.
-  getChildContext(){
-    return {
-      row: this.props.row,
-      theme: this.getThemeConfig(),
-      rootView: this.getRoot(),
-      scale: this.getScale(),
-      layer: this.getLayer(),
-      topLayer: this.getTopLayer(),
-    };
-  }
-
   // getThemeConfig fetches the active palette configuration.
-  // It merges the palette configs from props/context/global.
+  // It merges the palette configs from props/parent/global.
   getThemeConfig(){
-    let contextTheme = {};
-    if( this.context && this.context.theme ){
-      contextTheme = this.context.theme;
-    }
+    let parent = this.getParent();
+    let inheritedTheme = parent ? parent.getThemeConfig() : defaultTheme;
     let shortcutPaletteMode = PALETTE_MODES.filter(name => {
       return !!this.props[name];
     })[0];
@@ -354,14 +342,12 @@ export default class View extends React.Component {
         shortcutTheme.hue = this.props[shortcutPaletteMode];
       }
     }
-
     let shortcutMode = THEME_MODES.filter(name => {
       return !!this.props[name];
     })[0];
     if ( shortcutMode ){
       shortcutTheme.mode = shortcutMode;
     }
-
     if( this.isInverted() ){
       shortcutTheme.invert = true;
     }
@@ -369,14 +355,12 @@ export default class View extends React.Component {
       shortcutTheme.textMode = 'disabled';
       shortcutTheme.paletteMode = 'grey'; //Can't have primary or accent if disabled.
     }
-
     let propsTheme = {};
     if( this.props.theme ){
       propsTheme = this.props.theme;
     }
     return {
-      ...defaultTheme,
-      ...contextTheme,
+      ...inheritedTheme,
       ...shortcutTheme,
       ...propsTheme,
     };
@@ -392,8 +376,11 @@ export default class View extends React.Component {
     let layer = this.props.layer;
 
     if( typeof layer != 'number' ){
-      layer = this.context.layer;
-      if ( this.props.raised ) layer += 1; //XXX: Should either be raise (0-5) or just (0-1)
+      let parent = this.getParent();
+      layer = parent ? parent.getLayer() : 0;
+      if( this.props.raised ){
+        layer += 1; //XXX: Should either be raise (0-5) or just (0-1)
+      }
     }
     if( typeof layer != 'number' ){
       layer = 0;
@@ -405,9 +392,9 @@ export default class View extends React.Component {
   // getTopLayer returns the top layer number (top be automatically calculated
   getTopLayer(){
     let topLayer = this.props.topLayer;
-
     if( typeof topLayer != 'number' ){
-      topLayer = this.context.topLayer;
+      let parent = this.getParent();
+      topLayer = parent ? parent.getTopLayer() : 0;
     }
     if( typeof topLayer != 'number' ){
       topLayer = 0;
@@ -420,7 +407,8 @@ export default class View extends React.Component {
   getScale(){
     let scale = this.props.scale;
     if( typeof scale != 'number' ){
-      scale = this.context.scale;
+      let parent = this.getParent();
+      scale = parent ? parent.getScale() : 1;
     }
     if( typeof scale != 'number' ){
       return 1;
