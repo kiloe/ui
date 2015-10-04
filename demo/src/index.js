@@ -7,6 +7,7 @@ import View from '../../package/View';
 import Drawer from '../../package/Drawer';
 import Toolbar from '../../package/Toolbar';
 import Button from '../../package/Button';
+import Progress from '../../package/Progress';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
@@ -23,6 +24,7 @@ import Buttons from './Buttons';
 import Palette from './Palette';
 import Lists from './Lists';
 import Icons from './Icons';
+import ProgressBars from './ProgressBars';
 
 export default class App extends React.Component {
 
@@ -117,6 +119,7 @@ export default class App extends React.Component {
       case 'palette'  :   return <Palette />;
       case 'lists'    :   return <Lists />;
       case 'icons'    :   return <Icons />;
+      case 'progress'    :   return <ProgressBars />;
     }
   }
 
@@ -133,6 +136,7 @@ export default class App extends React.Component {
             <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.openPage.bind(this, 'palette')} />
             <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.openPage.bind(this, 'lists')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.openPage.bind(this, 'icons')} />
+            <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.openPage.bind(this, 'progress')} />
             <Button icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
