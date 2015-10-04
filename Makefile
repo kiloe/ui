@@ -103,12 +103,12 @@ clean:
 	rm -f demo/public/index.js
 	rm -f demo/src/IconList.js
 	rm -f demo/src/IconList.js.tmp
-	rm -rf node_modules
 	rm -rf src/icons.build
 	rm -f .browserifycache
 	rm -rf package
 
 distclean: clean
+	rm -rf node_modules
 	rm -rf src/icons
 	rm -rf material-design-icons
 
