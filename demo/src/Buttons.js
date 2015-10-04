@@ -1,6 +1,7 @@
 import React from 'react';
 
 import View from '../../package/View';
+import Button from '../../package/Button';
 import CloudIcon from '../../package/icons/CloudIcon';
 
 import Doc from './Doc';
@@ -15,6 +16,9 @@ export default class ButtonsDemo extends React.Component {
       }
       return k;
     }).sort().join(', ');
+    if( flags.size == Button.defaultProps.size ){
+      delete flags.size;
+    }
     let src = Doc.jsx`
       <View row ${bgFlags}>
         <Button ${flags} disabled />
