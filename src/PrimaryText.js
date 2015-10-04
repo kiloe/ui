@@ -1,78 +1,37 @@
-'use strict';
+import React from 'react';
+import View from './View';
+import Text from './Text';
 
-var _get = require('babel-runtime/helpers/get')['default'];
+export default class PrimaryText extends Text {
 
-var _inherits = require('babel-runtime/helpers/inherits')['default'];
-
-var _createClass = require('babel-runtime/helpers/create-class')['default'];
-
-var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
-
-var _extends = require('babel-runtime/helpers/extends')['default'];
-
-var _interopRequireDefault = require('babel-runtime/helpers/interop-require-default')['default'];
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _View = require('./View');
-
-var _View2 = _interopRequireDefault(_View);
-
-var _Text2 = require('./Text');
-
-var _Text3 = _interopRequireDefault(_Text2);
-
-var PrimaryText = (function (_Text) {
-  _inherits(PrimaryText, _Text);
-
-  function PrimaryText() {
-    _classCallCheck(this, PrimaryText);
-
-    _get(Object.getPrototypeOf(PrimaryText.prototype), 'constructor', this).apply(this, arguments);
+  static propTypes = {
+    ...View.propTypes,
   }
 
-  _createClass(PrimaryText, [{
-    key: 'getClassNames',
-    value: function getClassNames() {
-      var cs = _get(Object.getPrototypeOf(PrimaryText.prototype), 'getClassNames', this).call(this);
-      cs.primaryText = true;
+  static defaultProps = {
+    ...View.defaultProps,
+    theme: { textMode: 'primary' },
+  }
 
-      return cs;
-    }
-  }, {
-    key: 'getStyle',
-    value: function getStyle() {
-      var style = _get(Object.getPrototypeOf(PrimaryText.prototype), 'getStyle', this).call(this);
-      delete style.fontSize;
+  getClassNames(){
+    let cs = super.getClassNames();
+    cs.primaryText = true;
 
-      return style;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
 
-      return _get(Object.getPrototypeOf(PrimaryText.prototype), 'render', this).call(this, this.props.children);
-    }
-  }], [{
-    key: 'propTypes',
-    value: _extends({}, _View2['default'].propTypes),
-    enumerable: true
-  }, {
-    key: 'defaultProps',
-    value: _extends({}, _View2['default'].defaultProps, {
-      theme: { textMode: 'primary' }
-    }),
-    enumerable: true
-  }]);
+    return cs;
+  }
 
-  return PrimaryText;
-})(_Text3['default']);
+  getStyle(){
+    let style = super.getStyle();
+    delete style.fontSize;
 
-exports['default'] = PrimaryText;
-module.exports = exports['default'];
+    return style;
+  }
+
+  render(){
+
+
+    return super.render( this.props.children );
+  }
+
+}
