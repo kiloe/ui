@@ -125,11 +125,6 @@ export default class Button extends View {
     return cs;
   }
 
-  constructor(...args){
-    super(...args);
-    this.state = {active:false};
-  }
-
   getLayer() {
     if ( this.props.raised ) return 0; //reset layer if raised
     else return super.getLayer();
