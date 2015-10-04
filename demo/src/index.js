@@ -25,6 +25,7 @@ import Palette from './Palette';
 import Lists from './Lists';
 import Icons from './Icons';
 import ProgressBars from './ProgressBars';
+import Cards from './Cards';
 
 export default class App extends React.Component {
 
@@ -85,6 +86,10 @@ export default class App extends React.Component {
     localStorage.setItem('page', page);
   }
 
+  open(page){
+    return this.openPage.bind(this,page);
+  }
+
   toggleThemeMode(){
     UI.theme.mode = UI.theme.mode=='light' ? 'dark' : 'light';
     this.forceUpdate();
@@ -120,6 +125,7 @@ export default class App extends React.Component {
       case 'lists'    :   return <Lists />;
       case 'icons'    :   return <Icons />;
       case 'progress'    :   return <ProgressBars />;
+      case 'cards'    :   return <Cards />;
     }
   }
 
@@ -132,11 +138,12 @@ export default class App extends React.Component {
             <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </Toolbar>
           <View scroll>
-            <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.openPage.bind(this,'buttons')} />
-            <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.openPage.bind(this, 'palette')} />
-            <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.openPage.bind(this, 'lists')} />
-            <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.openPage.bind(this, 'icons')} />
-            <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.openPage.bind(this, 'progress')} />
+            <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.open('buttons')} />
+            <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.open('palette')} />
+            <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.open('lists')} />
+            <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.open('icons')} />
+            <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.open('progress')} />
+            <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
