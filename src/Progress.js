@@ -64,8 +64,8 @@ export default class Progress extends View {
       backgroundColor: this.getBackgroundColor(), // this.getThemeMode() == 'light' ? -5 : 5 ),
     };
     let children = [];
-    children.push( <span style={backgroundStyle} className="progressBG"></span> );
-    children.push( <span style={barStyle} className="progressBar"></span> );
+    children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
+    children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
     
     return super.render(children);
 
