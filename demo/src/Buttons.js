@@ -18,14 +18,15 @@ export default class ButtonsDemo extends React.Component {
       }
       return k;
     }).sort().join(', ');
+    let labels = flags.label ? ['disabled', 'normal', 'raised'] : [];
     return (
         <View row>
           <View size={20} style={{fontSize:'1rem'}}>{desc}</View>
           <View>
             <View style={{margin:'2rem 0',padding:'2rem'}} row raised {...bgFlags}>
-              <Button style={style} {...flags} disabled />
-              <Button style={style} {...flags} />
-              <Button style={style} {...flags} raised />
+              <Button style={style} {...flags} disabled label={labels[0]}/>
+              <Button style={style} {...flags} label={labels[1]}/>
+              <Button style={style} {...flags} raised label={labels[2]}/>
             </View>
           </View>
         </View>
