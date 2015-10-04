@@ -90,6 +90,21 @@ export default class Button extends View {
     return super.getRaise();
   }
 
+  getSize(){
+    // The 'intrinsic' size of an icon-only button is to maintain the aspect ratio
+    // of the cross-axis ie. if container's height=10 then icon's width=10
+    if( !this.props.label && this.props.size == 'intrinsic' ){
+      let parent = this.getParent();
+      if( parent ){
+        let parentSize = parent.getSize();
+        if( typeof parentSize == 'number' ){
+          return parentSize;
+        }
+      }
+    }
+    return super.getSize();
+  }
+
   getClassNames(){
     let cs = super.getClassNames();
     cs.button = true;
@@ -128,7 +143,7 @@ export default class Button extends View {
     if( this.props.label ){
       style.padding = this.isColumn() ? '0.75rem 1rem' : '0.5rem 0.5rem';
     }else{
-      style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
+      // style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
       style.justifyContent = 'center';
     }
     return style;
@@ -179,7 +194,7 @@ export default class Button extends View {
           this.props.align == 'left' ? '0 0.5rem 0 0' :
           this.props.align == 'right' ? '0 0 0 0.5rem' :
           this.props.label ? '0 0.5rem 0 0' :
-          0
+          '0.6rem'
       },
       size:'intrinsic'
     };
