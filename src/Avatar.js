@@ -30,7 +30,8 @@ export default class Avatar extends Image {
   }
 
   getSize(){
-    return 3.5 * this.getScale();
+    let size = super.getSize() || 3.5;
+    return size * this.getScale();
   }
 
   getStyle(){

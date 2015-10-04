@@ -1,34 +1,11 @@
 import React from 'react';
 import View from './View';
-import Icon from './Icon';
 import CSS from './utils/css';
 
 CSS.register({
-  '.listItem .primaryText': {
-    fontSize: '16px', // XXX: Need to decide what to do about obeying the spec and working with this app's scale, etc
+  '.listItem': {
+    padding: '1.33rem',
   },
-  '.listItem .secondaryText': {
-    fontSize: '14px',
-  },
-  '.listItem .right.icon': {
-    width: '24px',
-  },
-  '.listItem .left': {
-    marginLeft: '1.33rem',
-  },
-  '.listItem .content': {
-    margin: '0 1.33rem',
-  },
-  '.listItem .right': {
-    marginRight: '1.33rem',
-  },
-  '.listItem .left.iconButton': {
-    // XXX: when it's an iconButton, it has padding already. How can we generalise this?
-    marginLeft: '0.5rem',
-  },
-  '.listItem .right.iconButton': {
-    marginRight: '0.5rem',
-  }
 });
 
 // Note: A List Item / Tile should have a maximum of 3 lines of text.
@@ -38,8 +15,24 @@ export default class ListItem extends View {
 
   static propTypes = {
     ...View.propTypes,
-    left: React.PropTypes.oneOfType([ React.PropTypes.node, React.PropTypes.bool ]),
-    right: React.PropTypes.oneOfType([ React.PropTypes.node, React.PropTypes.bool ]),
+    // left assigns a View to the LHS of the list item.
+    // passing an element will place that element in the column,
+    // passing 'true' will guess the size of a blank space to fill the column.
+    // padding a number will create a space of that 'size'
+    left: React.PropTypes.oneOfType([
+      React.PropTypes.node,
+      React.PropTypes.bool,
+      React.PropTypes.number,
+    ]),
+    // right assigns a View to the RHS of the list item.
+    // passing an element will place that element in the column,
+    // passing 'true' will guess the size of a blank space to fill the column.
+    // padding a number will create a space of that 'size'
+    right: React.PropTypes.oneOfType([
+      React.PropTypes.node,
+      React.PropTypes.bool,
+      React.PropTypes.number,
+    ]),
   }
 
   static defaultProps = {
@@ -56,85 +49,52 @@ export default class ListItem extends View {
     return cs;
   }
 
-  constructor(...args){
-    super(...args);
-
-  }
-
-
   getStyle(){
     let style = super.getStyle();
-
     style.justifyContent = 'space-between';
-    style.padding = '8px 0px';
+    // style.padding = '8px 0px';
     style.flexGrow = '0'; // List items shouldn't stretch out to fill the vertical space
     // style.flex = '1 0 0';
-
     return style;
   }
 
-
-  onClick(e){
-    super.onClick(e);
-
+  cloneItem(el, i){
+    if( !el ){
+      return;
+    }
+    let props = {
+      row:
+        i == 1 ? false : true,
+      size:
+        i == 1 ? 'fill' : 'intrinsic',
+      key: i,
+      className:
+        i == 0 ? 'left' :
+        i == 1 ? 'content' :
+        i == 2 ? 'right' :
+        '',
+      style: {
+        justifyContent: 'space-between',
+        margin: '0 0.5rem',
+        flexShrink: i==1 ? 1 : 0,
+        alignItems:
+          i == 1 ? 'stretch' : 'center', //XXX: maybe all should be center
+      }
+    };
+    if( el === true ){
+      return <View {...props} size={1.6} />; //XXX: arbitary size?
+    }else if( typeof el == 'number' ){
+      return <View {...props} size={el * this.getScale()}/>;
+    }else if( Array.isArray(el) ){
+      return <View {...props}>{el}</View>;
+    }
+    return <View {...props}>{el}</View>;
   }
 
-
   render(){
-
-    // const ICON_SIZE = 1.6;
-    // const AVATAR_SIZE = 4;
-
-    let children = [];
-    // TODO: handle when left and right are just set to true
-    // (e.g. There's no element but there should be a space as if there were.)
-    if( this.props.left ){
-      let s = {
-       // paddingRight: '16px',
-
-
-      };
-
-      // let size = "intrinsic";
-      // if ( this.props.left.type.prototype instanceof Icon ) size = ICON_SIZE;
-      // if ( this.props.left.props.avatar ) size = AVATAR_SIZE;
-
-      let left = React.cloneElement(this.props.left,{
-        //size: size,
-        style: s,
-        key: 'left',
-        className: 'left',
-      });
-      children.push( left );
-    }
-
-    // XXX: Quickfix for Flex
-    children.push( <View key="content" className="content" style={{flex:'1 0 0'}}>{this.props.children}</View> ); //content
-    if( this.props.right ){
-      // let s = {
-        //right style
-        //margin: '0 0.5rem',
-      // };
-
-      // let size = "intrinsic";
-      // if ( this.props.right.type.prototype instanceof Icon ) size = ICON_SIZE;
-      // if ( this.props.right.props.avatar ) size = AVATAR_SIZE;
-
-      let right = React.cloneElement(this.props.right,{
-
-        key: 'right',
-        className: 'right',
-        //size: size,
-        style: {
-          justifyContent: 'flex-start',
-        },
-
-      });
-      children.push( right );
-    }
-
-
-    return super.render(children);
+    return super.render([this.props.left, this.props.children, this.props.right]
+      .map(this.cloneItem.bind(this))
+      .filter(el => !!el));
   }
 
 }
