@@ -115,7 +115,6 @@ export default class View extends React.Component {
     // Note: do not use this for controlling logic, instead fetch the palette via getTheme()
     light: React.PropTypes.bool,
     dark: React.PropTypes.bool,
-    transparent: React.PropTypes.bool,
     primary: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     accent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     grey: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
