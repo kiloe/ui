@@ -1,8 +1,8 @@
 import React from 'react';
 import View from '../../package/View';
 
-import ButtonView from '../../package/ButtonView';
-// import IconButtonView from '../../package/IconButtonView';
+import Button from '../../package/Button';
+// import IconButton from '../../package/IconButton';
 // import AddIcon from '../../package/icons/AddIcon';
 // import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import CloudIcon from '../../package/icons/CloudIcon';
@@ -23,9 +23,9 @@ export default class ButtonsDemo extends React.Component {
           <View size={20} style={{fontSize:'1rem'}}>{desc}</View>
           <View>
             <View style={{margin:'2rem 0',padding:'2rem'}} row raised {...bgFlags}>
-              <ButtonView style={style} {...flags} disabled />
-              <ButtonView style={style} {...flags} />
-              <ButtonView style={style} {...flags} raised />
+              <Button style={style} {...flags} disabled />
+              <Button style={style} {...flags} />
+              <Button style={style} {...flags} raised />
             </View>
           </View>
         </View>

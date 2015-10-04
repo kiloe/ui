@@ -22,7 +22,7 @@ UI.registerCSS({
   },
 });
 
-export default class PaletteTableView extends View {
+export default class PaletteTable extends View {
 
   static defaultProps = {
     ...View.defaultProps,

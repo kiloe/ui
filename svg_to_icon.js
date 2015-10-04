@@ -4,8 +4,8 @@ var camelize = require('camelize');
 
 var TEMPLATE = "\
 import React from 'react';\n\
-import IconView from '../IconView';\n\n\
-export default class CLASS_NAME extends IconView {\n  getSVG(){return SVG_DATA;}\n};";
+import Icon from '../Icon';\n\n\
+export default class CLASS_NAME extends Icon {\n  getSVG(){return SVG_DATA;}\n};";
 
 var FILEPAT = /ic_(.*)_\d+px.svg/;
 
@@ -31,7 +31,7 @@ function render(filename){
     ;
   var outname = 'src/icons.build/'+name+'.js';
   fs.writeFileSync(outname, js);
-  console.log('created '+outname);
+  console.log(filename,'->',outname);
 }
 
 render(process.argv[2]);

@@ -4,9 +4,9 @@ import UI from '../../package/index';
 import {COLORS} from '../../package/utils/colors';
 
 import View from '../../package/View';
-import DrawerView from '../../package/DrawerView';
-import ToolbarView from '../../package/ToolbarView';
-import ButtonView from '../../package/ButtonView';
+import Drawer from '../../package/Drawer';
+import Toolbar from '../../package/Toolbar';
+import Button from '../../package/Button';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
@@ -31,7 +31,7 @@ export default class App extends React.Component {
     // Initial state
     this.state = {
       page: localStorage.getItem('page') || 'lists',
-      scale: 1.5,
+      scale: 1.2,
     };
     // Trigger update on browser resize
     UI.viewport.on('change', () => {
@@ -123,34 +123,34 @@ export default class App extends React.Component {
   render(){
     return (
       <View row scale={this.state.scale}>
-        <DrawerView docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
-          <ToolbarView accent>
+        <Drawer docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
+          <Toolbar accent>
             <View>Demo-crazy</View>
-            <ButtonView transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
-          </ToolbarView>
+            <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
+          </Toolbar>
           <View scroll>
-            <ButtonView icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.openPage.bind(this,'buttons')} />
-            <ButtonView icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.openPage.bind(this, 'palette')} />
-            <ButtonView icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.openPage.bind(this, 'lists')} />
-            <ButtonView icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.openPage.bind(this, 'icons')} />
-            <ButtonView icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
+            <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.openPage.bind(this,'buttons')} />
+            <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.openPage.bind(this, 'palette')} />
+            <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.openPage.bind(this, 'lists')} />
+            <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.openPage.bind(this, 'icons')} />
+            <Button icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
             <View/>
-            <ButtonView icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
-            <ButtonView icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />
-            <ButtonView icon={<FormatPaintIcon/>} align="right" label="Paint Rollers H-M" />
-            <ButtonView icon={<FormatPaintIcon/>} align="right" label="Paint Rollers N-Z" />
+            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
+            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />
+            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers H-M" />
+            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers N-Z" />
           </View>
-        </DrawerView>
+        </Drawer>
         <View onClickCapture={this.clickBody.bind(this)}>
-          <ToolbarView primary={'600'}>
-            <ButtonView transparent onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
+          <Toolbar primary={'600'}>
+            <Button transparent onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
             <View>Title</View>
-            <ButtonView transparent onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
-            <ButtonView transparent onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
-            <ButtonView transparent onClick={this.toggleDiscoMode.bind(this)} icon={<FormatPaintIcon/>} />
-            <ButtonView transparent onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
-            <ButtonView transparent onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
-          </ToolbarView>
+            <Button transparent onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
+            <Button transparent onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
+            <Button transparent onClick={this.toggleDiscoMode.bind(this)} icon={<FormatPaintIcon/>} />
+            <Button transparent onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
+            <Button transparent onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
+          </Toolbar>
           {this.getPage()}
         </View>
       </View>
