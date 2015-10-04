@@ -18,7 +18,6 @@ CSS.register({
     zIndex: '1',
   },
   '.button .button-hover, .button .button-focus, .button .button-press': {
-    // visibility: 'hidden',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -28,26 +27,17 @@ CSS.register({
     opacity: '0',
   },
   '.button:hover .button-hover': {
-    // visibility: 'visible',
     opacity:'1',
   },
   '.button:focus:not(:active) .button-focus': {
-    // visibility: 'visible',
     opacity:'1',
   },
   '.button:active .button-press': {
-    // visibility: 'visible',
     opacity:'1',
   },
   '.button.circular, .button.circular .button-hover, .button.circular .button-focus, .button.circular .button-press': {
     borderRadius: '50%',
     justifyContent: 'center',
-  },
-  '.button:not(.circular)': {
-    // minWidth: '5.3rem', // 88dp minimum for normal flat/raised buttons
-  },
-  '.dialog .button.flat:not(.circular)': {
-    // minWidth: '3.4rem', // 64dp minimum for flat buttons inside dialogs
   },
   '.button.transparent:hover .button-hover': {
     opacity: '0.1',
@@ -148,9 +138,9 @@ export default class Button extends View {
     if( this.props.transparent ){
       return this.getTheme().getTransparent();
     }
-    if ( typeof hueOffset == 'undefined' && this.getRaise() > 0 && this.props.disabled ) {
-      hueOffset = ( this.getThemeMode() == 'light' ? 1 : -1 );
-    }
+    // if ( typeof hueOffset == 'undefined' && this.getRaise() > 0 && this.props.disabled ) {
+    //   hueOffset = ( this.getThemeMode() == 'light' ? 1 : -1 );
+    // }
     return super.getBackgroundColor( hueOffset );
   }
 

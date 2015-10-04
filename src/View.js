@@ -71,6 +71,11 @@ CSS.register({
     boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
     zIndex:5,
   },
+  '.view.disabled': {
+    opacity:'0.2 !important',
+    filter: 'grayscale(100%)',
+    WebkitFilter: 'grayscale(100%)',
+  },
 });
 
 
@@ -213,10 +218,13 @@ export default class View extends React.Component {
     if( this.props.className ){
       cs[this.props.className] = true;
     }
+    if( this.props.disabled ){
+      cs.disabled = true;
+    }
     cs.vsplit = this.props.row;
     // only non-transparent views can be raised
     let mode = this.getThemeMode();
-    if( mode != 'transparent' && !this.props.disabled ){ // Material items can't be raised if they're disabled. It's science.
+    if( mode != 'transparent' ){
       let z = this.getRaise();
       if( z ){
         cs[`z${z}`] = true;
@@ -246,12 +254,19 @@ export default class View extends React.Component {
   // Return an interger between 0 and 5 that represents how far
   // off the page the element is raised. 0=flat 5=most-raised
   getRaise() {
+    // Material items can't be raised if they're disabled. It's science.
+    if( this.props.disabled ){
+      return 0;
+    }
+    // false is same as 0
     if( !this.props.raised ){
       return 0;
     }
+    // true is same as 1
     if( this.props.raised === true ){
       return 1;
     }
+    // number
     return this.props.raised;
   }
 
@@ -269,6 +284,9 @@ export default class View extends React.Component {
   // light background color.
   getBackgroundColor(hueOffset=0){
     let theme = this.getTheme();
+    if( this.props.disabled && this.invert ){
+      return 'transparent';
+    }
     return theme.getBackgroundColor(false,this.getLayer(),this.getTopLayer(),hueOffset);
   }
 
@@ -350,19 +368,16 @@ export default class View extends React.Component {
     if( this.isInverted() ){
       shortcutTheme.invert = true;
     }
-    if ( this.props.disabled ){
-      shortcutTheme.textMode = 'disabled';
-      shortcutTheme.paletteMode = 'grey'; //Can't have primary or accent if disabled.
-    }
     let propsTheme = {};
     if( this.props.theme ){
       propsTheme = this.props.theme;
     }
-    return {
+    let theme = {
       ...inheritedTheme,
       ...shortcutTheme,
       ...propsTheme,
     };
+    return theme;
   }
 
   // getTheme returns the merged palette.
