@@ -150,7 +150,7 @@ export default class View extends React.Component {
     // Scale is a mulitpler that affects certain key elements/properties.
     // In most scenarios it can be thought of as a font-sizing method
     scale: React.PropTypes.number,
-    //The View is a divider (with bottom border)
+    // The View is a divider (with bottom border)
     divider: React.PropTypes.bool,
   }
 
