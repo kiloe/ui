@@ -18,7 +18,7 @@ package/%.js: src/%.js node_modules
 	@mkdir -p $(dir $@)
 	$(BABEL) -o $@ $<
 
-package/icons: src/icons node_modules
+package/icons: | node_modules
 	$(BABEL) -d package/icons src/icons
 
 package/package.json: package.json
@@ -29,7 +29,7 @@ package/.npmignore: .npmignore
 	@mkdir -p $(dir $@)
 	cp $< $@
 
-package: package/package.json package/icons $(ES5) package/.npmignore
+package: package/package.json $(ES5) package/.npmignore package/icons
 
 #---------------------------------------
 
@@ -39,7 +39,7 @@ node_modules: package.json
 
 #--------------------------------------
 
-src/icons: node_modules
+src/icons: | node_modules
 	git clone https://github.com/google/material-design-icons.git
 	mkdir -p $@.build
 	for filename in `ls material-design-icons/**/svg/production/*.svg`; do \
@@ -50,7 +50,7 @@ src/icons: node_modules
 
 #--------------------------------------
 
-demo/src/IconList.js: src/icons
+demo/src/IconList.js:
 	echo '' > $@.tmp
 	for path in `ls $</*.js`; do \
 		filename=`basename $$path`; \
@@ -67,10 +67,10 @@ demo/src/IconList.js: src/icons
 	echo "]" >> $@.tmp
 	mv $@.tmp $@
 
-demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/IconList.js package node_modules
+demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/IconList.js package | node_modules
 	$(BROWSERIFY) -t babelify $< -o $@
 
-demo: demo/public/index.js node_modules
+demo: demo/public/index.js | node_modules
 	$(SERVE) demo/public
 
 watch: demo/public/index.js
