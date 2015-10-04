@@ -1,35 +1,29 @@
 import React from 'react';
-import View from '../../package/View';
 
-import Button from '../../package/Button';
-// import IconButton from '../../package/IconButton';
-// import AddIcon from '../../package/icons/AddIcon';
-// import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
+import View from '../../package/View';
 import CloudIcon from '../../package/icons/CloudIcon';
 
+import Doc from './Doc';
 
 export default class ButtonsDemo extends React.Component {
 
   renderRow(flags, bgFlags){
-    let style = {margin: '0 10px'};
+    flags.style = {margin: '0 1rem'};
     let desc = Object.keys(flags).map(k => {
       if( k == 'size' ){
         return flags.size;
       }
       return k;
     }).sort().join(', ');
-    let labels = flags.label ? ['disabled', 'normal', 'raised'] : [];
+    let src = Doc.jsx`
+      <View row ${bgFlags}>
+        <Button ${flags} disabled />
+        <Button ${flags} />
+        <Button ${flags} raised />
+      </View>
+    `;
     return (
-        <View row>
-          <View size={20} style={{fontSize:'1rem'}}>{desc}</View>
-          <View>
-            <View style={{margin:'2rem 0',padding:'2rem'}} row raised {...bgFlags}>
-              <Button style={style} {...flags} disabled label={labels[0]}/>
-              <Button style={style} {...flags} label={labels[1]}/>
-              <Button style={style} {...flags} raised label={labels[2]}/>
-            </View>
-          </View>
-        </View>
+        <Doc src={src}>{desc}</Doc>
     );
   }
 
