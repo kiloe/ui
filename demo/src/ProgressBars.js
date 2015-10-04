@@ -6,18 +6,21 @@ import Progress from '../../package/Progress';
 export default class ProgressDemo extends React.Component {
 
   componentDidMount(){
-    
     this.setState({progressInterval: setInterval(() => {
-        this.setState( { progress: this.state.progress+0.15 } );
-        if ( this.state.progress >= 100 ) {
-          clearInterval( this.state.progressInterval );
-          this.setState({progressInterval:false});
-        }
-        this.forceUpdate();
-      },1)});
-    
+      this.setState( { progress: this.state.progress+0.15 } );
+      if ( this.state.progress >= 100 ) {
+        clearInterval( this.state.progressInterval );
+        this.setState({progressInterval:false});
+      }
+    },1)});
   }
-  
+
+  componentWillUnmount(){
+    if( this.state.progressInterval ){
+      clearInterval(this.state.progressInterval);
+    }
+  }
+
   constructor(...args){
     super(...args);
     // Initial state
