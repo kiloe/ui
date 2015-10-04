@@ -351,9 +351,6 @@ export default class View extends React.Component {
       shortcutTheme.invert = true;
     }
     if ( this.props.disabled ){
-      if( this.props.invert && (this.props.primary || this.props.accent) ){
-        shortcutTheme.invert = false;
-      }
       shortcutTheme.textMode = 'disabled';
       shortcutTheme.paletteMode = 'grey'; //Can't have primary or accent if disabled.
     }
