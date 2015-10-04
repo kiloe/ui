@@ -1,9 +1,8 @@
 
-import _3dRotationIcon from '../../package/icons/_3dRotationIcon.js';
 import AccessAlarmIcon from '../../package/icons/AccessAlarmIcon.js';
 import AccessAlarmsIcon from '../../package/icons/AccessAlarmsIcon.js';
-import AccessibilityIcon from '../../package/icons/AccessibilityIcon.js';
 import AccessTimeIcon from '../../package/icons/AccessTimeIcon.js';
+import AccessibilityIcon from '../../package/icons/AccessibilityIcon.js';
 import AccountBalanceIcon from '../../package/icons/AccountBalanceIcon.js';
 import AccountBalanceWalletIcon from '../../package/icons/AccountBalanceWalletIcon.js';
 import AccountBoxIcon from '../../package/icons/AccountBoxIcon.js';
@@ -48,14 +47,14 @@ import AssessmentIcon from '../../package/icons/AssessmentIcon.js';
 import AssignmentIcon from '../../package/icons/AssignmentIcon.js';
 import AssignmentIndIcon from '../../package/icons/AssignmentIndIcon.js';
 import AssignmentLateIcon from '../../package/icons/AssignmentLateIcon.js';
-import AssignmentReturnedIcon from '../../package/icons/AssignmentReturnedIcon.js';
 import AssignmentReturnIcon from '../../package/icons/AssignmentReturnIcon.js';
+import AssignmentReturnedIcon from '../../package/icons/AssignmentReturnedIcon.js';
 import AssignmentTurnedInIcon from '../../package/icons/AssignmentTurnedInIcon.js';
 import AssistantIcon from '../../package/icons/AssistantIcon.js';
 import AssistantPhotoIcon from '../../package/icons/AssistantPhotoIcon.js';
 import AttachFileIcon from '../../package/icons/AttachFileIcon.js';
-import AttachmentIcon from '../../package/icons/AttachmentIcon.js';
 import AttachMoneyIcon from '../../package/icons/AttachMoneyIcon.js';
+import AttachmentIcon from '../../package/icons/AttachmentIcon.js';
 import AudiotrackIcon from '../../package/icons/AudiotrackIcon.js';
 import AutorenewIcon from '../../package/icons/AutorenewIcon.js';
 import AvTimerIcon from '../../package/icons/AvTimerIcon.js';
@@ -157,8 +156,8 @@ import ChromeReaderModeIcon from '../../package/icons/ChromeReaderModeIcon.js';
 import ClassIcon from '../../package/icons/ClassIcon.js';
 import ClearAllIcon from '../../package/icons/ClearAllIcon.js';
 import ClearIcon from '../../package/icons/ClearIcon.js';
-import ClosedCaptionIcon from '../../package/icons/ClosedCaptionIcon.js';
 import CloseIcon from '../../package/icons/CloseIcon.js';
+import ClosedCaptionIcon from '../../package/icons/ClosedCaptionIcon.js';
 import CloudCircleIcon from '../../package/icons/CloudCircleIcon.js';
 import CloudDoneIcon from '../../package/icons/CloudDoneIcon.js';
 import CloudDownloadIcon from '../../package/icons/CloudDownloadIcon.js';
@@ -169,8 +168,8 @@ import CloudUploadIcon from '../../package/icons/CloudUploadIcon.js';
 import CodeIcon from '../../package/icons/CodeIcon.js';
 import CollectionsBookmarkIcon from '../../package/icons/CollectionsBookmarkIcon.js';
 import CollectionsIcon from '../../package/icons/CollectionsIcon.js';
-import ColorizeIcon from '../../package/icons/ColorizeIcon.js';
 import ColorLensIcon from '../../package/icons/ColorLensIcon.js';
+import ColorizeIcon from '../../package/icons/ColorizeIcon.js';
 import CommentIcon from '../../package/icons/CommentIcon.js';
 import CompareIcon from '../../package/icons/CompareIcon.js';
 import ComputerIcon from '../../package/icons/ComputerIcon.js';
@@ -221,12 +220,12 @@ import DirectionsTransitIcon from '../../package/icons/DirectionsTransitIcon.js'
 import DirectionsWalkIcon from '../../package/icons/DirectionsWalkIcon.js';
 import DiscFullIcon from '../../package/icons/DiscFullIcon.js';
 import DnsIcon from '../../package/icons/DnsIcon.js';
+import DoNotDisturbAltIcon from '../../package/icons/DoNotDisturbAltIcon.js';
+import DoNotDisturbIcon from '../../package/icons/DoNotDisturbIcon.js';
 import DockIcon from '../../package/icons/DockIcon.js';
 import DomainIcon from '../../package/icons/DomainIcon.js';
 import DoneAllIcon from '../../package/icons/DoneAllIcon.js';
 import DoneIcon from '../../package/icons/DoneIcon.js';
-import DoNotDisturbAltIcon from '../../package/icons/DoNotDisturbAltIcon.js';
-import DoNotDisturbIcon from '../../package/icons/DoNotDisturbIcon.js';
 import DraftsIcon from '../../package/icons/DraftsIcon.js';
 import DriveEtaIcon from '../../package/icons/DriveEtaIcon.js';
 import DvrIcon from '../../package/icons/DvrIcon.js';
@@ -357,8 +356,8 @@ import HealingIcon from '../../package/icons/HealingIcon.js';
 import HearingIcon from '../../package/icons/HearingIcon.js';
 import HelpIcon from '../../package/icons/HelpIcon.js';
 import HelpOutlineIcon from '../../package/icons/HelpOutlineIcon.js';
-import HighlightOffIcon from '../../package/icons/HighlightOffIcon.js';
 import HighQualityIcon from '../../package/icons/HighQualityIcon.js';
+import HighlightOffIcon from '../../package/icons/HighlightOffIcon.js';
 import HistoryIcon from '../../package/icons/HistoryIcon.js';
 import HomeIcon from '../../package/icons/HomeIcon.js';
 import HotelIcon from '../../package/icons/HotelIcon.js';
@@ -500,13 +499,13 @@ import NetworkWifiIcon from '../../package/icons/NetworkWifiIcon.js';
 import NewReleasesIcon from '../../package/icons/NewReleasesIcon.js';
 import NfcIcon from '../../package/icons/NfcIcon.js';
 import NoSimIcon from '../../package/icons/NoSimIcon.js';
+import NotInterestedIcon from '../../package/icons/NotInterestedIcon.js';
 import NoteAddIcon from '../../package/icons/NoteAddIcon.js';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon.js';
 import NotificationsIcon from '../../package/icons/NotificationsIcon.js';
 import NotificationsNoneIcon from '../../package/icons/NotificationsNoneIcon.js';
 import NotificationsOffIcon from '../../package/icons/NotificationsOffIcon.js';
 import NotificationsPausedIcon from '../../package/icons/NotificationsPausedIcon.js';
-import NotInterestedIcon from '../../package/icons/NotInterestedIcon.js';
 import OfflinePinIcon from '../../package/icons/OfflinePinIcon.js';
 import OndemandVideoIcon from '../../package/icons/OndemandVideoIcon.js';
 import OpenInBrowserIcon from '../../package/icons/OpenInBrowserIcon.js';
@@ -536,25 +535,25 @@ import PermMediaIcon from '../../package/icons/PermMediaIcon.js';
 import PermPhoneMsgIcon from '../../package/icons/PermPhoneMsgIcon.js';
 import PermScanWifiIcon from '../../package/icons/PermScanWifiIcon.js';
 import PersonAddIcon from '../../package/icons/PersonAddIcon.js';
-import PersonalVideoIcon from '../../package/icons/PersonalVideoIcon.js';
 import PersonIcon from '../../package/icons/PersonIcon.js';
 import PersonOutlineIcon from '../../package/icons/PersonOutlineIcon.js';
 import PersonPinIcon from '../../package/icons/PersonPinIcon.js';
+import PersonalVideoIcon from '../../package/icons/PersonalVideoIcon.js';
 import PhoneAndroidIcon from '../../package/icons/PhoneAndroidIcon.js';
 import PhoneBluetoothSpeakerIcon from '../../package/icons/PhoneBluetoothSpeakerIcon.js';
 import PhoneForwardedIcon from '../../package/icons/PhoneForwardedIcon.js';
 import PhoneIcon from '../../package/icons/PhoneIcon.js';
 import PhoneInTalkIcon from '../../package/icons/PhoneInTalkIcon.js';
 import PhoneIphoneIcon from '../../package/icons/PhoneIphoneIcon.js';
+import PhoneLockedIcon from '../../package/icons/PhoneLockedIcon.js';
+import PhoneMissedIcon from '../../package/icons/PhoneMissedIcon.js';
+import PhonePausedIcon from '../../package/icons/PhonePausedIcon.js';
 import PhonelinkEraseIcon from '../../package/icons/PhonelinkEraseIcon.js';
 import PhonelinkIcon from '../../package/icons/PhonelinkIcon.js';
 import PhonelinkLockIcon from '../../package/icons/PhonelinkLockIcon.js';
 import PhonelinkOffIcon from '../../package/icons/PhonelinkOffIcon.js';
 import PhonelinkRingIcon from '../../package/icons/PhonelinkRingIcon.js';
 import PhonelinkSetupIcon from '../../package/icons/PhonelinkSetupIcon.js';
-import PhoneLockedIcon from '../../package/icons/PhoneLockedIcon.js';
-import PhoneMissedIcon from '../../package/icons/PhoneMissedIcon.js';
-import PhonePausedIcon from '../../package/icons/PhonePausedIcon.js';
 import PhotoAlbumIcon from '../../package/icons/PhotoAlbumIcon.js';
 import PhotoCameraIcon from '../../package/icons/PhotoCameraIcon.js';
 import PhotoIcon from '../../package/icons/PhotoIcon.js';
@@ -654,9 +653,9 @@ import SettingsSystemDaydreamIcon from '../../package/icons/SettingsSystemDaydre
 import SettingsVoiceIcon from '../../package/icons/SettingsVoiceIcon.js';
 import ShareIcon from '../../package/icons/ShareIcon.js';
 import ShopIcon from '../../package/icons/ShopIcon.js';
+import ShopTwoIcon from '../../package/icons/ShopTwoIcon.js';
 import ShoppingBasketIcon from '../../package/icons/ShoppingBasketIcon.js';
 import ShoppingCartIcon from '../../package/icons/ShoppingCartIcon.js';
-import ShopTwoIcon from '../../package/icons/ShopTwoIcon.js';
 import ShuffleIcon from '../../package/icons/ShuffleIcon.js';
 import SignalCellular0BarIcon from '../../package/icons/SignalCellular0BarIcon.js';
 import SignalCellular1BarIcon from '../../package/icons/SignalCellular1BarIcon.js';
@@ -720,8 +719,8 @@ import SupervisorAccountIcon from '../../package/icons/SupervisorAccountIcon.js'
 import SurroundSoundIcon from '../../package/icons/SurroundSoundIcon.js';
 import SwapCallsIcon from '../../package/icons/SwapCallsIcon.js';
 import SwapHorizIcon from '../../package/icons/SwapHorizIcon.js';
-import SwapVerticalCircleIcon from '../../package/icons/SwapVerticalCircleIcon.js';
 import SwapVertIcon from '../../package/icons/SwapVertIcon.js';
+import SwapVerticalCircleIcon from '../../package/icons/SwapVerticalCircleIcon.js';
 import SwitchCameraIcon from '../../package/icons/SwitchCameraIcon.js';
 import SwitchVideoIcon from '../../package/icons/SwitchVideoIcon.js';
 import SyncDisabledIcon from '../../package/icons/SyncDisabledIcon.js';
@@ -730,10 +729,10 @@ import SyncProblemIcon from '../../package/icons/SyncProblemIcon.js';
 import SystemUpdateAltIcon from '../../package/icons/SystemUpdateAltIcon.js';
 import SystemUpdateIcon from '../../package/icons/SystemUpdateIcon.js';
 import TabIcon from '../../package/icons/TabIcon.js';
+import TabUnselectedIcon from '../../package/icons/TabUnselectedIcon.js';
 import TabletAndroidIcon from '../../package/icons/TabletAndroidIcon.js';
 import TabletIcon from '../../package/icons/TabletIcon.js';
 import TabletMacIcon from '../../package/icons/TabletMacIcon.js';
-import TabUnselectedIcon from '../../package/icons/TabUnselectedIcon.js';
 import TagFacesIcon from '../../package/icons/TagFacesIcon.js';
 import TapAndPlayIcon from '../../package/icons/TapAndPlayIcon.js';
 import TerrainIcon from '../../package/icons/TerrainIcon.js';
@@ -742,14 +741,14 @@ import TextsmsIcon from '../../package/icons/TextsmsIcon.js';
 import TextureIcon from '../../package/icons/TextureIcon.js';
 import TheatersIcon from '../../package/icons/TheatersIcon.js';
 import ThumbDownIcon from '../../package/icons/ThumbDownIcon.js';
-import ThumbsUpDownIcon from '../../package/icons/ThumbsUpDownIcon.js';
 import ThumbUpIcon from '../../package/icons/ThumbUpIcon.js';
+import ThumbsUpDownIcon from '../../package/icons/ThumbsUpDownIcon.js';
+import TimeToLeaveIcon from '../../package/icons/TimeToLeaveIcon.js';
 import TimelapseIcon from '../../package/icons/TimelapseIcon.js';
 import Timer10Icon from '../../package/icons/Timer10Icon.js';
 import Timer3Icon from '../../package/icons/Timer3Icon.js';
 import TimerIcon from '../../package/icons/TimerIcon.js';
 import TimerOffIcon from '../../package/icons/TimerOffIcon.js';
-import TimeToLeaveIcon from '../../package/icons/TimeToLeaveIcon.js';
 import TocIcon from '../../package/icons/TocIcon.js';
 import TodayIcon from '../../package/icons/TodayIcon.js';
 import TollIcon from '../../package/icons/TollIcon.js';
@@ -775,9 +774,9 @@ import VerticalAlignBottomIcon from '../../package/icons/VerticalAlignBottomIcon
 import VerticalAlignCenterIcon from '../../package/icons/VerticalAlignCenterIcon.js';
 import VerticalAlignTopIcon from '../../package/icons/VerticalAlignTopIcon.js';
 import VibrationIcon from '../../package/icons/VibrationIcon.js';
+import VideoLibraryIcon from '../../package/icons/VideoLibraryIcon.js';
 import VideocamIcon from '../../package/icons/VideocamIcon.js';
 import VideocamOffIcon from '../../package/icons/VideocamOffIcon.js';
-import VideoLibraryIcon from '../../package/icons/VideoLibraryIcon.js';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon.js';
 import ViewArrayIcon from '../../package/icons/ViewArrayIcon.js';
 import ViewCarouselIcon from '../../package/icons/ViewCarouselIcon.js';
@@ -822,13 +821,13 @@ import WrapTextIcon from '../../package/icons/WrapTextIcon.js';
 import YoutubeSearchedForIcon from '../../package/icons/YoutubeSearchedForIcon.js';
 import ZoomInIcon from '../../package/icons/ZoomInIcon.js';
 import ZoomOutIcon from '../../package/icons/ZoomOutIcon.js';
+import _3dRotationIcon from '../../package/icons/_3dRotationIcon.js';
 
 export const ICONS = [
-  _3dRotationIcon,
   AccessAlarmIcon,
   AccessAlarmsIcon,
-  AccessibilityIcon,
   AccessTimeIcon,
+  AccessibilityIcon,
   AccountBalanceIcon,
   AccountBalanceWalletIcon,
   AccountBoxIcon,
@@ -873,14 +872,14 @@ export const ICONS = [
   AssignmentIcon,
   AssignmentIndIcon,
   AssignmentLateIcon,
-  AssignmentReturnedIcon,
   AssignmentReturnIcon,
+  AssignmentReturnedIcon,
   AssignmentTurnedInIcon,
   AssistantIcon,
   AssistantPhotoIcon,
   AttachFileIcon,
-  AttachmentIcon,
   AttachMoneyIcon,
+  AttachmentIcon,
   AudiotrackIcon,
   AutorenewIcon,
   AvTimerIcon,
@@ -982,8 +981,8 @@ export const ICONS = [
   ClassIcon,
   ClearAllIcon,
   ClearIcon,
-  ClosedCaptionIcon,
   CloseIcon,
+  ClosedCaptionIcon,
   CloudCircleIcon,
   CloudDoneIcon,
   CloudDownloadIcon,
@@ -994,8 +993,8 @@ export const ICONS = [
   CodeIcon,
   CollectionsBookmarkIcon,
   CollectionsIcon,
-  ColorizeIcon,
   ColorLensIcon,
+  ColorizeIcon,
   CommentIcon,
   CompareIcon,
   ComputerIcon,
@@ -1046,12 +1045,12 @@ export const ICONS = [
   DirectionsWalkIcon,
   DiscFullIcon,
   DnsIcon,
+  DoNotDisturbAltIcon,
+  DoNotDisturbIcon,
   DockIcon,
   DomainIcon,
   DoneAllIcon,
   DoneIcon,
-  DoNotDisturbAltIcon,
-  DoNotDisturbIcon,
   DraftsIcon,
   DriveEtaIcon,
   DvrIcon,
@@ -1182,8 +1181,8 @@ export const ICONS = [
   HearingIcon,
   HelpIcon,
   HelpOutlineIcon,
-  HighlightOffIcon,
   HighQualityIcon,
+  HighlightOffIcon,
   HistoryIcon,
   HomeIcon,
   HotelIcon,
@@ -1325,13 +1324,13 @@ export const ICONS = [
   NewReleasesIcon,
   NfcIcon,
   NoSimIcon,
+  NotInterestedIcon,
   NoteAddIcon,
   NotificationsActiveIcon,
   NotificationsIcon,
   NotificationsNoneIcon,
   NotificationsOffIcon,
   NotificationsPausedIcon,
-  NotInterestedIcon,
   OfflinePinIcon,
   OndemandVideoIcon,
   OpenInBrowserIcon,
@@ -1361,25 +1360,25 @@ export const ICONS = [
   PermPhoneMsgIcon,
   PermScanWifiIcon,
   PersonAddIcon,
-  PersonalVideoIcon,
   PersonIcon,
   PersonOutlineIcon,
   PersonPinIcon,
+  PersonalVideoIcon,
   PhoneAndroidIcon,
   PhoneBluetoothSpeakerIcon,
   PhoneForwardedIcon,
   PhoneIcon,
   PhoneInTalkIcon,
   PhoneIphoneIcon,
+  PhoneLockedIcon,
+  PhoneMissedIcon,
+  PhonePausedIcon,
   PhonelinkEraseIcon,
   PhonelinkIcon,
   PhonelinkLockIcon,
   PhonelinkOffIcon,
   PhonelinkRingIcon,
   PhonelinkSetupIcon,
-  PhoneLockedIcon,
-  PhoneMissedIcon,
-  PhonePausedIcon,
   PhotoAlbumIcon,
   PhotoCameraIcon,
   PhotoIcon,
@@ -1479,9 +1478,9 @@ export const ICONS = [
   SettingsVoiceIcon,
   ShareIcon,
   ShopIcon,
+  ShopTwoIcon,
   ShoppingBasketIcon,
   ShoppingCartIcon,
-  ShopTwoIcon,
   ShuffleIcon,
   SignalCellular0BarIcon,
   SignalCellular1BarIcon,
@@ -1545,8 +1544,8 @@ export const ICONS = [
   SurroundSoundIcon,
   SwapCallsIcon,
   SwapHorizIcon,
-  SwapVerticalCircleIcon,
   SwapVertIcon,
+  SwapVerticalCircleIcon,
   SwitchCameraIcon,
   SwitchVideoIcon,
   SyncDisabledIcon,
@@ -1555,10 +1554,10 @@ export const ICONS = [
   SystemUpdateAltIcon,
   SystemUpdateIcon,
   TabIcon,
+  TabUnselectedIcon,
   TabletAndroidIcon,
   TabletIcon,
   TabletMacIcon,
-  TabUnselectedIcon,
   TagFacesIcon,
   TapAndPlayIcon,
   TerrainIcon,
@@ -1567,14 +1566,14 @@ export const ICONS = [
   TextureIcon,
   TheatersIcon,
   ThumbDownIcon,
-  ThumbsUpDownIcon,
   ThumbUpIcon,
+  ThumbsUpDownIcon,
+  TimeToLeaveIcon,
   TimelapseIcon,
   Timer10Icon,
   Timer3Icon,
   TimerIcon,
   TimerOffIcon,
-  TimeToLeaveIcon,
   TocIcon,
   TodayIcon,
   TollIcon,
@@ -1600,9 +1599,9 @@ export const ICONS = [
   VerticalAlignCenterIcon,
   VerticalAlignTopIcon,
   VibrationIcon,
+  VideoLibraryIcon,
   VideocamIcon,
   VideocamOffIcon,
-  VideoLibraryIcon,
   ViewAgendaIcon,
   ViewArrayIcon,
   ViewCarouselIcon,
@@ -1647,4 +1646,5 @@ export const ICONS = [
   YoutubeSearchedForIcon,
   ZoomInIcon,
   ZoomOutIcon,
+  _3dRotationIcon,
 ]
