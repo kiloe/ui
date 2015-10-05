@@ -17,27 +17,30 @@ import {COLORS,LIGHT_HUES} from './colors';
 //    getCurrentColor( hue, alpha=100 ) - Get the current main colour for a button, icon or something like that.
 
 
+function isAccentHue(hue){
+  return !Number.isInteger(parseInt(hue,10));
+}
+
+export let defaultTheme = {
+  primaryPalette: 'blue',            // The app's primary palette (should be a constant). Options: see colors.js.
+  primaryHues: ['100','500','700'],  // Pick 3 hues for the app to use (based on spec). Array (should be a constant). It doesn't have to be 3 values but the number should be odd so that the middle value is seen as the default hue. Options: see colors.js.
+  accentPalette: 'pink',             // The app's accent palette (this should be a constant). Options: see colors.js.
+  accentHue: 'A200',                 // Pick 1 main hue for the app. Options: see colors.js.
+  mode: 'light',                     // The current theme mode (usually for containers or the whole app). Options: 'light', 'dark', 'transparent'
+  paletteMode: 'grey',               // The current palette mode. Options: 'primary', 'accent', 'grey'.
+  textMode: 'primary',               // The current text mode. Options: 'primary', 'secondary', 'disabled', 'hint'
+  hue: undefined,                    // The current user-forced hue (weight). Options: see colors.js.
+  invert: false,                     // The current invert flag. Switches the element colour and text colour. Boolean.
+};
 
 export class ThemeManager {
 
   constructor(cfg){
     this.cfg = {
-      primaryPalette: 'blue',            // The app's primary palette (should be a constant). Options: see colors.js.
-      primaryHues: ['100','500','700'],  // Pick 3 hues for the app to use (based on spec). Array (should be a constant). It doesn't have to be 3 values but the number should be odd so that the middle value is seen as the default hue. Options: see colors.js.
-      accentPalette: 'pink',             // The app's accent palette (this should be a constant). Options: see colors.js.
-      accentHue: 'A200',                 // Pick 1 main hue for the app. Options: see colors.js.
-      mode: 'light',                     // The current theme mode (usually for containers or the whole app). Options: 'light', 'dark', 'transparent'
-
-      paletteMode: 'grey',               // The current palette mode. Options: 'primary', 'accent', 'grey'.
-      textMode: 'primary',               // The current text mode. Options: 'primary', 'secondary', 'disabled', 'hint'
-      hue: '500',                        // The current hue (weight). Options: see colors.js.
-      invert: false,                     // The current invert flag. Switches the element colour and text colour. Boolean.
-
+      ...defaultTheme,
       ...cfg,
     };
   }
-
-
 
   // Get the current colour
   //
@@ -169,10 +172,8 @@ export class ThemeManager {
 
 
   _getHueByLayer( paletteName, layer, topLayer ) {
-    let hues = Object.keys( COLORS[paletteName] );
-    if ( this.cfg.paletteMode == 'accent' ) hues = hues.filter( function(s) { return isNaN(s); } ); //use only the accent hues
-    else hues = hues.filter( function(s) { return !isNaN(s); } ); //remove the accent hues
-
+    let hues = Object.keys( COLORS[paletteName] )
+      .filter(s => this.cfg.paletteMode == 'accent' ? isAccentHue(s) : !isAccentHue(s));
     if ( this.cfg.paletteMode == 'primary' ) {
       let hue = this.cfg.hue || this.getPrimaryHue();
       hues = this._getArrayItemsAfter( hues, hue, true); //Restrict the range
@@ -183,18 +184,14 @@ export class ThemeManager {
     }
 
     if ( this.cfg.mode == 'light' ) {
-
       // Example: in the 'grey' palette, layer 1 of 4 would be hues[3] (200)
       // Example: in the 'grey' palette, layer 4 of 4 would be hues[0] (0)
       return hues[ Math.min( hues.length-1, (topLayer - layer) ) ];
-
     }
     else if ( this.cfg.mode == 'dark' ) {
-
       // Example: in the 'grey' palette, layer 1 of 4 would be hues[11] (1000)
       // Example: in the 'grey' palette, layer 4 of 4 would be hues[9] (700)
       return hues[ Math.max( 0, ( hues.length - (layer+1) ) ) ];
-
     }
   }
 
@@ -298,11 +295,13 @@ export class ThemeManager {
   }
 
   _toHex(n) {
-   n = parseInt(n,10);
-   if (isNaN(n)) return "00";
-   n = Math.max(0,Math.min(n,255));
-   return "0123456789ABCDEF".charAt((n-n%16)/16)
-        + "0123456789ABCDEF".charAt(n%16);
+    n = parseInt(n,10);
+    if( isNaN(n) ){
+      return '00';
+    }
+    n = Math.max(0,Math.min(n,255));
+    return '0123456789ABCDEF'.charAt((n-n%16)/16)
+      + '0123456789ABCDEF'.charAt(n%16);
   }
 
   _rgba(v, alpha){
@@ -324,12 +323,7 @@ export class ThemeManager {
 }
 
 
-export const defaultTheme = {
-      primaryPalette: 'blue',
-      primaryHues: ['100','500','700'],
-      accentPalette: 'pink',
-      accentHue: 'A200',
-      mode: 'light',
+export default {
+  theme: defaultTheme,
+  Manager: ThemeManager,
 };
-
-export default defaultTheme;

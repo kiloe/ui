@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {defaultTheme,ThemeManager} from './utils/themeManager';
+import {ThemeManager} from './utils/themeManager';
 import CSS from './utils/css';
 import Modal from './Modal';
 
@@ -355,7 +355,7 @@ export default class View extends React.Component {
   // It merges the palette configs from props/parent/global.
   getThemeConfig(){
     let parent = this.getParent();
-    let inheritedTheme = parent ? parent.getThemeConfig() : defaultTheme;
+    let inheritedTheme = parent ? parent.getThemeConfig() : {};
     let shortcutPaletteMode = PALETTE_MODES.filter(name => {
       return !!this.props[name];
     })[0];
