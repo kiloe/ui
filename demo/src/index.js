@@ -19,6 +19,7 @@ import ArrowBackIcon from '../../package/icons/ArrowBackIcon';
 import FullscreenIcon from '../../package/icons/FullscreenIcon';
 import ColorLensIcon from '../../package/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon';
+import LayersIcon from '../../package/icons/LayersIcon';
 
 import Buttons from './Buttons';
 import Palette from './Palette';
@@ -140,7 +141,7 @@ export default class App extends React.Component {
             <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </Toolbar>
           <View scroll>
-            <Button icon={<ViewAgendaIcon/>} align="left" label="Layers" onClick={this.open('layers')} />
+            <Button icon={<LayersIcon/>} align="left" label="Layers" onClick={this.open('layers')} />
             <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" onClick={this.open('buttons')} />
             <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.open('palette')} />
             <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.open('lists')} />

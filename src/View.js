@@ -174,6 +174,14 @@ export default class View extends React.Component {
     this.state = {};
   }
 
+  componentDidMount(){
+    this.reportLayerNumberToRootLayer();
+  }
+
+  componentWillReceiveProps(props){
+    this.reportLayerNumberToRootLayer(props);
+  }
+
   // getChildContext returns the context for children
   getChildContext(){
     return {
@@ -384,7 +392,7 @@ export default class View extends React.Component {
 
   // getLayer returns the current (or inherited) layer number
   getLayer(nextProps){
-    let props = this.nextProps || this.props;
+    let props = nextProps || this.props;
     let layer = props.layer;
     if( typeof layer == 'number' ){
       return layer;
@@ -392,14 +400,6 @@ export default class View extends React.Component {
     let parent = this.getParent();
     layer = parent ? parent.getLayer() : 0;
     return props.raised ? layer+1 : layer;
-  }
-
-  componentDidMount(){
-    this.reportLayerNumberToRootLayer();
-  }
-
-  componentWillReceiveProps(props){
-    this.reportLayerNumberToRootLayer(props);
   }
 
   reportLayerNumberToRootLayer(props){
