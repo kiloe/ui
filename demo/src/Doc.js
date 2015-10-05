@@ -1,21 +1,10 @@
 import React from 'react';
 import View from '../../package/View';
-import Button from '../../package/Button';
-import Card from '../../package/Card';
-import Image from '../../package/Image';
-import CloudIcon from '../../package/icons/CloudIcon';
 import * as babel from 'babel';
-
-window.React = React;
-window.View = View;
-window.Button = Button;
-window.CloudIcon = CloudIcon;
-window.Card = Card;
-window.Image = Image;
+import {exec} from './all';
 
 function compile(src){
-  let input = `(function(){ return (${src}); })()`;
-  return eval(babel.transform(input).code);
+  return exec(babel.transform(src,{blacklist: ['strict']}).code);
 }
 
 function val(v){
