@@ -202,7 +202,7 @@ export default class Button extends View {
           this.props.align == 'left' ? '0 0.5rem 0 0' :
           this.props.align == 'right' ? '0 0 0 0.5rem' :
           this.props.label ? '0 0.5rem 0 0' :
-          '0.6rem'
+          '0.5rem'
       },
       size:'intrinsic'
     };

@@ -1,5 +1,6 @@
 import React from 'react';
 import View from '../../package/View';
+import Card from '../../package/Card';
 import * as babel from 'babel';
 import {exec} from './all';
 
@@ -55,14 +56,14 @@ export default class Doc extends React.Component {
     let el = compile(src);
     let view = React.cloneElement(el, {style: {padding:'2rem'}});
     return (
-      <View>
+      <Card>
         <View>
           <code style={{whiteSpace:'pre'}}>{src}</code>
         </View>
-        <View raised style={{margin:'2rem 0'}}>
+        <View layer={0}>
           {view}
         </View>
-      </View>
+      </Card>
     );
   }
 

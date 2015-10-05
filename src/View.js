@@ -179,8 +179,25 @@ export default class View extends React.Component {
     this.reportLayerNumberToRootLayer();
   }
 
+  componentWillUnmount(){
+    // XXX: need to tell root layer we are nolonger here
+    // this is important if we were previously the top layer,
+    // but how will root layer know who is next in line?
+    // for now the quick solution is to just forceupdate the tree
+    // from the rootLayer down... but this is gonna be prohibitatively
+    // expensive for complex layouts so need a better solution!
+    let root = this.getRootLayer();
+    if( root != this ){
+      root.forceLayerCalc();
+    }
+  }
+
   componentWillReceiveProps(props){
     this.reportLayerNumberToRootLayer(props);
+  }
+
+  forceLayerCalc(){
+    this.setState({topLayer: 0});
   }
 
   // getChildContext returns the context for children
@@ -291,9 +308,6 @@ export default class View extends React.Component {
   // light background color.
   getBackgroundColor(hueOffset=0){
     let theme = this.getTheme();
-    if( this.props.disabled && this.invert ){
-      return 'transparent';
-    }
     return theme.getBackgroundColor(false,this.getLayer(),this.getTopLayer(),hueOffset);
   }
 
