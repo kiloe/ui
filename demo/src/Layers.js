@@ -45,7 +45,7 @@ class Split extends React.Component {
       <Button icon={this.state.lock ? LockOpenIcon : LockIcon} onClick={this.onToggleLock.bind(this)} />
     </View>;
     let initprops = this.props.initprops || {};
-    if( this.state.root ){
+    if( this.state.lock ){
       initprops.layer = 0;
     }
     return (

@@ -179,6 +179,7 @@ export default class View extends React.Component {
   }
 
   componentWillReceiveProps(props){
+    console.log('newprops', props);
     this.reportLayerNumberToRootLayer(props);
   }
 
