@@ -383,14 +383,15 @@ export default class View extends React.Component {
   }
 
   // getLayer returns the current (or inherited) layer number
-  getLayer(){
-    let layer = this.props.layer;
+  getLayer(nextProps){
+    let props = this.nextProps || this.props;
+    let layer = props.layer;
     if( typeof layer == 'number' ){
       return layer;
     }
     let parent = this.getParent();
     layer = parent ? parent.getLayer() : 0;
-    return this.props.raised ? layer+1 : layer;
+    return props.raised ? layer+1 : layer;
   }
 
   componentDidMount(){
@@ -398,23 +399,15 @@ export default class View extends React.Component {
   }
 
   componentWillReceiveProps(props){
-    if( props.layer != this.props.layer || props.raised != this.props.raised ){
-      this.reportLayerNumberToRootLayer(props.layer);
-    }
+    this.reportLayerNumberToRootLayer(props);
   }
 
-  reportLayerNumberToRootLayer(n){
-    if( typeof n == 'undefined' ){
-      n = this.getLayer();
-    }
+  reportLayerNumberToRootLayer(props){
+    let n = this.getLayer(props);
     this.getRootLayer().setTopLayer(n);
   }
 
   setTopLayer(n){
-    if( this.getRootLayer() != this ){ //XXX: remove this check once happy
-      console.error('setTopLayer should never be called on a non-root layer');
-      return;
-    }
     if( typeof this.state.topLayer != 'number' || n > this.state.topLayer ){
       this.setState({topLayer: n});
     }
