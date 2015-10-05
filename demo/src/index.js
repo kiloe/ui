@@ -26,6 +26,7 @@ import Lists from './Lists';
 import Icons from './Icons';
 import ProgressBars from './ProgressBars';
 import Cards from './Cards';
+import Layers from './Layers';
 
 export default class App extends React.Component {
 
@@ -126,6 +127,7 @@ export default class App extends React.Component {
       case 'icons'    :   return <Icons />;
       case 'progress' :   return <ProgressBars />;
       case 'cards'    :   return <Cards />;
+      case 'layers'   :   return <Layers />;
     }
   }
 
@@ -138,7 +140,8 @@ export default class App extends React.Component {
             <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </Toolbar>
           <View scroll>
-            <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" id="menu-buttons" onClick={this.open('buttons')} />
+            <Button icon={<ViewAgendaIcon/>} align="left" label="Layers" onClick={this.open('layers')} />
+            <Button icon={<ViewAgendaIcon/>} align="left" label="Buttons" onClick={this.open('buttons')} />
             <Button icon={<ColorLensIcon/>} align="left" label="Palette" onClick={this.open('palette')} />
             <Button icon={<FullscreenIcon/>} align="left" label="Lists" onClick={this.open('lists')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.open('icons')} />
