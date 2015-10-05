@@ -393,32 +393,55 @@ export default class View extends React.Component {
     return this.props.raised ? layer+1 : layer;
   }
 
-  // getTopLayer returns the topmost layer number
-  // it walks the children tree and counts the raises
+  componentDidMount(){
+    this.reportLayerNumberToRootLayer();
+  }
+
+  componentWillReceiveProps(props){
+    if( props.layer != this.props.layer || props.raised != this.props.raised ){
+      this.reportLayerNumberToRootLayer(props.layer);
+    }
+  }
+
+  reportLayerNumberToRootLayer(n){
+    if( typeof n == 'undefined' ){
+      n = this.getLayer();
+    }
+    this.getRootLayer().setTopLayer(n);
+  }
+
+  setTopLayer(n){
+    if( this.getRootLayer() != this ){ //XXX: remove this check once happy
+      console.error('setTopLayer should never be called on a non-root layer');
+      return;
+    }
+    if( typeof this.state.topLayer != 'number' || n > this.state.topLayer ){
+      this.setState({topLayer: n});
+    }
+  }
+
+  getRootLayer(){
+    if( this.props.layer == 0 ){
+      return this;
+    }
+    let parent = this.getParent();
+    if( !parent ){
+      return this;
+    }
+    return parent.getRootLayer();
+  }
+
+  // getTopLayer returns the topmost layer number by asking
+  // the rootLayer (the layer with layer==0) for it's highest numbered child layer
   getTopLayer(){
-    let max = 0;
-    let visit = function(n, raises){
-      if( !n ){
-        return;
-      }
-      if( !n.props ){
-        return;
-      }
-      if( n.props.layer === 0 ){
-        return;
-      }
-      if( n.props.raised ){
-        raises++;
-        max = Math.max(max,raises);
-      }
-      React.Children.forEach(n.props.children, function(n){
-        visit(n, raises);
-      });
-    };
-    React.Children.forEach(this.props.children, function(n){
-      visit(n, 0);
-    });
-    return this.getLayer() + max;
+    if( typeof this.state.topLayer == 'number' ){
+      return this.state.topLayer;
+    }
+    let parent = this.getParent();
+    if( !parent ){
+      return 0;
+    }
+    return parent.getTopLayer();
   }
 
   // getScale returns the current (or inherited) scale factor

@@ -34,8 +34,9 @@ class Split extends React.Component {
       <Split raised={this.state.raised} key="a" row={!this.props.row} />,
       <Split raised={this.state.raised} key="b" row={!this.props.row} />
     ] : <View>ClickMe</View>;
+    let initprops = this.props.initprops || {};
     return (
-      <View className="splitter" raised={this.props.raised} style={s} onClick={handler} row={this.props.row}>
+      <View debug={true} {...initprops} raised={this.props.raised} style={s} onClick={handler} row={this.props.row}>
         {children}
       </View>
     );
@@ -44,6 +45,6 @@ class Split extends React.Component {
 
 export default class Layers extends React.Component {
   render(){
-    return <Split />;
+    return <Split initprops={{layer:0, primary:false, className:'splitter'}}/>;
   }
 }
