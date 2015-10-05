@@ -186,7 +186,6 @@ export default class View extends React.Component {
   }
 
   _setStateWhenIdle(){
-    console.info('idling... setting:', this.laterState);
     this.setState(this.laterState);
     this.laterState = {};
     this.laterTimer = null;
