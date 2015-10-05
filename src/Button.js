@@ -149,6 +149,11 @@ export default class Button extends View {
     return;
   }
 
+  // raised buttons do not report back so this is a noop
+  forceLayerCalc(){
+    return;
+  }
+
   // buttons inherit layer from parent
   getRootLayer(){
     let parent = this.getParent();

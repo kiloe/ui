@@ -79,7 +79,6 @@ CSS.register({
   },
 });
 
-
 // View is a flex-box building block.
 export default class View extends React.Component {
 
@@ -173,6 +172,24 @@ export default class View extends React.Component {
   constructor(...args){
     super(...args);
     this.state = {};
+    this.laterState = {};
+  }
+
+  setStateWhenIdle(o){
+    for(let k in o){
+      this.laterState[k] = o[k];
+    }
+    if( this.laterTimer ){
+      clearTimeout(this.laterTimer);
+    }
+    this.laterTimer = setTimeout(this._setStateWhenIdle.bind(this),500);
+  }
+
+  _setStateWhenIdle(){
+    console.info('idling... setting:', this.laterState);
+    this.setState(this.laterState);
+    this.laterState = {};
+    this.laterTimer = null;
   }
 
   componentDidMount(){
@@ -186,18 +203,19 @@ export default class View extends React.Component {
     // for now the quick solution is to just forceupdate the tree
     // from the rootLayer down... but this is gonna be prohibitatively
     // expensive for complex layouts so need a better solution!
-    let root = this.getRootLayer();
-    if( root != this ){
-      root.forceLayerCalc();
-    }
+    this.forceLayerCalc(true);
   }
 
   componentWillReceiveProps(props){
     this.reportLayerNumberToRootLayer(props);
   }
 
-  forceLayerCalc(){
-    this.setState({topLayer: 0});
+  forceLayerCalc(unmounting){
+    let root = this.getRootLayer();
+    if( unmounting && root == this ){
+      return;
+    }
+    root.setStateWhenIdle({topLayer: 0});
   }
 
   // getChildContext returns the context for children
