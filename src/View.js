@@ -172,30 +172,47 @@ export default class View extends React.Component {
   constructor(...args){
     super(...args);
     this.state = {};
-    this.laterState = {};
+    this.idleState = {};
   }
 
+  // setStateWhenIdle works like setState, only it batches for a much longer time
+  // 500-1000ms. It's primaily used to ease mass updates of the root layer when
+  // components are added/removed all at once.
   setStateWhenIdle(o){
     for(let k in o){
-      this.laterState[k] = o[k];
+      this.idleState[k] = o[k];
     }
-    if( this.laterTimer ){
-      clearTimeout(this.laterTimer);
-    }
-    this.laterTimer = setTimeout(this._setStateWhenIdle.bind(this),500);
+    this.clearIdleTimer();
+    this.idleTimer = setTimeout(this._setStateWhenIdle.bind(this),700);
   }
 
   _setStateWhenIdle(){
-    this.setState(this.laterState);
-    this.laterState = {};
-    this.laterTimer = null;
+    if( !this.idleTimer ){
+      return;
+    }
+    this.idleState = {};
+    this.clearIdleTimer();
+    if( this.mounted ){
+      this.setState(this.idleState);
+    }
+  }
+
+  clearIdleTimer(){
+    if( this.idleTimer ){
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
   }
 
   componentDidMount(){
+    this.mounted = true;
     this.reportLayerNumberToRootLayer();
   }
 
   componentWillUnmount(){
+    this.mounted = false;
+    // ignore any pending state
+    this.clearIdleTimer();
     // XXX: need to tell root layer we are nolonger here
     // this is important if we were previously the top layer,
     // but how will root layer know who is next in line?
