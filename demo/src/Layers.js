@@ -1,5 +1,12 @@
 import React from 'react';
 import View from '../../package/View';
+import UI from '../../package/index';
+
+UI.registerCSS({
+  '.splitter *': {
+    transition: 'all 0.3s ease !important'
+  },
+});
 
 class Split extends React.Component {
 
@@ -10,22 +17,25 @@ class Split extends React.Component {
 
   onClick(){
     this.setState({split: true});
+    setTimeout(() => {
+      this.setState({raised: true});
+    }, 100);
   }
 
   render(){
     let handler = this.onClick.bind(this);
     let s = {
-      margin: '1.5rem',
+      margin: this.props.raised ? '1.5rem' : 0,
       justifyContent: 'center',
       textAlign: 'center',
       verticalAlign: 'cetner',
     };
     let children = this.state.split ? [
-      <Split key="a" row={!this.props.row} />,
-      <Split key="b" row={!this.props.row} />
+      <Split raised={this.state.raised} key="a" row={!this.props.row} />,
+      <Split raised={this.state.raised} key="b" row={!this.props.row} />
     ] : <View>ClickMe</View>;
     return (
-      <View raised layer={this.props.layer} style={s} onClick={handler} row={this.props.row}>
+      <View className="splitter" raised={this.props.raised} style={s} onClick={handler} row={this.props.row}>
         {children}
       </View>
     );
@@ -34,6 +44,6 @@ class Split extends React.Component {
 
 export default class Layers extends React.Component {
   render(){
-    return <Split layer={0} />;
+    return <Split />;
   }
 }
