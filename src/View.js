@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import {defaultTheme,ThemeManager} from './utils/themeManager';
 import CSS from './utils/css';
+import Modal from './Modal';
 
 const SIZES = ['fill', 'intrinsic'];
 const THEME_MODES = ['light', 'dark'];
@@ -258,21 +259,22 @@ export default class View extends React.Component {
 
   // Return an interger between 0 and 5 that represents how far
   // off the page the element is raised. 0=flat 5=most-raised
-  getRaise() {
+  getRaise(nextProps) {
+    let props = nextProps || this.props;
     // Material items can't be raised if they're disabled. It's science.
-    if( this.props.disabled ){
+    if( props.disabled ){
       return 0;
     }
     // false is same as 0
-    if( !this.props.raised ){
+    if( !props.raised ){
       return 0;
     }
     // true is same as 1
-    if( this.props.raised === true ){
+    if( props.raised === true ){
       return 1;
     }
     // number
-    return this.props.raised;
+    return props.raised;
   }
 
   isInverted() {
@@ -399,7 +401,7 @@ export default class View extends React.Component {
     }
     let parent = this.getParent();
     layer = parent ? parent.getLayer() : 0;
-    return props.raised ? layer+1 : layer;
+    return this.getRaise(nextProps) ? layer+1 : layer;
   }
 
   reportLayerNumberToRootLayer(nextProps){
@@ -413,6 +415,8 @@ export default class View extends React.Component {
     }
   }
 
+  // The root layer is the first View in the parent chain that has layer=0
+  // else it's the root-view.
   getRootLayer(nextProps){
     let props = nextProps || this.props;
     if( props.layer === 0 ){
@@ -456,7 +460,7 @@ export default class View extends React.Component {
   // onClickOutside is the event fired when someone clicks outside of
   // an active modal. This method is only accessed on the root.
   onClickOutside(){
-    this.setState({modal: null});
+    this.getModal().clearContent();
   }
 
   // onClick is called when a click event on the View DOM node
@@ -475,8 +479,13 @@ export default class View extends React.Component {
   // This allows for a single modal element to be rendered for things
   // like popup menus and modal dialogs.
   // Call with null to remove the modal.
-  setModal(view){
-    this.getRoot().setState({modal: view});
+  setModalContent(view){
+    this.getModal().setContent(view);
+  }
+
+  // Fetch the global Modal instance
+  getModal(){
+    return this.getRoot().refs.modal;
   }
 
   // render does what it says on the tin.
@@ -496,14 +505,12 @@ export default class View extends React.Component {
     // if we are the root then we might need to
     // render an additional child for the modal.
     let modal;
-    if( this == this.getRoot() && this.state.modal ){
-      modal = this.state.modal;
+    if( this == this.getRoot() ){
+      modal = <Modal ref="modal" />;
     }
     // render
     return (
       <div ref="view"
-      data-layer={this.getLayer()}
-      data-layer-prop={this.props.layer}
       onClick={this.isClickable() || this.getRoot() == this ? this.onClick.bind(this) : undefined}
       onClickCapture={this.props.onClickCapture}
       style={this.getStyle()}

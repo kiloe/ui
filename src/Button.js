@@ -70,7 +70,7 @@ export default class Button extends View {
     row: true,
     align: 'center',
     size: 'intrinsic',
-    layer: 0,
+    // layer: 0, // XXX: if you re-enable this, remove getRootLayer() from this class
   }
 
   getRaise(){
@@ -115,11 +115,6 @@ export default class Button extends View {
     return cs;
   }
 
-  getLayer() {
-    if ( this.props.raised ) return 0; //reset layer if raised
-    else return super.getLayer();
-  }
-
   getStyle(){
     let style = super.getStyle();
     if( this.props.align == 'right' ){
@@ -138,10 +133,39 @@ export default class Button extends View {
     if( this.props.transparent ){
       return this.getTheme().getTransparent();
     }
-    // if ( typeof hueOffset == 'undefined' && this.getRaise() > 0 && this.props.disabled ) {
-    //   hueOffset = ( this.getThemeMode() == 'light' ? 1 : -1 );
-    // }
     return super.getBackgroundColor( hueOffset );
+  }
+
+  // buttons inherit layer from parent
+  getLayer() {
+    let parent = this.getParent();
+    if( !parent ){
+      return 0;
+    }
+    return parent.getLayer();
+  }
+
+  // raised buttons do not report back so this is a noop
+  reportLayerNumberToRootLayer(){
+    return;
+  }
+
+  // buttons inherit layer from parent
+  getRootLayer(){
+    let parent = this.getParent();
+    if( !parent ){
+      return this;
+    }
+    return parent.getRootLayer();
+  }
+
+  // buttons inherit layer from parent
+  getTopLayer(){
+    let parent = this.getParent();
+    if( !parent ){
+      return 0;
+    }
+    return parent.getTopLayer();
   }
 
   onClick(e){
@@ -154,7 +178,7 @@ export default class Button extends View {
           top: pos.top,
         }
       });
-      this.setModal(menu);
+      this.setModalContent(menu);
     } else {
       super.onClick(e);
     }

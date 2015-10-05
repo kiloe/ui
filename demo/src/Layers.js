@@ -41,7 +41,7 @@ class Split extends React.Component {
       <Split raised={this.state.raised} key="a" row={!this.props.row} />,
       <Split raised={this.state.raised} key="b" row={!this.props.row} />
     ] : <View row style={{alignItems:'center'}}>
-      <Button disabled={this.state.lock} icon={CallSplitIcon} onClick={this.onSplit.bind(this)} />
+      <Button raised disabled={this.state.lock} icon={CallSplitIcon} onClick={this.onSplit.bind(this)} />
       <Button icon={this.state.lock ? LockOpenIcon : LockIcon} onClick={this.onToggleLock.bind(this)} />
     </View>;
     let initprops = this.props.initprops || {};
