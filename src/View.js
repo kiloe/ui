@@ -17,7 +17,7 @@ CSS.register({
     alignItems: 'stretch',
     alignContent: 'stretch',
     borderRadius: 1,
-    // overflow: 'hidden',
+    overflow: 'hidden',
     transition: {
       left: CSS.transitions.swift,
       right: CSS.transitions.swift,
@@ -127,9 +127,6 @@ export default class View extends React.Component {
     invert: React.PropTypes.bool,
     // The current layer of material/paper
     layer: React.PropTypes.number,
-    // The top-most layer of material/paper
-    // XXX: Will be (hopefully) set automatically later
-    topLayer: React.PropTypes.number,
     // Size gives the View a either a fixed width in rem (if row) or fixed height rem (if column).
     // OR size=fill which means take up all the space (default).
     // OR special value 'intrinsic' can be used to say only take up what you need.
@@ -388,31 +385,40 @@ export default class View extends React.Component {
   // getLayer returns the current (or inherited) layer number
   getLayer(){
     let layer = this.props.layer;
-    if( typeof layer != 'number' ){
-      let parent = this.getParent();
-      layer = parent ? parent.getLayer() : 0;
-      if( this.props.raised ){
-        layer += 1; //XXX: Should either be raise (0-5) or just (0-1)
-      }
+    if( typeof layer == 'number' ){
+      return layer;
     }
-    if( typeof layer != 'number' ){
-      layer = 0;
-    }
-    return layer;
+    let parent = this.getParent();
+    layer = parent ? parent.getLayer() : 0;
+    return this.props.raised ? layer+1 : layer;
   }
 
-  // getTopLayer returns the top layer number (top be automatically calculated
+  // getTopLayer returns the topmost layer number
+  // it walks the children tree and counts the raises
   getTopLayer(){
-    let topLayer = this.props.topLayer;
-    if( typeof topLayer != 'number' ){
-      let parent = this.getParent();
-      topLayer = parent ? parent.getTopLayer() : 0;
-    }
-    if( typeof topLayer != 'number' ){
-      topLayer = 0;
-    }
-    topLayer = 1; //XXX: Just for now
-    return topLayer;
+    let max = 0;
+    let visit = function(n, raises){
+      if( !n ){
+        return;
+      }
+      if( !n.props ){
+        return;
+      }
+      if( n.props.layer === 0 ){
+        return;
+      }
+      if( n.props.raised ){
+        raises++;
+        max = Math.max(max,raises);
+      }
+      React.Children.forEach(n.props.children, function(n){
+        visit(n, raises);
+      });
+    };
+    React.Children.forEach(this.props.children, function(n){
+      visit(n, 0);
+    });
+    return this.getLayer() + max;
   }
 
   // getScale returns the current (or inherited) scale factor

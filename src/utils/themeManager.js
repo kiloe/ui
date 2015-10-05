@@ -116,7 +116,9 @@ export class ThemeManager {
   _getBackgroundColorObject( hue, layer, topLayer ) {
 
     // If the layers are specified then override the hue specified
-    if ( typeof layer == 'number' && typeof topLayer == 'number' ) hue = this._getHueByLayer( this.getCurrentPaletteName(), layer, topLayer );
+    if ( typeof layer == 'number' && typeof topLayer == 'number' ){
+      hue = this._getHueByLayer( this.getCurrentPaletteName(), layer, topLayer );
+    }
 
     return this._getCurrentColorObjectByHue( hue );
 
@@ -239,11 +241,6 @@ export class ThemeManager {
     let rgb = COLORS[ color.palette ][ color.hue ];
 
     return this._toHex(rgb[0])+this._toHex(rgb[1])+this._toHex(rgb[2]);
-  }
-
-  getBackgroundHex() {
-    let color = this._getBackgroundColorObjectWithSwitch();
-    return this._getHexFromColorObject();
   }
 
   getHexFromPaletteHue( paletteName, hue ) { // For the palette tables example
