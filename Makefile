@@ -10,7 +10,7 @@ ES5 := $(addprefix package/,$(ES6:src/%=%))
 BABEL := ./node_modules/.bin/babel
 BROWSERIFY := ./node_modules/.bin/browserifyinc --cachefile .browserifycache
 SERVE := ./node_modules/.bin/http-server
-DEMO_SRCS = $(filter-out demo/src/IconList.js, $(wildcard demo/src/**/*.js))
+DEMO_SRCS = $(wildcard demo/src/**/*.js)
 
 #--------------------------------------
 
@@ -50,23 +50,6 @@ src/icons: | node_modules
 
 #--------------------------------------
 
-demo/src/IconList.js:
-	echo "// This file is generated during build - do not modify" > $@.tmp
-	for path in `ls $</*.js`; do \
-		filename=`basename $$path`; \
-		klass=`basename $$filename .js`; \
-		echo "import $$klass from '../../package/icons/$$filename';" >> $@.tmp; \
-	done
-	echo "" >> $@.tmp
-	echo "export const ICONS = [" >> $@.tmp
-	for path in `ls $</*.js`; do \
-		filename=`basename $$path`; \
-		klass=`basename $$filename .js`; \
-		echo "  $$klass," >> $@.tmp; \
-	done
-	echo "]" >> $@.tmp
-	mv $@.tmp $@
-
 demo/src/all.js: $(shell find src -type f -name '*.js' | grep -v 'utils' | grep -v 'index')
 	@echo "// This file is generated during build - do not modify" > $@
 	@echo "import React from 'react'" >> $@
@@ -90,7 +73,7 @@ demo/src/all.js: $(shell find src -type f -name '*.js' | grep -v 'utils' | grep 
 	@echo "return window.eval(src) }" >> $@
 	@echo $@
 
-demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/IconList.js demo/src/all.js package | node_modules
+demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/all.js package | node_modules
 	$(BROWSERIFY) -t babelify $< -o $@
 
 demo: demo/public/index.js | node_modules

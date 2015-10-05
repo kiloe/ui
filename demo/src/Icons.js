@@ -1,6 +1,6 @@
 import React from 'react';
 import View from '../../package/View';
-import {ICONS} from './IconList';
+import everything from './all';
 
 export default class IconsDemo extends React.Component {
 
@@ -9,21 +9,24 @@ export default class IconsDemo extends React.Component {
       padding: '1rem',
       alignItems: 'center',
     };
-    let icons = ICONS.map(Icon => {
-      return (
-        <View key={Icon.name} size={15} style={s}>
-          <Icon size={3} />
-          <View>{Icon.name}</View>
-        </View>
-      );
-    });
     return (
       <View scroll>
         <View row>
           <h2>Icons</h2>
         </View>
         <View row style={{flexWrap:'wrap'}}>
-          {icons}
+          {Object.keys(everything).filter(name => {
+            return /.Icon/.test(name);
+          }).map(name => {
+            return everything[name];
+          }).map(Icon => {
+            return (
+              <View key={Icon.name} size={15} style={s}>
+                <Icon size={3} />
+                <View>{Icon.name}</View>
+              </View>
+            );
+          })};
         </View>
       </View>
     );
