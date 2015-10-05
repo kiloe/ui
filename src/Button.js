@@ -70,7 +70,6 @@ export default class Button extends View {
     row: true,
     align: 'center',
     size: 'intrinsic',
-    // layer: 0, // XXX: if you re-enable this, remove getRootLayer() from this class
   }
 
   getRaise(){
