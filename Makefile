@@ -39,14 +39,14 @@ node_modules: package.json
 
 #--------------------------------------
 
-src/icons: | node_modules
+icons: | node_modules
 	git clone https://github.com/google/material-design-icons.git
-	mkdir -p $@.build
+	mkdir -p src/$@.build
 	for filename in `ls material-design-icons/**/svg/production/*.svg`; do \
 		node svg_to_icon.js $$filename; \
 	done
 	rm -rf material-design-icons
-	mv $@.build $@
+	mv src/$@.build src/$@
 
 #--------------------------------------
 
@@ -123,5 +123,5 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean publish watch unwatch package
+.PHONY: default test demo clean distclean publish watch unwatch package icons
 
