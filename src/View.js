@@ -179,7 +179,6 @@ export default class View extends React.Component {
   }
 
   componentWillReceiveProps(props){
-    console.log('newprops', props);
     this.reportLayerNumberToRootLayer(props);
   }
 
@@ -403,9 +402,9 @@ export default class View extends React.Component {
     return props.raised ? layer+1 : layer;
   }
 
-  reportLayerNumberToRootLayer(props){
-    let n = this.getLayer(props);
-    this.getRootLayer().setTopLayer(n);
+  reportLayerNumberToRootLayer(nextProps){
+    let n = this.getLayer(nextProps);
+    this.getRootLayer(nextProps).setTopLayer(n);
   }
 
   setTopLayer(n){
@@ -414,8 +413,9 @@ export default class View extends React.Component {
     }
   }
 
-  getRootLayer(){
-    if( this.props.layer == 0 ){
+  getRootLayer(nextProps){
+    let props = nextProps || this.props;
+    if( props.layer === 0 ){
       return this;
     }
     let parent = this.getParent();
@@ -428,8 +428,10 @@ export default class View extends React.Component {
   // getTopLayer returns the topmost layer number by asking
   // the rootLayer (the layer with layer==0) for it's highest numbered child layer
   getTopLayer(){
-    if( typeof this.state.topLayer == 'number' ){
-      return this.state.topLayer;
+    if( this == this.getRootLayer() ){
+      if( typeof this.state.topLayer == 'number' ){
+        return this.state.topLayer;
+      }
     }
     let parent = this.getParent();
     if( !parent ){
