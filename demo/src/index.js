@@ -136,7 +136,7 @@ export default class App extends React.Component {
     return (
       <View row scale={this.state.scale}>
         <Drawer docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
-          <Toolbar accent>
+          <Toolbar layer={0} accent>
             <View>Demo-crazy</View>
             <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </Toolbar>
