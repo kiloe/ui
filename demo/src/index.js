@@ -124,7 +124,7 @@ export default class App extends React.Component {
       case 'palette'  :   return <Palette />;
       case 'lists'    :   return <Lists />;
       case 'icons'    :   return <Icons />;
-      case 'progress'    :   return <ProgressBars />;
+      case 'progress' :   return <ProgressBars />;
       case 'cards'    :   return <Cards />;
     }
   }
