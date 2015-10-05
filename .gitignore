@@ -12,3 +12,4 @@ debug.log
 package
 .browserifycache
 demo/src/IconList.js.tmp
+demo/src/all.js
