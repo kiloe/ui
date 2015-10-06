@@ -1,13 +1,12 @@
 import React from 'react';
 
 import UI from '../../package/index';
-import {COLORS} from '../../package/utils/colors';
 
 import View from '../../package/View';
 import Drawer from '../../package/Drawer';
 import Toolbar from '../../package/Toolbar';
 import Button from '../../package/Button';
-import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
+import TextFormatIcon from '../../package/icons/TextFormatIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
 import MenuIcon from '../../package/icons/MenuIcon';
@@ -28,6 +27,7 @@ import ProgressBars from './ProgressBars';
 import Cards from './Cards';
 import Layers from './Layers';
 import ColorWheel from './ColorWheel';
+import Typography from './Typography';
 
 export default class App extends React.Component {
 
@@ -104,13 +104,14 @@ export default class App extends React.Component {
 
   getPage(){
     switch ( this.state.page ){
-      case 'buttons'  :   return <Buttons />;
-      case 'palette'  :   return <Palette />;
-      case 'lists'    :   return <Lists />;
-      case 'icons'    :   return <Icons />;
-      case 'progress' :   return <ProgressBars />;
-      case 'cards'    :   return <Cards />;
-      case 'layers'   :   return <Layers />;
+      case 'buttons'   :   return <Buttons />;
+      case 'palette'   :   return <Palette />;
+      case 'lists'     :   return <Lists />;
+      case 'icons'     :   return <Icons />;
+      case 'progress'  :   return <ProgressBars />;
+      case 'cards'     :   return <Cards />;
+      case 'layers'    :   return <Layers />;
+      case 'typography':   return <Typography />;
     }
   }
 
@@ -158,7 +159,7 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Icons" onClick={this.open('icons')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.open('progress')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
-            <Button icon={<NotificationsActiveIcon/>} align="left" label="Bells & Whistles" />
+            <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />

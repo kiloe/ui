@@ -9,7 +9,7 @@ import Doc from './Doc';
 export default class ButtonsDemo extends React.Component {
 
   renderRow(flags, bgFlags){
-    flags.style = {margin: '0 1rem'};
+    flags.style = {margin: '1rem'};
     let desc = Object.keys(flags).map(k => {
       if( k == 'size' ){
         return flags.size;

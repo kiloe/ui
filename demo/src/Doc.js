@@ -1,6 +1,7 @@
 import React from 'react';
 import View from '../../package/View';
 import Card from '../../package/Card';
+import Text from '../../package/Text';
 import * as babel from 'babel';
 import {exec} from './all';
 
@@ -53,16 +54,20 @@ export default class Doc extends React.Component {
 
   render(){
     let src = clean(this.props.src);
-    let el = compile(src);
-    let view = React.cloneElement(el, {style: {padding:'2rem'}});
+    let view = compile(src);
+    let padding = {padding:'2rem'};
     return (
       <Card>
-        <View>
-          <code style={{whiteSpace:'pre'}}>{src}</code>
-        </View>
-        <View layer={0}>
+        <Title>{this.props.title || view.type.prototype.constructor.name}'</Title>
+        <View raised style={padding}>
           {view}
         </View>
+        <Text>
+          <code style={{whiteSpace:'pre'}}>{src}</code>
+        </Text>
+        <Text>
+          {this.props.children}
+        </Text>
       </Card>
     );
   }
