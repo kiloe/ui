@@ -11,3 +11,10 @@ export default {
   ThemeManager: ThemeManager,
 };
 
+export {
+  viewport,
+  CSS,
+  defaultTheme,
+  ThemeManager,
+};
+

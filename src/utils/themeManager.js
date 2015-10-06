@@ -172,8 +172,9 @@ export class ThemeManager {
 
 
   _getHueByLayer( paletteName, layer, topLayer ) {
+    let accentHue = this.cfg.hue || this.cfg.accentHue || 'A400';
     let hues = Object.keys( COLORS[paletteName] )
-      .filter(s => this.cfg.paletteMode == 'accent' ? isAccentHue(s) : !isAccentHue(s));
+      .filter(s => this.cfg.paletteMode == 'accent' && isAccentHue(accentHue)  ? isAccentHue(s) : !isAccentHue(s));
     if ( this.cfg.paletteMode == 'primary' ) {
       let hue = this.cfg.hue || this.getPrimaryHue();
       hues = this._getArrayItemsAfter( hues, hue, true); //Restrict the range

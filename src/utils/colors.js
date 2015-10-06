@@ -267,6 +267,10 @@ export const COLORS = {
     '700': [93,64,55],
     '800': [78,52,46],
     '900': [62,39,35],
+    'A100': [109,76,65],
+    'A200': [93,64,55],
+    'A400': [109,76,65],
+    'A700': [62,39,35],
   },
   'grey': {
     '0': [255,255,255],   //added white
@@ -281,6 +285,8 @@ export const COLORS = {
     '800': [66,66,66],
     '900': [33,33,33],
     '1000': [0,0,0],      //added black
+    'A400': [117,117,117],
+    'A700': [33,33,33],
   },
   'blue-grey': {
     '50': [236,239,241],
@@ -293,12 +299,33 @@ export const COLORS = {
     '700': [69,90,100],
     '800': [55,71,79],
     '900': [38,50,56],
+    'A100': [84,110,122],
+    'A200': [69,90,100],
+    'A400': [84,110,122],
+    'A700': [38,50,56],
   }
 };
 
 
 // An array with all the light hues for each palette name.
 // No need to list the dark hues as it's all the others
+//
+// XXX: PLEASE NOTE: I have intensionally gone off spec.
+// These LIGHT_HUES values are correct - but if this note is still here then
+// the colors are wrong!
+//
+// Google's color spec is clearly made for a human to pick a single
+// color scheme and run with it, not for any kind of automated color themeing
+// ... it's close, but it's not quite there. So I'm going to make the
+// following additional rules and then update the colors to obey these rules:
+//
+// * ALL palettes have the same weights available (with the exception of 'grey'
+//   which has an additional 1000 weight for black.
+// * 500+ weights ALWAYS work as a text color on a white background.
+// * A700 weight ALWAYS works as a text color on a white background.
+// * weights not specified above may or may not work on a white background (that what the LIGHT_HUES block is for)
+// * ALL palettes have at least one color that works on white (a result of the
+//   previous rules).
 export const LIGHT_HUES = {
   'red': ['50','100','200','300','A100'],
   'pink': ['50','100','200','A100'],
@@ -306,17 +333,17 @@ export const LIGHT_HUES = {
   'deep-purple': ['50','100','200','A100'],
   'indigo': ['50','100','200','A100'],
   'blue': ['50','100','200','300','400','A100'],
-  'light-blue': ['50','100','200','300','400','500','A100','A200','A400'],
-  'cyan': ['50','100','200','300','400','500','600','A100','A200','A400','A700'],
-  'teal': ['50','100','200','300','400','A100','A200','A400','A700'],
-  'green': ['50','100','200','300','400','500','A100','A200','A400','A700'],
-  'light-green': ['50','100','200','300','400','500','600','A100','A200','A400','A700'],
-  'lime': ['50','100','200','300','400','500','600','700','800','A100','A200','A400','A700'],
-  'yellow': ['50','100','200','300','400','500','600','700','800','900','A100','A200','A400','A700'],
-  'amber': ['50','100','200','300','400','500','600','700','800','900','A100','A200','A400','A700'],
-  'orange': ['50','100','200','300','400','500','600','700','A100','A200','A400','A700'],
+  'light-blue': ['50','100','200','300','400','A100','A200','A400'],
+  'cyan': ['50','100','200','300','400','A100','A200','A400'],
+  'teal': ['50','100','200','300','400','A100','A200','A400'],
+  'green': ['50','100','200','300','400','A100','A200','A400'],
+  'light-green': ['50','100','200','300','400','A100','A200','A400'],
+  'lime': ['50','100','200','300','400','A100','A200','A400'],
+  'yellow': ['50','100','200','300','400','A100','A200','A400'], // XXX: yes I broke the colors on purpose :)
+  'amber': ['50','100','200','300','400','A100','A200','A400'],  // XXX: read above before changing
+  'orange': ['50','100','200','300','400','A100','A200','A400'],
   'deep-orange': ['50','100','200','300','400','A100','A200'],
   'brown': ['50','100','200'],
-  'grey': ['0','50','100','200','300','400','500'],
+  'grey': ['0','50','100','200','300','400'],
   'blue-grey': ['50','100','200','300'],
 };

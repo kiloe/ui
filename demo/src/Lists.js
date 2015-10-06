@@ -61,7 +61,7 @@ export default class ListDemo extends React.Component {
               <PrimaryText>Chris Farmiloe</PrimaryText>
               <SecondaryText>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</SecondaryText>
             </ListItem>
-            <ListItem left={Avatar2} right={<Button transparent theme={{textMode:'hint'}} icon={ChatBubbleIcon}/>}>
+            <ListItem left={Avatar2} right={<Button transparent icon={ChatBubbleIcon}/>}>
               <PrimaryText lines={1}>Chris Ward</PrimaryText>
               <SecondaryText lines={1}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</SecondaryText>
             </ListItem>

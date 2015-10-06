@@ -7,7 +7,6 @@ import View from '../../package/View';
 import Drawer from '../../package/Drawer';
 import Toolbar from '../../package/Toolbar';
 import Button from '../../package/Button';
-import Progress from '../../package/Progress';
 import NotificationsActiveIcon from '../../package/icons/NotificationsActiveIcon';
 import FormatPaintIcon from '../../package/icons/FormatPaintIcon';
 import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
@@ -28,6 +27,7 @@ import Icons from './Icons';
 import ProgressBars from './ProgressBars';
 import Cards from './Cards';
 import Layers from './Layers';
+import ColorWheel from './ColorWheel';
 
 export default class App extends React.Component {
 
@@ -61,24 +61,6 @@ export default class App extends React.Component {
 
   clickBody(){
     this.closeDrawer();
-  }
-
-  toggleDiscoMode(){
-    if ( this.state.discoInterval ) {
-      console.log( 'Party over! Oops, out of time :(' ); // Prince lyric FYI
-      clearInterval( this.state.discoInterval );
-      this.setState({discoInterval:false});
-    }
-    else {
-      this.setState({discoInterval: setInterval(() => {
-        let notAccent = ['brown', 'grey', 'blue-grey'];
-        let primaryColors = Object.keys(COLORS);
-        let accentColors = Object.keys(COLORS).filter(c => notAccent.indexOf(c) === -1 );
-        UI.theme.primaryPalette = primaryColors[Math.floor(Math.random()*primaryColors.length)];
-        UI.theme.accentPalette = accentColors[Math.floor(Math.random()*accentColors.length)];
-        this.forceUpdate();
-      },1000)});
-    }
   }
 
   openPage(page){
@@ -132,9 +114,37 @@ export default class App extends React.Component {
     }
   }
 
+  onPickPrimary(name){
+    UI.theme.primaryPalette = name;
+    this.forceUpdate();
+  }
+
+  onPickAccent(name, hue){
+    UI.theme.accentPalette = name;
+    UI.theme.accentHue = hue;
+    this.forceUpdate();
+  }
+
+  getColorWheel(){
+    return <View style={{padding:'2rem'}}>
+      <View><h1>Color Picker</h1></View>
+      <ColorWheel
+        onPickPrimary={this.onPickPrimary.bind(this)}
+        onPickAccent={this.onPickAccent.bind(this)}
+      />
+      <View row size={4} style={{padding:'1rem', justifyContent:'flex-end'}}>
+        <Button invert accent label="continue"/>
+      </View>
+    </View>;
+  }
+
+  themePicker(){
+    this.refs.main.setModalContent(this.getColorWheel());
+  }
+
   render(){
     return (
-      <View row scale={this.state.scale}>
+      <View ref="main" row scale={this.state.scale}>
         <Drawer docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
           <Toolbar layer={0} accent>
             <View>Demo-crazy</View>
@@ -162,7 +172,7 @@ export default class App extends React.Component {
             <View>Title</View>
             <Button transparent onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
             <Button transparent onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
-            <Button transparent onClick={this.toggleDiscoMode.bind(this)} icon={<FormatPaintIcon/>} />
+            <Button transparent onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} />
             <Button transparent onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
             <Button transparent onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
           </Toolbar>
