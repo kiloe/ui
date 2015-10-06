@@ -79,6 +79,12 @@ demo/public/index.js: demo/src/index.js $(DEMO_SRCS) demo/src/all.js package | n
 demo: demo/public/index.js | node_modules
 	$(SERVE) demo/public
 
+demo_and_reload: demo/public/index.js
+	CUR_WID=`xdotool getwindowfocus`; \
+		xdotool windowactivate `xdotool search --onlyvisible --class google-chrome|head -1` \
+		&& xdotool key 'ctrl+r' \
+		&& xdotool windowactivate $$CUR_WID
+
 watch: demo/public/index.js
 	@envsubst < .watchsrc | watchman -j
 	@envsubst < .watchdemo | watchman -j
@@ -123,5 +129,5 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean publish watch unwatch package icons
+.PHONY: default test demo clean distclean publish watch unwatch package icons demo_and_reload
 

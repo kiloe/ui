@@ -1,6 +1,6 @@
 ["trigger", "$PWD/demo/src", {
   "name": "kiloe-ui-src",
     "expression": ["suffix", "js"],
-    "command": ["make", "demo/public/index.js"],
+    "command": ["make", "demo_and_reload"],
     "chdir": "$PWD"
 }]
