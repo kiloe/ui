@@ -8,7 +8,7 @@ export default class ProgressDemo extends React.Component {
 
   componentDidMount(){
     this.setState({progressInterval: setInterval(() => {
-      this.setState( { progress: this.state.progress+0.15, buffer: this.state.buffer+0.2 } );
+      this.setState( { progress: this.state.progress+0.15, progressb: this.state.progressb+0.2, bufferb: this.state.bufferb+0.3 } );
       if ( this.state.progress >= 100 ) {
         clearInterval( this.state.progressInterval );
         this.setState({progressInterval:false});
@@ -27,13 +27,15 @@ export default class ProgressDemo extends React.Component {
     // Initial state
     this.state = {
       progress: 0,
-      buffer: 0,
+      progressb: 0,
+      bufferb: 0,
     };
   }
   render(){
 
     let value = Math.min( Math.floor( this.state.progress * 100) / 100, 100 );
-    let buffer = Math.min( Math.floor( this.state.buffer * 100) / 100, 100 );
+    let valueb = Math.min( Math.floor( this.state.progressb * 100) / 100, 100 );
+    let bufferb = Math.min( Math.floor( this.state.bufferb * 100) / 100, 100 );
 
     let determinateSrc = Doc.jsx`
       <View style={{ justifyContent: 'space-around' }}>
@@ -43,7 +45,7 @@ export default class ProgressDemo extends React.Component {
     
     let bufferSrc = Doc.jsx`
       <View style={{ justifyContent: 'space-around' }}>
-        <Progress value=${value} max={100} buffer=${buffer} size={1} primary />
+        <Progress value=${valueb} max={100} buffer=${bufferb} size={1} primary />
       </View>
     `;
     return (
