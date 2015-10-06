@@ -112,8 +112,6 @@ export default class View extends React.Component {
       textMode: React.PropTypes.oneOf(['primary','secondary','disabled','hint']),
       // The current hue (weight). e.g. '100', '500'. Or 'A300' if paletteMode is 'accent'
       hue: React.PropTypes.string,
-      // switch foreground/background colors
-      invert: React.PropTypes.bool,
 
     }),
     // Shortcut props for setting palette theme + hue
@@ -123,8 +121,6 @@ export default class View extends React.Component {
     primary: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     accent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     grey: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
-    // Shortcut for setting pallete invert
-    invert: React.PropTypes.bool,
     // The current layer of material/paper
     layer: React.PropTypes.number,
     // Size gives the View a either a fixed width in rem (if row) or fixed height rem (if column).
@@ -169,10 +165,13 @@ export default class View extends React.Component {
     divider: false,
   }
 
-  constructor(...args){
-    super(...args);
+  constructor(props, ...args){
+    super(props, ...args);
     this.state = {};
     this.idleState = {};
+    if( props.raised ){
+      this.hasEverBeenRaised = true;
+    }
   }
 
   // setStateWhenIdle works like setState, only it batches for a much longer time
@@ -190,11 +189,24 @@ export default class View extends React.Component {
     if( !this.idleTimer ){
       return;
     }
-    this.idleState = {};
     this.clearIdleTimer();
-    if( this.mounted ){
+    if( !this.mounted ){
+      return;
+    }
+    // shallow equal - can be removed once shouldComponentUpdate is implemented
+    let changed = (() => {
+      for(let k in this.idleState){
+        if(this.state[k] != this.idleState[k]){
+          return true;
+        }
+        console.log('not chnaged');
+        return false;
+      }
+    })();
+    if( changed ){
       this.setState(this.idleState);
     }
+    this.idleState = {};
   }
 
   clearIdleTimer(){
@@ -210,6 +222,7 @@ export default class View extends React.Component {
   }
 
   componentWillUnmount(){
+    // mark as unmounted
     this.mounted = false;
     // ignore any pending state
     this.clearIdleTimer();
@@ -223,6 +236,9 @@ export default class View extends React.Component {
   }
 
   componentWillReceiveProps(props){
+    if( props.raised ){
+      this.hasEverBeenRaised = true;
+    }
     this.reportLayerNumberToRootLayer(props);
   }
 
@@ -231,7 +247,20 @@ export default class View extends React.Component {
     if( unmounting && root == this ){
       return;
     }
-    root.setStateWhenIdle({topLayer: 0});
+    if( this.hasEverBeenRaised ){
+      root.setStateWhenIdle({topLayer: 0});
+    }
+  }
+
+  // XXX: implement this... but it's going to be tricky
+  shouldComponentUpdate(){
+    // keeping a note of things to track:
+    // * viewport values (need a way to opt in to listening to viewport sizes)
+    // * props/state etc
+    // * value of 'parent' ref from context
+    // * theme config (since default theme may have been altered)
+    // * topLayer
+    return true;
   }
 
   // getChildContext returns the context for children
@@ -328,10 +357,6 @@ export default class View extends React.Component {
     return props.raised;
   }
 
-  isInverted() {
-    return this.props.invert;
-  }
-
   getTextColor(){
     let theme = this.getTheme();
     return theme.getTextColor(false,this.getLayer(),this.getTopLayer());
@@ -419,9 +444,6 @@ export default class View extends React.Component {
     })[0];
     if ( shortcutMode ){
       shortcutTheme.mode = shortcutMode;
-    }
-    if( this.isInverted() ){
-      shortcutTheme.invert = true;
     }
     let propsTheme = {};
     if( this.props.theme ){

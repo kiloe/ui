@@ -38,7 +38,7 @@ export default class ListDemo extends React.Component {
         <View row style={{ justifyContent: 'space-around' }}>
 
           <List raised style={listStyle}>
-            <ListItem left={<StarIcon accent invert size={1.6} />} right={Avatar1}><PrimaryText lines={1}>Janet Perkins</PrimaryText></ListItem>
+            <ListItem left={<StarIcon accent size={1.6} />} right={Avatar1}><PrimaryText lines={1}>Janet Perkins</PrimaryText></ListItem>
             <ListItem left={1.6} right={Avatar2}><PrimaryText lines={1}>Mary Johnson</PrimaryText></ListItem>
             <ListItem left={1.6} right={Avatar1}><PrimaryText lines={1}>Peter Carlsson</PrimaryText></ListItem>
             <ListItem left={1.6} right={Avatar2}><PrimaryText lines={1}>Trevor Hansen</PrimaryText></ListItem>
@@ -57,15 +57,15 @@ export default class ListDemo extends React.Component {
               <PrimaryText lines={1}>Chris Ward</PrimaryText>
               <SecondaryText lines={3}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</SecondaryText>
             </ListItem>
-            <ListItem left={Avatar1} right={<Button transparent icon={ChatBubbleIcon}/>}>
+            <ListItem left={Avatar1} right={<Button subtle icon={ChatBubbleIcon}/>}>
               <PrimaryText>Chris Farmiloe</PrimaryText>
               <SecondaryText>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</SecondaryText>
             </ListItem>
-            <ListItem left={Avatar2} right={<Button transparent icon={ChatBubbleIcon}/>}>
+            <ListItem left={Avatar2} right={<Button subtle icon={ChatBubbleIcon}/>}>
               <PrimaryText lines={1}>Chris Ward</PrimaryText>
               <SecondaryText lines={1}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</SecondaryText>
             </ListItem>
-            <ListItem left={Avatar1} right={<Button transparent icon={ChatBubbleIcon}/>}>
+            <ListItem left={Avatar1} right={<Button subtle icon={ChatBubbleIcon}/>}>
               <PrimaryText>Chris Farmiloe</PrimaryText>
               <SecondaryText>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</SecondaryText>
             </ListItem>
@@ -87,12 +87,12 @@ export default class ListDemo extends React.Component {
 
           <List raised style={listStyle}>
             <ListItem><SecondaryText style={{ fontWeight: 'bold' }}>Recent chat</SecondaryText></ListItem>
-            <ListItem left={Avatar1} right={<Button accent transparent icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Janet Perkins</PrimaryText></ListItem>
-            <ListItem left={Avatar2} right={<Button accent transparent disabled icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Mary Johnson</PrimaryText></ListItem>
-            <ListItem left={Avatar1} right={<Button accent transparent icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
-            <ListItem left={3.5} right={<Button accent transparent icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
-            <ListItem left={3.5} right={<Button accent transparent disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
-            <ListItem left={3.5} right={<Button accent transparent disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
+            <ListItem left={Avatar1} right={<Button accent subtle icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Janet Perkins</PrimaryText></ListItem>
+            <ListItem left={Avatar2} right={<Button accent subtle disabled icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Mary Johnson</PrimaryText></ListItem>
+            <ListItem left={Avatar1} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><PrimaryText lines={1}>Jeff Jefferson</PrimaryText></ListItem>
             <Divider/>
             <ListItem><SecondaryText style={{ fontWeight: 'bold' }}>Previous chats</SecondaryText></ListItem>
             <ListItem left={Avatar1}><PrimaryText lines={1}>Janet Perkins</PrimaryText></ListItem>

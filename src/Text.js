@@ -26,11 +26,15 @@ CSS.register({
   },
 });
 
+// Text is (unsurprizingly) for displaying chunks of text.
 export default class Text extends View {
 
   static propTypes = {
     ...View.propTypes,
+    // lines limits the number of lines of text that will be displayed
     lines: React.PropTypes.number,
+    // color is a CSS color value (default is to calculate the color from the palette)
+    color: React.PropTypes.string,
   }
 
   static defaultProps = {
@@ -38,6 +42,16 @@ export default class Text extends View {
     lines: 0, // 0 means no limit
   }
 
+  getColor(){
+    if( this.props.color ){
+      return this.props.color;
+    }
+    return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer());
+  }
+
+  getBackgroundColor(){
+    return 'transparent';
+  }
 
   getClassNames(){
     let cs = super.getClassNames();
@@ -48,8 +62,8 @@ export default class Text extends View {
 
   getStyle(){
     let style = super.getStyle();
-
-   // style.flexBasis = '0'; // XXX: to fix width of text
+    style.color = this.getColor();
+    // style.flexBasis = '0'; // XXX: to fix width of text
     /*
     if ( this.props.lines > 0 ) {
       style.textOverflow = 'ellipsis';
@@ -59,15 +73,8 @@ export default class Text extends View {
       style.WebkitBoxOrient = 'vertical';
 
     }*/
-
-
     return style;
   }
 
-  render(){
-
-
-    return super.render( this.props.children );
-  }
 
 }

@@ -11,6 +11,14 @@ CSS.register({
 
 export default class Icon extends View {
 
+  static propTypes = {
+    ...View.propTypes,
+    // Use stroke rather than fill color
+    outline: React.PropTypes.bool,
+    // color is a CSS color value (default is to calculate the color from the palette)
+    color: React.PropTypes.string,
+  }
+
   getBackgroundColor(){
     return 'transparent';
   }
@@ -52,18 +60,31 @@ export default class Icon extends View {
     return 1.6 * this.getScale();
   }
 
+  getColor(){
+    if( this.props.color ){
+      return this.props.color;
+    }
+    return this.getTheme().getColoredTextColor(false, this.getLayer(), this.getTopLayer(), 'primary');
+  }
+
+  getBorderWidth(){
+    return this.getTheme().getBorderWidth();
+  }
 
   render(){
+    let style = {
+      padding: this.getBorderWidth(),
+    };
+    if( this.props.outline ){
+      style.stroke = this.getColor();
+      style.strokeWidth = this.getBorderWidth();
+      style.fill = this.getBackgroundColor();
+    } else {
+      style.fill = this.getColor();
+    }
     let svg = React.cloneElement(this.getSVG(),{
       red: 'icon',
-      style: {
-        fill: this.getTextColor(),
-        // position: 'absolute',
-        // top: 0,
-        // left: 0,
-        // right: 0,
-        // bottom: 0,
-      },
+      style: style,
       width: '100%',
       height: '100%',
     });

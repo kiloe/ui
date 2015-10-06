@@ -34,18 +34,18 @@ export default class ButtonsDemo extends React.Component {
   render(){
 
     let labelFlags = [{label:'button'}, {label:'button', icon:CloudIcon}, {icon:CloudIcon}];
-    let invertFlags = [{},{invert:true}];
+    let outlineFlags = [{},{outline:true}];
     let sizeFlags = [{size:'intrinsic'},{size:'fill'}];
     let paletteFlags = [{},{primary:true},{accent:true}];
-    let transFlags = [{},{transparent:true}];
+    let muteFlags = [{},{subtle:true}];
     let bgFlags = [{},{primary:true}];
 
     let examples = bgFlags.map(bg => {
       return sizeFlags.map(s => {
         return labelFlags.map(l => {
-          return invertFlags.map(i => {
+          return outlineFlags.map(i => {
             return paletteFlags.map(p => {
-              return transFlags.map(t => {
+              return muteFlags.map(t => {
                 return this.renderRow({...s,...l,...i,...p,...t}, bg);
               });
             });

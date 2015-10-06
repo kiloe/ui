@@ -133,7 +133,7 @@ export default class App extends React.Component {
         onPickAccent={this.onPickAccent.bind(this)}
       />
       <View row size={4} style={{padding:'1rem', justifyContent:'flex-end'}}>
-        <Button invert accent label="continue"/>
+        <Button outline accent label="continue"/>
       </View>
     </View>;
   }
@@ -148,7 +148,7 @@ export default class App extends React.Component {
         <Drawer docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
           <Toolbar layer={0} accent>
             <View>Demo-crazy</View>
-            <Button transparent icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
+            <Button icon={<ArrowBackIcon/>} align="left" onClick={this.toggleMenu.bind(this)}/>
           </Toolbar>
           <View scroll>
             <Button icon={<LayersIcon/>} align="left" label="Layers" onClick={this.open('layers')} />
@@ -168,13 +168,13 @@ export default class App extends React.Component {
         </Drawer>
         <View onClickCapture={this.clickBody.bind(this)}>
           <Toolbar primary={'600'}>
-            <Button transparent onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
+            <Button onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
             <View>Title</View>
-            <Button transparent onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
-            <Button transparent onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
-            <Button transparent onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} />
-            <Button transparent onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
-            <Button transparent onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
+            <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
+            <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
+            <Button onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} />
+            <Button onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
+            <Button onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
           </Toolbar>
           {this.getPage()}
         </View>
