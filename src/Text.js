@@ -27,6 +27,8 @@ CSS.register({
 });
 
 // Text is (unsurprizingly) for displaying chunks of text.
+// Unlike View's (but like Icons), Text blocks do not have background color.
+// When you set the theme's paletteMode you are setting the color of the text NOT the background.
 export default class Text extends View {
 
   static propTypes = {
@@ -35,6 +37,8 @@ export default class Text extends View {
     lines: React.PropTypes.number,
     // color is a CSS color value (default is to calculate the color from the palette)
     color: React.PropTypes.string,
+    // subtle makes the text more muted, it's basically a shortcut for setting theme={textMode:'secondary'}
+    subtle: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -63,17 +67,15 @@ export default class Text extends View {
   getStyle(){
     let style = super.getStyle();
     style.color = this.getColor();
-    // style.flexBasis = '0'; // XXX: to fix width of text
-    /*
-    if ( this.props.lines > 0 ) {
-      style.textOverflow = 'ellipsis';
-      style.overflow = 'hidden';
-      style.display = '-webkit-box';
-      style.WebkitLineClamp = this.props.lines;
-      style.WebkitBoxOrient = 'vertical';
-
-    }*/
     return style;
+  }
+
+  getThemeConfig(){
+    let cfg = super.getThemeConfig();
+    if( this.props.subtle ){
+      cfg.textMode = 'secondary';
+    }
+    return cfg;
   }
 
 
