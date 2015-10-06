@@ -1,12 +1,15 @@
 import ReactDOM from 'react-dom';
 import CSSPropertyOperations from 'react/lib/CSSPropertyOperations';
+import {ThemeManager} from './themeManager.js';
+
+let theme = new ThemeManager();
 
 // required global browser styles/resets
-var globalStyles = {
+let globalStyles = {
   'html': {
-    fontFamily: `'Roboto', sans-serif`,
+    fontFamily: `${theme.getFontFamily()}, sans-serif`,
     WebkitTapHighlightColor: 'transparent',
-    fontSize: 12,
+    fontSize: theme.getBaseFontSize(), // this cannot be realistically updated by the theme (yet)
   },
   '*, *:before, *:after': {
     WebkitTapHighlightColor: 'inherit',

@@ -292,6 +292,14 @@ export class ThemeManager {
     return '0.07142857142857142rem';
   }
 
+  getFontFamily(){
+    return 'Roboto';
+  }
+
+  getBaseFontSize(){
+    return 12;
+  }
+
 
   //Helpers
 
