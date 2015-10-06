@@ -169,10 +169,13 @@ export default class View extends React.Component {
     divider: false,
   }
 
-  constructor(...args){
-    super(...args);
+  constructor(props, ...args){
+    super(props, ...args);
     this.state = {};
     this.idleState = {};
+    if( props.raised ){
+      this.hasEverBeenRaised = true;
+    }
   }
 
   // setStateWhenIdle works like setState, only it batches for a much longer time
@@ -190,11 +193,24 @@ export default class View extends React.Component {
     if( !this.idleTimer ){
       return;
     }
-    this.idleState = {};
     this.clearIdleTimer();
-    if( this.mounted ){
+    if( !this.mounted ){
+      return;
+    }
+    // shallow equal - can be removed once shouldComponentUpdate is implemented
+    let changed = (() => {
+      for(let k in this.idleState){
+        if(this.state[k] != this.idleState[k]){
+          return true;
+        }
+        console.log('not chnaged');
+        return false;
+      }
+    })();
+    if( changed ){
       this.setState(this.idleState);
     }
+    this.idleState = {};
   }
 
   clearIdleTimer(){
@@ -210,6 +226,7 @@ export default class View extends React.Component {
   }
 
   componentWillUnmount(){
+    // mark as unmounted
     this.mounted = false;
     // ignore any pending state
     this.clearIdleTimer();
@@ -223,6 +240,9 @@ export default class View extends React.Component {
   }
 
   componentWillReceiveProps(props){
+    if( props.raised ){
+      this.hasEverBeenRaised = true;
+    }
     this.reportLayerNumberToRootLayer(props);
   }
 
@@ -231,7 +251,20 @@ export default class View extends React.Component {
     if( unmounting && root == this ){
       return;
     }
-    root.setStateWhenIdle({topLayer: 0});
+    if( this.hasEverBeenRaised ){
+      root.setStateWhenIdle({topLayer: 0});
+    }
+  }
+
+  // XXX: implement this... but it's going to be tricky
+  shouldComponentUpdate(){
+    // keeping a note of things to track:
+    // * viewport values (need a way to opt in to listening to viewport sizes)
+    // * props/state etc
+    // * value of 'parent' ref from context
+    // * theme config (since default theme may have been altered)
+    // * topLayer
+    return true;
   }
 
   // getChildContext returns the context for children
@@ -329,6 +362,7 @@ export default class View extends React.Component {
   }
 
   isInverted() {
+    // return false; // XXX: experimenting with no-invert
     return this.props.invert;
   }
 
@@ -431,6 +465,7 @@ export default class View extends React.Component {
       ...inheritedTheme,
       ...shortcutTheme,
       ...propsTheme,
+      // ...{invert:false}, // XXX: experimenting with no invert
     };
     return theme;
   }
