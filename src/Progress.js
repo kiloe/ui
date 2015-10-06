@@ -6,19 +6,21 @@ CSS.register({
   '.progress': {
     position: 'relative',
   },
-  '.progress .progressBG': {
+  '.progress *': {
     position: 'absolute',
-    opacity: '0.3',
-    width: '100%',
     height: '100%',
     top: '0',
     left: '0',
   },
+  '.progress .bufferBG': {
+    opacity: '0.3',
+    width: '100%',
+  },
+  '.progress .progressBG, .progress .bufferBar': {
+    opacity: '0.3',
+    width: '100%',
+  },
   '.progress .progressBar': {
-    position: 'absolute',
-    height: '100%',
-    top: '0',
-    left: '0',
   }
 });
 
@@ -29,6 +31,7 @@ export default class Progress extends View {
 
     value: React.PropTypes.number,
     max: React.PropTypes.number,
+    buffer: React.PropTypes.number,
   }
 
   static defaultProps = {
@@ -55,16 +58,34 @@ export default class Progress extends View {
   render(){
   
     let w = Math.max( 0, Math.min( this.props.value / this.props.max * 100, 100 ) );
+    let buffer = Math.max( 0, Math.min( this.props.buffer, 100 ) );
 
     let barStyle = {
       backgroundColor: this.getBackgroundColor(),
       width: w+'%',
     };
     let backgroundStyle = {
-      backgroundColor: this.getBackgroundColor(), // this.getThemeMode() == 'light' ? -5 : 5 ),
+      backgroundColor: this.getBackgroundColor(),
     };
+    
+    let bufferStyle = {};
+    if ( this.props.buffer ) {
+      backgroundStyle = {
+        backgroundColor: 'white',
+      };
+      bufferStyle = {
+        backgroundColor: this.getBackgroundColor(),
+        width: buffer+'%',
+      };
+    }
+    
     let children = [];
-    children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
+    if ( this.props.buffer ) {
+      children.push( <span style={backgroundStyle} className="bufferBG" key="bufferBG"></span> );
+      children.push( <span style={bufferStyle} className="bufferBar" key="bufferBar"></span> );
+    }
+    else children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
+    
     children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
     
     return super.render(children);
