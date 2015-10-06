@@ -112,8 +112,6 @@ export default class View extends React.Component {
       textMode: React.PropTypes.oneOf(['primary','secondary','disabled','hint']),
       // The current hue (weight). e.g. '100', '500'. Or 'A300' if paletteMode is 'accent'
       hue: React.PropTypes.string,
-      // switch foreground/background colors
-      invert: React.PropTypes.bool,
 
     }),
     // Shortcut props for setting palette theme + hue
@@ -123,8 +121,6 @@ export default class View extends React.Component {
     primary: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     accent: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
     grey: React.PropTypes.oneOfType([React.PropTypes.string,React.PropTypes.bool]),
-    // Shortcut for setting pallete invert
-    invert: React.PropTypes.bool,
     // The current layer of material/paper
     layer: React.PropTypes.number,
     // Size gives the View a either a fixed width in rem (if row) or fixed height rem (if column).
@@ -361,11 +357,6 @@ export default class View extends React.Component {
     return props.raised;
   }
 
-  isInverted() {
-    // return false; // XXX: experimenting with no-invert
-    return this.props.invert;
-  }
-
   getTextColor(){
     let theme = this.getTheme();
     return theme.getTextColor(false,this.getLayer(),this.getTopLayer());
@@ -454,9 +445,6 @@ export default class View extends React.Component {
     if ( shortcutMode ){
       shortcutTheme.mode = shortcutMode;
     }
-    if( this.isInverted() ){
-      shortcutTheme.invert = true;
-    }
     let propsTheme = {};
     if( this.props.theme ){
       propsTheme = this.props.theme;
@@ -465,7 +453,6 @@ export default class View extends React.Component {
       ...inheritedTheme,
       ...shortcutTheme,
       ...propsTheme,
-      // ...{invert:false}, // XXX: experimenting with no invert
     };
     return theme;
   }

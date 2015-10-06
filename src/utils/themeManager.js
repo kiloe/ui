@@ -14,7 +14,7 @@ import {COLORS,LIGHT_HUES} from './colors';
 // The main functions which will be used by Views are:
 //    getBackgroundColor( hue, layer, topLayer ) - For use with containers and layers.
 //    getTextColor( hue, layer, topLayer, textMode ) - For the current text Color.
-//    getCurrentColor( hue, alpha=100 ) - Get the current main colour for a button, icon or something like that.
+//    getCurrentColor( hue, alpha=1 ) - Get the current main colour for a button, icon or something like that.
 
 
 function isAccentHue(hue){
@@ -30,7 +30,6 @@ export let defaultTheme = {
   paletteMode: 'grey',               // The current palette mode. Options: 'primary', 'accent', 'grey'.
   textMode: 'primary',               // The current text mode. Options: 'primary', 'secondary', 'disabled', 'hint'
   hue: undefined,                    // The current user-forced hue (weight). Options: see colors.js.
-  invert: false,                     // The current invert flag. Switches the element colour and text colour. Boolean.
 };
 
 export class ThemeManager {
@@ -49,13 +48,13 @@ export class ThemeManager {
   // getCurrentColor( '300' ) - uses hue of 300 from the palette
   // getCurrentColor( 1 ) - uses the 2nd (zero-index) Primary hue
   // getCurrentColor( 'default' ) - uses the middle Primary hue or the accent hue
-  getCurrentColor( hue, alpha=100 ) {
+  getCurrentColor( hue, alpha=1 ) {
     let color = this._getCurrentColorObjectByHue( hue, alpha );
 
     return this.getColorFromPalette(color.palette, color.hue, color.alpha);
   }
 
-  _getCurrentColorObjectByHue( hue, alpha=100 ) {
+  _getCurrentColorObjectByHue( hue, alpha=1 ) {
     let palette = 'grey';
     if ( this.cfg.paletteMode == 'primary' ) palette = this.cfg.primaryPalette;
     else if ( this.cfg.paletteMode == 'accent' ) palette = this.cfg.accentPalette;
@@ -111,9 +110,8 @@ export class ThemeManager {
     return this.getColorFromPalette( color.palette, color.hue, color.alpha, hueOffset );
   }
 
-  _getBackgroundColorObjectWithSwitch( hue, layer, topLayer ) { //includes invert switch
-    if ( !this.cfg.invert ) return this._getBackgroundColorObject( hue, layer, topLayer );
-    else return this._getTextColorObject( hue, layer, topLayer ); //switch it
+  _getBackgroundColorObjectWithSwitch( hue, layer, topLayer ) {
+    return this._getBackgroundColorObject( hue, layer, topLayer );
   }
 
   _getBackgroundColorObject( hue, layer, topLayer ) {
@@ -127,47 +125,56 @@ export class ThemeManager {
 
   }
 
+  // getColoredTextColor returns a color suitable for use as text
+  // while getTextColor returns a suitable color to work on the primary/accent color
+  // getColoredTextColor returns the primary/accent color in a hue that is readable
+  // upon the current theme's light/dark background.
+  getColoredTextColor( hue, layer, topLayer, textMode ) {
+    if( this.cfg.paletteMode == 'grey' ){
+      return this.getTextColor( hue, layer, topLayer, textMode );
+    }
+    // XXX: right now this is just the same as getBackgroundColor
+    // but it SHOULD take into account the rest of the theme and pick
+    // the hue that is most suitable (ie most of the time it will probably
+    // need to be a darker hue like A700 for accent or 500+ for normal
+    let textColor = this._getBackgroundColorObject( hue, layer, topLayer);
+    let background = this._getTextColorObject( hue, layer, topLayer, textMode );
+    let alpha = this._getAlphaForTextMode(background, textMode);
+    return this.getColorFromPalette( textColor.palette, textColor.hue, alpha );
+
+  }
+
   // Find out if the background colour is dark or light. Base text colour will be white and black respectively.
   // Then set the text's alpha based on the textMode
   getTextColor( hue, layer, topLayer, textMode ) {
     let color = this._getTextColorObjectWithSwitch( hue, layer, topLayer, textMode );
-
     return this.getColorFromPalette( color.palette, color.hue, color.alpha );
   }
 
-  _getTextColorObjectWithSwitch( hue, layer, topLayer, textMode ) { //includes invert switch
-    if ( !this.cfg.invert ) return this._getTextColorObject( hue, layer, topLayer, textMode );
-    else return this._getBackgroundColorObject( hue, layer, topLayer ); //switch it
+  _getTextColorObjectWithSwitch( hue, layer, topLayer, textMode ) {
+    return this._getTextColorObject( hue, layer, topLayer, textMode );
+  }
+
+  _getAlphaForTextMode(background, textMode){
+    if ( typeof textMode == 'undefined' ){
+      textMode = this.cfg.textMode; //get the current textMode from the context
+    }
+    if( textMode == 'primary' ){
+      return 0.85;
+    }
+    if( textMode == 'secondary' ){
+      return this.isHueLight( background.palette, background.hue ) ?
+        0.54 : // light background, dark text
+        0.60 ; // dark background, light text
+    }
+    return 0.30; //XXX: Maybe 0.38 - the spec says both multiple times, contradicting itself
   }
 
   _getTextColorObject( hue, layer, topLayer, textMode ) {
-
-    if ( typeof textMode == 'undefined' ) textMode = this.cfg.textMode; //get the current textMode from the context
-
     let background = this._getBackgroundColorObject( hue, layer, topLayer );
-    let textHue = '0';
-    let alpha = 1;
-
-    if ( this.isHueLight( background.palette, background.hue ) ) { //light background, dark text
-
-      if ( textMode == 'primary' ) alpha = 0.85;
-      else if ( textMode == 'secondary' ) alpha = 0.54;
-      else alpha = 0.26; //XXX: Maybe 0.38 - the spec says both multiple times, contradicting itself
-
-      textHue = '1000'; //black
-    }
-    else { //dark background, light text
-
-      // The spec actually says 100%, 70% and 30%. But I've changed it to 85% and 60% because 100% is weird
-      if ( textMode == 'primary' ) alpha = 0.85;
-      else if ( textMode == 'secondary' ) alpha = 0.60;
-      else alpha = 0.30;
-
-      textHue = '0'; //white
-    }
-
+    let textHue = this.isHueLight( background.palette, background.hue ) ? '1000' : 0;
+    let alpha = this._getAlphaForTextMode(background, textMode);
     return { palette: 'grey', hue: textHue, alpha: alpha };
-
   }
 
 
@@ -217,7 +224,7 @@ export class ThemeManager {
   }
 
 
-  getColorFromPalette(paletteName, hue=500, alpha=100, hueOffset=0){
+  getColorFromPalette(paletteName, hue=500, alpha=1, hueOffset=0){
 
     hue = this._offsetHue( paletteName, hue, hueOffset );
 
@@ -256,6 +263,15 @@ export class ThemeManager {
   }
 
   isHueLight( paletteName, hue ) {
+    if( hue == 0 ){
+      return true;
+    }
+    if( hue == 1000 ){
+      return false;
+    }
+    if( !LIGHT_HUES[paletteName] ){
+      throw new Error(`no palette ${paletteName} in LIGHT_HUES`);
+    }
     return LIGHT_HUES[paletteName].indexOf(hue) > -1;
   }
 
@@ -272,22 +288,18 @@ export class ThemeManager {
     return this.cfg.paletteMode;
   }
 
-
-  isInverted() {
-    return this.cfg.invert;
+  getBorderWidth(){
+    return '0.07142857142857142rem';
   }
-
-
-
 
 
   //Helpers
 
-  getWhite( alpha=100 ) {
+  getWhite( alpha=1 ) {
     return this._rgba([255,255,255],alpha);
   }
 
-  getBlack( alpha=100 ) {
+  getBlack( alpha=1 ) {
     return this._rgba([0,0,0],alpha);
   }
 
@@ -307,6 +319,9 @@ export class ThemeManager {
 
   _rgba(v, alpha){
     if( typeof alpha == 'number' ){
+      if( alpha > 1 ){
+        throw new Error(`invalid value ${alpha} for alpha`);
+      }
       v = [...v];
       v[3] = alpha;
     }

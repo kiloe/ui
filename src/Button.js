@@ -1,11 +1,10 @@
 import React from 'react';
 import View from './View';
+import Text from './Text';
 import CSS from './utils/css';
 
 CSS.register({
   '.button': {
-    border: 'none',
-    borderRadius: 2,
     textTransform: 'uppercase',
     letterSpacing: '0',
     willChange: 'box-shadow, transform',
@@ -13,6 +12,8 @@ CSS.register({
     transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     outline: 'none',
     textAlign: 'center',
+    borderStyle: 'solid',
+    borderRadius: 2,
   },
   '.button .icon, .button span': {
     zIndex: '1',
@@ -39,15 +40,15 @@ CSS.register({
     borderRadius: '50%',
     justifyContent: 'center',
   },
-  '.button.transparent:hover .button-hover': {
+  '.button.subtle:hover .button-hover, .button.outline:hover .button-hover': {
     opacity: '0.1',
   },
-  '.button.transparent:active .button-press': {
-    opacity: '0.3',
-  },
-  '.button.transparent:focus .button-press': {
+  '.button.subtle:active .button-press, .button.outline:active .button-press': {
     opacity: '0.2',
-  }
+  },
+  '.button.subtle:focus .button-press, .button.outline:focus .button-press': {
+    opacity: '0.1',
+  },
 });
 
 export default class Button extends View {
@@ -61,8 +62,16 @@ export default class Button extends View {
       React.PropTypes.element,
       React.PropTypes.func,
     ]),
-    // transparent buttons only have background for the click effects
-    transparent: React.PropTypes.bool,
+    // subtle buttons do not have hover effects or borders and are slightly transparent.
+    // they are usually used with only an icon for use as muted auxilary actions
+    subtle: React.PropTypes.bool,
+    // outline buttons:
+    // * the same fill color as a 'grey' button
+    // * for primary/accent: text/stroke color is what would usually be the fill color
+    // * for grey buttons: text color is same as normal
+    // * have a border of the stroke color
+    // * if icon used: sets "outline" prop on icon (maybe?)
+    outline: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -73,8 +82,8 @@ export default class Button extends View {
   }
 
   getRaise(){
-    if( this.props.transparent ){
-      return 0; // can't raise transparent things
+    if( this.props.subtle ){
+      return 0; // can't raise subtle buttons
     }
     return super.getRaise();
   }
@@ -106,10 +115,11 @@ export default class Button extends View {
     if( !this.props.label && this.props.size != 'fill' ){
       cs.circular = true;
     }
-    // a 'transparent' button is one where the background
-    // color only shows for effects
-    if( this.props.transparent ){
-      cs.transparent = true;
+    if( this.props.subtle ){
+      cs.subtle = true;
+    }
+    if( this.props.outline ){
+      cs.outline = true;
     }
     return cs;
   }
@@ -125,14 +135,51 @@ export default class Button extends View {
       // style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
       style.justifyContent = 'center';
     }
+    style.borderColor = this.getBorderColor();
+    style.borderWidth = this.getBorderWidth();
+    if( this.props.subtle ){
+      style.borderColor = 'transparent';
+      style.backgroundColor = 'transparent';
+    }
     return style;
   }
 
-  getBackgroundColor( hueOffset ) {
-    if( this.props.transparent ){
-      return this.getTheme().getTransparent();
+  getBackgroundColor(hueOffset) {
+    if( this.props.outline ){
+      let theme = this.getTheme();
+      if( theme.getPaletteMode() != 'grey' ){
+        return super.getTextColor();
+      }
     }
-    return super.getBackgroundColor( hueOffset );
+    return super.getBackgroundColor(hueOffset);
+  }
+
+  getBackgroundEffectColor(hueOffset) {
+    if( this.props.outline ){
+      let textMode = this.props.subtle ? 'hint' : 'primary';
+      return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer(), textMode);
+    }
+    return super.getBackgroundColor(hueOffset);
+  }
+
+  getTextColor(){
+    if( this.props.outline || this.props.subtle ){
+      let textMode = this.props.subtle ? 'secondary' : 'primary';
+      return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer(), textMode);
+    }
+    return super.getTextColor();
+  }
+
+  getBorderColor(){
+    if( this.props.outline ){
+      let textMode = this.props.subtle ? 'hint' : 'primary';
+      return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer(), textMode);
+    }
+    return super.getBackgroundColor();
+  }
+
+  getBorderWidth(){
+    return this.getTheme().getBorderWidth();
   }
 
   // buttons inherit layer from parent
@@ -209,7 +256,9 @@ export default class Button extends View {
           this.props.label ? '0 0.5rem 0 0' :
           '0.5rem'
       },
-      size:'intrinsic'
+      size:'intrinsic',
+      outline: this.props.outline,
+      color: this.getTextColor(),
     };
     if( this.props.icon instanceof Function ){
       let Icon = this.props.icon;
@@ -218,46 +267,39 @@ export default class Button extends View {
     return React.cloneElement(this.props.icon, props);
   }
 
-  isInverted(){
-    // primary/accent colors only work inverted when transparent
-    if( this.props.transparent && (this.props.primary || this.props.accent) ){
-      return true;
-    }
-    return super.isInverted();
+  getLabel(){
+    let props = {
+      style: {
+        cursor: this.isClickable() ? 'pointer' : 'default',
+        alignItems:
+          this.props.align == 'left' ? 'flex-start' :
+          this.props.align == 'right' ? 'flex-end' :
+          'stretch',
+        backgroundColor: 'transparent',
+      },
+      color: this.getTextColor(),
+    };
+    return <Text key="label" {...props}>{this.props.label}</Text>;
   }
 
 
-  render(c){
-
-    if ( c ) return super.render(c); //er...how should I actually do this?
-
+  render(){
     let children = [];
     if( this.props.icon ){
       children.push(this.getIcon());
     }
     if( this.props.label ){
-      let s = {
-        cursor: this.isClickable() ? 'pointer' : 'default',
-        backgroundColor: 'transparent',
-        alignItems:
-          this.props.align == 'left' ? 'flex-start' :
-          this.props.align == 'right' ? 'flex-end' :
-          'stretch'
-      };
-      children.push(<View key="label" style={s}>{this.props.label}</View>);
+      children.push(this.getLabel());
     }
-
     // :hover. :focus and :active are all handled with hidden backgrounds. I totally came up with this idea on my own and didn't have to ask anyone.
     if ( !this.props.disabled ) { // No other states if it's disabled, yo!
       let hover = {
-        backgroundColor: this.props.transparent ?
+        backgroundColor: this.props.subtle ?
           'transparent' :
-          this.getBackgroundColor( this.getThemeMode() == 'light' ? 1 : -1 )
+          this.getBackgroundEffectColor( this.getThemeMode() == 'light' ? 1 : -1 )
       };
       let press = {
-        backgroundColor: this.props.transparent ?
-          this.getTextColor() :
-          this.getBackgroundColor( this.getThemeMode() == 'light' ? 2 : -2 )
+        backgroundColor: this.getBackgroundEffectColor( this.getThemeMode() == 'light' ? 2 : -2 )
       };
       children.push(<div key="button-backgrounds">
           <div className="button-hover" style={hover}></div>
