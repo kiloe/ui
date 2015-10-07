@@ -16,13 +16,16 @@ CSS.register({
     borderStyle: 'solid',
     borderRadius: 2,
   },
-  '.row > .button + .button': {
+  // spacing between adjacent buttons in row
+  '.row > .button + .button':{
     marginLeft: '0.5rem'
   },
-  '.button > .text + .icon': {
-    marginLeft: '0.5rem'
+  // spacing between adjacent buttons in col
+  '.col > .button + .button': {
+    marginTop: '0.5rem'
   },
-  '.button > .icon + .text': {
+  // spacing between label and icon
+  '.button > .text + .icon, .button > .icon + .text': {
     marginLeft: '0.5rem'
   },
   '.button .button-hover, .button .button-focus, .button .button-press': {
@@ -97,7 +100,10 @@ export default class Button extends View {
   }
 
   getPadding(){
-    return super.getPadding() / 3;
+    if( !this.isInRow() ){
+      return 0;
+    }
+    return super.getPadding();
   }
 
   getSize(){
@@ -141,10 +147,7 @@ export default class Button extends View {
     if( this.props.align == 'right' ){
       style.flexDirection = 'row-reverse'; //Reverse the order (e.g. label then icon)
     }
-    if( this.props.label ){
-      style.padding = this.isColumn() ? '0.75rem 1rem' : '0.5rem 0.5rem';
-    }else{
-      // style.padding = this.isColumn() ? '0.5rem' : '0.25rem';
+    if( !this.props.label ){
       style.justifyContent = 'center';
     }
     style.borderColor = this.getBorderColor();

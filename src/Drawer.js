@@ -58,7 +58,7 @@ export default class Drawer extends View {
     // If props.docked is set then dock the drawer back into the
     // page when the viewport size is met
     if( this.props.docked ){
-      let axis = this.isColumn() ? 'width' : 'height';
+      let axis = this.isInRow() ? 'width' : 'height';
       if( viewport[axis][this.props.docked] ){
         return style;
       }
@@ -68,7 +68,7 @@ export default class Drawer extends View {
     // Use props.side to dictate which side to float
     style.position = 'absolute';
     let offset = this.props.active ? 0 : 0 - this.getSize();
-    if( this.isColumn() ){
+    if( this.isInRow() ){
       style.top = 0;
       style.height = '100%';
       if( this.props.side == LEFT ){

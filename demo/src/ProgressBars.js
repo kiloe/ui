@@ -1,7 +1,6 @@
 import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
-import Progress from '../../package/Progress';
 
 
 export default class ProgressDemo extends React.Component {
@@ -42,21 +41,21 @@ export default class ProgressDemo extends React.Component {
         <Progress value=${value} max={100} size={1} primary />
       </View>
     `;
-    
+
     let bufferSrc = Doc.jsx`
       <View style={{ justifyContent: 'space-around' }}>
         <Progress value=${valueb} max={100} buffer=${bufferb} size={1} primary />
       </View>
     `;
-    
+
     let indeterminateSrc = Doc.jsx`
       <View style={{ justifyContent: 'space-around' }}>
         <Progress size={1} primary />
       </View>
     `;
-    
+
     return (
-      <View>
+      <View scroll>
         <View row size={5}>
           <h2>Determinate</h2>
         </View>

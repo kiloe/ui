@@ -285,10 +285,11 @@ export default class View extends React.Component {
     return !parent ? this : parent;
   }
 
-  // isRow returns true if the parent view that this view resides in
-  // has been set to show it's children as columns.
-  isColumn(){
-    return this.getParent().props.row;
+  // isInRow returns true if the parent view that this view that contains
+  // this view has been set to "row"
+  isInRow(){
+    let parent = this.getParent();
+    return parent ? parent.props.row : View.defaultProps.row;
   }
 
   // getClassNames builds and returns all CSS classes
@@ -310,6 +311,8 @@ export default class View extends React.Component {
     }
     if( this.props.row ){
       cs.row = true;
+    }else{
+      cs.col = true;
     }
     // only non-transparent views can be raised
     let mode = this.getThemeMode();
@@ -387,11 +390,11 @@ export default class View extends React.Component {
         size = 0;
       }
       style.flex = `0 0 ${size}rem`;
-      style[this.isColumn() ? 'width' : 'height'] = `${size}rem`;
-      style[this.isColumn() ? 'height' : 'width'] = 'auto';
+      style[this.isInRow() ? 'width' : 'height'] = `${size}rem`;
+      style[this.isInRow() ? 'height' : 'width'] = 'auto';
     }
     else if( this.isIntrinsic() ){
-      style[this.isColumn() ? 'width' : 'height'] = '-webkit-max-content';
+      style[this.isInRow() ? 'width' : 'height'] = '-webkit-max-content';
       style.flex = '0 0 auto';
     }
 

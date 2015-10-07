@@ -301,7 +301,7 @@ export class ThemeManager {
   }
 
   getSpacing(){
-    return 1.34;
+    return 0.5;
   }
 
 

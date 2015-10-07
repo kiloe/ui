@@ -31,7 +31,7 @@ export default class ButtonsDemo extends React.Component {
 
     let filters = Object.keys(this.state).map(k => {
       let v = this.state[k];
-      return <span><input key={k} type="checkbox" onChange={this.set.bind(this, k, !v)} checked={v} />{k}</span>;
+      return <span key={k}><input type="checkbox" onChange={this.set.bind(this, k, !v)} checked={v} />{k}</span>;
     });
 
     let flags = {

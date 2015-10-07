@@ -14,6 +14,7 @@ export default class Toolbar extends View {
     ...View.defaultProps,
     row: true,
     raised: 2,
+    size: 'fill',
   }
 
   getClassNames(){
