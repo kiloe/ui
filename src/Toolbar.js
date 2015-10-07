@@ -17,7 +17,13 @@ export default class Toolbar extends View {
     if( typeof size != 'undefined' ){
       return size;
     }
-    return 3 * this.getScale();
+    return 2 * this.getScale();
+  }
+
+  getStyle(){
+    let style = super.getStyle();
+    style.padding = '0.5rem 0';
+    return style;
   }
 
 }
