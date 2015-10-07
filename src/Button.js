@@ -15,8 +15,14 @@ CSS.register({
     borderStyle: 'solid',
     borderRadius: 2,
   },
-  '.button .icon, .button span': {
-    zIndex: '1',
+  '.row > .button + .button': {
+    marginLeft: '0.5rem'
+  },
+  '.button > .text + .icon': {
+    marginLeft: '0.5rem'
+  },
+  '.button > .icon + .text': {
+    marginLeft: '0.5rem'
   },
   '.button .button-hover, .button .button-focus, .button .button-press': {
     position: 'absolute',
@@ -249,13 +255,6 @@ export default class Button extends View {
     }
     let props = {
       key:'icon',
-      style:{
-        padding:
-          this.props.align == 'left' ? '0 0.5rem 0 0' :
-          this.props.align == 'right' ? '0 0 0 0.5rem' :
-          this.props.label ? '0 0.5rem 0 0' :
-          '0.5rem'
-      },
       size:'intrinsic',
       outline: this.props.outline,
       color: this.getTextColor(),
@@ -276,8 +275,10 @@ export default class Button extends View {
           this.props.align == 'right' ? 'flex-end' :
           'stretch',
         backgroundColor: 'transparent',
+        alignSelf: 'center',
       },
       color: this.getTextColor(),
+
     };
     return <Text key="label" {...props}>{this.props.label}</Text>;
   }
@@ -285,12 +286,6 @@ export default class Button extends View {
 
   render(){
     let children = [];
-    if( this.props.icon ){
-      children.push(this.getIcon());
-    }
-    if( this.props.label ){
-      children.push(this.getLabel());
-    }
     // :hover. :focus and :active are all handled with hidden backgrounds. I totally came up with this idea on my own and didn't have to ask anyone.
     if ( !this.props.disabled ) { // No other states if it's disabled, yo!
       let hover = {
@@ -305,6 +300,12 @@ export default class Button extends View {
           <div className="button-hover" style={hover}></div>
           <div className="button-focus button-press" style={press}></div>
       </div>);
+    }
+    if( this.props.icon ){
+      children.push(this.getIcon());
+    }
+    if( this.props.label ){
+      children.push(this.getLabel());
     }
     return super.render(children);
   }
