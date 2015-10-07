@@ -28,7 +28,45 @@ export default class TextFieldDemo extends React.Component {
         src: Doc.jsx`
           <TextField placeholder="Placeholder text" />
         `,
-        info: ``
+      },
+      {
+        title: 'Password field',
+        src: Doc.jsx`
+          <TextField placeholder="Password" type="password" />
+        `,
+      },
+      {
+        title: 'Multi-line',
+        src: Doc.jsx`
+          <TextField multiLine />
+        `,
+        info:`
+          Not done yet.
+        `
+      },
+      {
+        title: 'Text Field with character counter',
+        src: Doc.jsx`
+          <TextField placeholder="Max 10" maxlength={10} />
+        `,
+        info:`
+          Not done yet.
+        `
+      },
+      {
+        title: 'Number field with icon',
+        src: Doc.jsx`
+          <TextField icon={<TextFormatIcon/>} type="number" />
+        `,
+        info:`
+          Not done yet.
+        `
+      },
+      {
+        title: 'Disabled',
+        src: Doc.jsx`
+          <TextField placeholder="This is disabled" disabled />
+        `,
       },
 
     ];

@@ -15,12 +15,17 @@ export default class TextField extends View {
     
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
+    name: React.PropTypes.string,
     multiLine: React.PropTypes.bool,
     type: React.PropTypes.string,
     rows: React.PropTypes.number,
     //html's maxlength
     maxlength: React.PropTypes.number,
     required: React.PropTypes.bool,
+    icon: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      React.PropTypes.func,
+    ]),
   }
 
   static defaultProps = {
@@ -54,6 +59,25 @@ export default class TextField extends View {
     return style;
   }
   
+
+  // getIcon returns the icon as an element or undefined if no icon prop
+  getIcon(){
+    if( !this.props.icon ){
+      return;
+    }
+    let props = {
+      key:'icon',
+      size:'intrinsic',
+      outline: this.props.outline,
+      color: this.getTextColor(),
+    };
+    if( this.props.icon instanceof Function ){
+      let Icon = this.props.icon;
+      return <Icon {...props} />;
+    }
+    return React.cloneElement(this.props.icon, props);
+  }
+  
   handleChange(event) {
     this.setState({value: event.target.value});
   }
@@ -61,14 +85,20 @@ export default class TextField extends View {
   render(){
     let children = [];
     
+    if( this.props.icon ){
+      children.push(this.getIcon());
+    }
+    
     children.push( 
       <input 
         value={this.state.value} 
         placeholder={this.props.placeholder} 
+        name={this.props.name}
         type={this.props.type} 
         required={this.props.required}
         maxlength={this.props.maxlength}
         onChange={this.handleChange}
+        disabled={this.props.disabled}
       />
       );
     
