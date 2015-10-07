@@ -157,7 +157,7 @@ export default class Progress extends View {
       children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
 
     }
-    else if ( this.props.value == undefined ) { // Indeterminate bar
+    else if ( !( this.props.value >= 0 ) ) { // Indeterminate bar (undefined or negative number)
       let barStyle = {
         backgroundColor: this.getBackgroundColor(),
       };

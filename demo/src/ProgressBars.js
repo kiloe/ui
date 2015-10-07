@@ -35,6 +35,8 @@ export default class ProgressDemo extends React.Component {
     let value = Math.min( Math.floor( this.state.progress * 100) / 100, 100 );
     let valueb = Math.min( Math.floor( this.state.progressb * 100) / 100, 100 );
     let bufferb = Math.min( Math.floor( this.state.bufferb * 100) / 100, 100 );
+    let query = Math.min( Math.floor( (this.state.progress-20)*1.25 * 100) / 100, 100 );
+    
 
     let determinateSrc = Doc.jsx`
       <View style={{ justifyContent: 'space-around' }}>
@@ -53,6 +55,12 @@ export default class ProgressDemo extends React.Component {
         <Progress size={1} primary />
       </View>
     `;
+    
+    let querySrc = Doc.jsx`
+      <View style={{ justifyContent: 'space-around' }}>
+        <Progress value=${query} max={100} size={1} primary />
+      </View>
+    `;
 
     return (
       <View scroll>
@@ -68,6 +76,10 @@ export default class ProgressDemo extends React.Component {
           <h2>Indeterminate</h2>
         </View>
         <Doc src={indeterminateSrc}>Making progress</Doc>
+        <View row size={5}>
+          <h2>Indeterminate query then Determinate</h2>
+        </View>
+        <Doc src={querySrc}>Making progress</Doc>
         <View row size={5}>
         </View>
       </View>
