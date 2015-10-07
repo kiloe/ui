@@ -8,55 +8,66 @@ import Doc from './Doc';
 
 export default class ButtonsDemo extends React.Component {
 
-  renderRow(flags, bgFlags){
-    flags.style = {margin: '1rem'};
-    let desc = Object.keys(flags).map(k => {
-      if( k == 'size' ){
-        return flags.size;
-      }
-      return k;
-    }).sort().join(', ');
-    if( flags.size == Button.defaultProps.size ){
-      delete flags.size;
-    }
-    let src = Doc.jsx`
-      <View row ${bgFlags}>
-        <Button ${flags} disabled />
-        <Button ${flags} />
-        <Button ${flags} raised />
-      </View>
-    `;
-    return (
-        <Doc src={src}>{desc}</Doc>
-    );
+  constructor(...args){
+    super(...args);
+    this.state = {
+      label:true,
+      icon:false,
+      outline: false,
+      fill:false,
+      primary:false,
+      accent:false,
+      subtle:false,
+      disabled:false,
+      raised:false,
+    };
+  }
+
+  set(flag, v){
+    this.setState({[flag]: v});
   }
 
   render(){
 
-    let labelFlags = [{label:'button'}, {label:'button', icon:CloudIcon}, {icon:CloudIcon}];
-    let outlineFlags = [{},{outline:true}];
-    let sizeFlags = [{size:'intrinsic'},{size:'fill'}];
-    let paletteFlags = [{},{primary:true},{accent:true}];
-    let muteFlags = [{},{subtle:true}];
-    let bgFlags = [{},{primary:true}];
-
-    let examples = bgFlags.map(bg => {
-      return sizeFlags.map(s => {
-        return labelFlags.map(l => {
-          return outlineFlags.map(i => {
-            return paletteFlags.map(p => {
-              return muteFlags.map(t => {
-                return this.renderRow({...s,...l,...i,...p,...t}, bg);
-              });
-            });
-          });
-        });
-      });
+    let filters = Object.keys(this.state).map(k => {
+      let v = this.state[k];
+      return <span><input key={k} type="checkbox" onChange={this.set.bind(this, k, !v)} checked={v} />{k}</span>;
     });
+
+    let flags = {
+      label:this.state.label ? 'button' : false,
+      icon:this.state.icon ? CloudIcon : false,
+      outline: this.state.outline,
+      size:this.state.fill ? 'fill' : 'intrinsic',
+      primary:this.state.primary,
+      accent:this.state.accent,
+      subtle:this.state.subtle,
+      disabled:this.state.disabled,
+      raised: this.state.raised,
+    };
+
+    flags = Object.keys(flags).reduce((o,k) => {
+      if( !flags[k] ){
+        return o;
+      }
+      if( k == 'size' && flags[k] == Button.defaultProps.size ){
+        return o;
+      }
+      o[k] = flags[k];
+      return o;
+    },{});
+
+    let src = Doc.jsx`
+      <View row>
+        <Button ${flags} />
+      </View>
+    `;
 
     return (
       <View scroll>
-        {examples}
+        <Doc src={src} title="Button">
+          {filters}
+        </Doc>
       </View>
     );
   }
