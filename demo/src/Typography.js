@@ -8,34 +8,65 @@ export default class Typography extends React.Component {
   render(){
     let data = [
       {
+        title: 'Headings',
         src: Doc.jsx`
-          <Display>Display</Display>
+          <View>
+            <Display>Display</Display>
+            <Headline>Headline</Headline>
+            <Title>Title</Title>
+            <Subheading>Subheading</Subheading>
+          </View>
         `,
-        info: `Display is for really big banners and text overlays and things like that, you'll only ever have one of these visible`
+        info:`
+          The heading elements are basically just scaled up Text elements.
+          Title is probably what you want most of the time for things like
+          Card titles, List items etc, Use Display sparingly, and Headline for
+          main "page" headings.
+        `
       },
       {
+        title: 'Body Text',
         src: Doc.jsx`
-          <Headline>Headline</Headline>
+          <Text>This is just normal body text</Text>
         `,
-        info: `Headline's are for 'page' or 'section' level titles you'll usually only have one or two visible at a time`
+        info: `The Text element is for text. Too complex? Deal with it.`
       },
       {
+        title: 'Colored Text',
         src: Doc.jsx`
-          <Title>Title</Title>
+          <View>
+            <Text primary>I am a leaf on the wind. Watch how I soar</Text>
+            <Text accent>I am a leaf on the wind. Watch how I soar</Text>
+          </View>
         `,
-        info: `Title's are used for headings in lists/sections/cards all over the place.`
+        info: `Adding the primary or accent flags makes things colorful. They work on heading things too if you are so inclined`
       },
       {
+        title: 'Subtle Text',
         src: Doc.jsx`
-          <Subheading>Subheading</Subheading>
+          <View>
+            <Text subtle>This text is so unimportant you can barely see it</Text>
+          </View>
         `,
-        info: `Subheadings are usually used when Title isn't enough`
-      }
+        info: `The subtle prop tells the component you want a more muted version`
+      },
+      {
+        title: 'Summaries',
+        src: Doc.jsx`
+          <View>
+            <Text lines={1}>Bacon ipsum dolor amet t-bone bacon ground round, bresaola doner short loin shank beef porchetta pancetta fatback. Tongue chicken brisket strip steak, prosciutto jowl pork loin andouille salami turducken sausage. Ground round chuck bacon, porchetta ham hock jerky short loin bresaola biltong jowl sirloin shoulder pork belly turkey. Turducken sausage pancetta salami, tail rump pork chop tri-tip frankfurter ribeye kevin.</Text>
+            <Summary lines={2}>Bacon ipsum dolor amet t-bone bacon ground round, bresaola doner short loin shank beef porchetta pancetta fatback. Tongue chicken brisket strip steak, prosciutto jowl pork loin andouille salami turducken sausage. Ground round chuck bacon, porchetta ham hock jerky short loin bresaola biltong jowl sirloin shoulder pork belly turkey. Turducken sausage pancetta salami, tail rump pork chop tri-tip frankfurter ribeye kevin.</Summary>
+          </View>
+        `,
+        info: `Pass lines={n} to limit output`
+      },
     ];
     return (
-      <View>
+      <View scroll>
         <Headline>Typography</Headline>
-        <View>{data.map((x,i) => <Doc key={i} src={x.src}>{x.info}</Doc>)}</View>;
+        <View>
+          {data.map((x,i) => <Doc key={i} title={x.title} src={x.src}>{x.info}</Doc>)}
+        </View>
       </View>
     );
   }
