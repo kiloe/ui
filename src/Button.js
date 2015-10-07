@@ -59,6 +59,42 @@ CSS.register({
   '.button.subtle:focus .button-press, .button.outline:focus .button-press': {
     opacity: '0.1',
   },
+  '.button::after': {
+    position: 'absolute',
+    content: '" "',
+    height: '100%',
+    width: '100%',
+    top: 0,
+    left: 0,
+    pointerEvents: 'none',
+    backgroundImage: 'radial-gradient(circle at center,rgba(255,255,255,0.8)  0%,rgba(255,255,255,0.8) 10%,transparent 11%,transparent 100%)',
+    backgroundSize: '1% 1%',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: 'transparent',
+    transition: '1s opacity ease, 0.5s background-size ease-in 0.3s',
+    opacity: 0,
+  },
+  '.button:focus::after': {
+    // transition: '0.25s background-size ease-out, 0.0s opacity ease-in',
+    boxShadow: '0 10px 10px rgba(0,0,0,0.19), 0 6px 3px rgba(0,0,0,0.23)',
+    animation: 'btnripple 1s forwards ease-out',
+  },
+  '@keyframes btnripple': `
+    0% {
+      opacity: 0;
+      background-size: 1% 1%;
+    }
+    40% {
+      opacity: 0.5;
+      background-size: 1000% 1000%;
+    }
+    100% {
+      opacity: 0;
+      background-size: 1000% 1000%;
+    }
+
+  `
 });
 
 export default class Button extends View {
@@ -290,6 +326,10 @@ export default class Button extends View {
 
     };
     return <Text key="label" {...props}>{this.props.label}</Text>;
+  }
+
+  getTabIndex(){
+    return '-1';
   }
 
 

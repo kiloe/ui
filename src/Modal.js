@@ -5,7 +5,8 @@ import CSS from './utils/css';
 CSS.register({
   // make modals float in the center
   '.modal': {
-    display: 'none',
+    display: 'flex',
+    pointerEvents: 'none',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -37,14 +38,13 @@ export default class Modal extends React.Component {
   }
 
   render(){
-    let style = {};
     let modal;
     if( this.state.content ){
-      style.display = 'flex';
-      modal = <View layer={0} raised={3} size="intrinsic">{this.state.content}</View>;
+      let style = {pointerEvents:'auto'};
+      modal = <View style={style} layer={0} raised={3} size="intrinsic">{this.state.content}</View>;
     }
     return (
-      <div className="modal" style={style}>{modal}</div>
+      <div className="modal">{modal}</div>
     );
   }
 

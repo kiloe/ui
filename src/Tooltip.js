@@ -5,6 +5,7 @@ import viewport from './utils/viewport';
 CSS.register({
   '.tiptext': {
     position: 'absolute',
+    pointerEvents: 'none',
     transition: {
       width: '500ms ease',
       height: '500ms ease',

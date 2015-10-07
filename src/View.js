@@ -81,6 +81,7 @@ CSS.register({
     zIndex:5,
   },
   '.view.disabled': {
+    pointerEvents: 'none',
     opacity:'0.2 !important',
     filter: 'grayscale(100%)',
     WebkitFilter: 'grayscale(100%)',
@@ -615,6 +616,10 @@ export default class View extends React.Component {
     return this.refs.view.getBoundingClientRect();
   }
 
+  getTabIndex(){
+    return this.props.tabIndex;
+  }
+
   // render does what it says on the tin.
   // subclasses can call super.render(children) if they
   // need to extend render.
@@ -622,17 +627,16 @@ export default class View extends React.Component {
     // subclasses may want to pass new children
     children = children || this.props.children;
     // main
-    let view =
-      <div ref="view"
+    let view = <div
+      ref="view"
       onClick={this.isClickable() || this.getRoot() == this ? this.onClick.bind(this) : undefined}
       onClickCapture={this.props.onClickCapture}
       onMouseEnter={this.props.tip ? this.showTip.bind(this) : undefined}
       onMouseLeave={this.props.tip ? this.hideTip.bind(this) : undefined}
       style={this.getStyle()}
       className={cx(this.getClassNames())}
-      disabled={this.props.disabled}>
-        {children}
-      </div>;
+      disabled={this.props.disabled}
+      tabIndex={this.getTabIndex()}>{children}</div>;
     if( this == this.getRoot() ){
       // if we are the root then we might need to
       // maintain some additional elements for global things like modals/tooltips
