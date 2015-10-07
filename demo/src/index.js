@@ -28,6 +28,7 @@ import Cards from './Cards';
 import Layers from './Layers';
 import ColorWheel from './ColorWheel';
 import Typography from './Typography';
+import TextFields from './TextFields';
 
 export default class App extends React.Component {
 
@@ -112,6 +113,7 @@ export default class App extends React.Component {
       case 'cards'     :   return <Cards />;
       case 'layers'    :   return <Layers />;
       case 'typography':   return <Typography />;
+      case 'textfields':   return <TextFields />;
     }
   }
 
@@ -160,6 +162,7 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.open('progress')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
+            <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />
