@@ -58,7 +58,9 @@ export default class ButtonsDemo extends React.Component {
     },{});
 
     let src = Doc.jsx`
-      <View row>
+      <View row pad>
+        <Button ${flags} />
+        <Button ${flags} />
         <Button ${flags} />
       </View>
     `;

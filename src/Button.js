@@ -4,7 +4,8 @@ import Text from './Text';
 import CSS from './utils/css';
 
 CSS.register({
-  '.button': {
+  '.view.button': {
+    boxSizing: 'border-box',
     textTransform: 'uppercase',
     letterSpacing: '0',
     willChange: 'box-shadow, transform',
@@ -85,6 +86,7 @@ export default class Button extends View {
     row: true,
     align: 'center',
     size: 'intrinsic',
+    pad: true,
   }
 
   getRaise(){
@@ -92,6 +94,10 @@ export default class Button extends View {
       return 0; // can't raise subtle buttons
     }
     return super.getRaise();
+  }
+
+  getPadding(){
+    return super.getPadding() / 3;
   }
 
   getSize(){

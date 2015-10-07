@@ -11,15 +11,15 @@ const PALETTE_MODES = ['primary','accent','grey'];
 CSS.register({
   '.view': {
     position: 'relative',
-    boxSizing: 'content-box',
+    boxSizing: 'content-box', // note to self: required so that we can rely on the size prop
     display: 'flex',
-    flex: '1 1 auto',
+    flex: '1 1 auto', // let items take up what they need when theres room or squash+clip when not
     flexDirection: 'column',
-    flexWrap: 'nowrap',
+    flexWrap: 'nowrap', // only ever one row or column (see Grid for wrappy things)
     alignItems: 'stretch',
     alignContent: 'stretch',
     borderRadius: 1,
-    overflow: 'hidden',
+    overflow: 'hidden', // required to give the 'clipping' behaviour that material should have
     transition: {
       left: CSS.transitions.swift,
       right: CSS.transitions.swift,
@@ -40,8 +40,7 @@ CSS.register({
   },
   '.view.scroll': {
     overflow:'auto',
-    display: 'block',
-    // flexBasis: '100%',
+    display: 'block', // XXX: unexpected layout? it might be this... it's here because otherwise fast-path scrolling doesn't want to work
     WebkitOverflowScrolling: 'touch',
   },
   '.view .view:nth-child(1)': {
@@ -143,6 +142,8 @@ export default class View extends React.Component {
     scale: React.PropTypes.number,
     // The View is a divider (with bottom border)
     divider: React.PropTypes.bool,
+    // pad adds the default (theme defined) padding default is no padding
+    pad: React.PropTypes.bool,
   }
 
   static contextTypes = {
@@ -401,9 +402,7 @@ export default class View extends React.Component {
     if( this.isClickable() ){
       style.cursor = 'pointer';
     }
-    if( this.props.scroll ){
-      // style.position = 'relative';
-    }else if(!style.justifyContent){
+    if(!this.props.scroll && !style.justifyContent){
       style.justifyContent =
         this.props.align == 'left' ? 'flex-start' :
         this.props.align == 'right' ? 'flex-end' :
@@ -411,18 +410,26 @@ export default class View extends React.Component {
     }
     style.fontSize = this.getFontSize() + 'rem';
     style.lineHeight = this.getLineHeight() + 'rem';
+    if( this.props.pad ){
+      style.padding = this.getPadding() + 'rem';
+    }
     if ( this.props.divider ) {
       style.borderBottom = '1px solid ' + ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
     }
     return style;
   }
 
-  // Number number of rems for font size (number not css value)
+  // Number of rems of padding to apply
+  getPadding(){
+    return this.getTheme().getSpacing();
+  }
+
+  // Number of rems for font size (number not css value)
   getFontSize(){
     return this.getScale();
   }
 
-  // Number number of rems for line height (number not css value)
+  // Number of rems for line height (number not css value)
   getLineHeight(){
     return this.getFontSize() * 1.5;
   }

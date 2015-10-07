@@ -300,6 +300,10 @@ export class ThemeManager {
     return 12;
   }
 
+  getSpacing(){
+    return 1.34;
+  }
+
 
   //Helpers
 
