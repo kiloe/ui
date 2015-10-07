@@ -13,7 +13,7 @@ CSS.register({
     position: 'relative',
     boxSizing: 'content-box', // note to self: required so that we can rely on the size prop
     display: 'flex',
-    flex: '1 1 auto', // let items take up what they need when theres room or squash+clip when not
+    flex: '1', // let items take up what they need when theres room or squash+clip when not
     flexDirection: 'column',
     flexWrap: 'nowrap', // only ever one row or column (see Grid for wrappy things)
     alignItems: 'stretch',
@@ -590,8 +590,8 @@ export default class View extends React.Component {
     if( this == this.getRoot() ){
       modal = <Modal ref="modal" />;
     }
-    // render
-    return (
+    // main
+    let view =
       <div ref="view"
       onClick={this.isClickable() || this.getRoot() == this ? this.onClick.bind(this) : undefined}
       onClickCapture={this.props.onClickCapture}
@@ -600,8 +600,11 @@ export default class View extends React.Component {
       disabled={this.props.disabled}>
         {children}
         {modal}
-      </div>
-    );
+      </div>;
+    // if( this.props.scroll ){ //XXX: this should not be required
+    //   return <div style={{display:'flex'}}>{view}</div>;
+    // }
+    return view;
   }
 
 }

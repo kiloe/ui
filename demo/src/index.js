@@ -127,13 +127,13 @@ export default class App extends React.Component {
   }
 
   getColorWheel(){
-    return <View style={{padding:'2rem'}}>
+    return <View pad>
       <View><h1>Color Picker</h1></View>
       <ColorWheel
         onPickPrimary={this.onPickPrimary.bind(this)}
         onPickAccent={this.onPickAccent.bind(this)}
       />
-      <View row size={4} style={{padding:'1rem', justifyContent:'flex-end'}}>
+      <View row align="right">
         <Button outline accent label="continue"/>
       </View>
     </View>;

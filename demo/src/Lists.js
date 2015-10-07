@@ -26,7 +26,7 @@ export default class ListDemo extends React.Component {
 
    // let list = { raised: true, style:{padding:10, justifyContent:'space-between'} };
     let div = { marginLeft: '72px' };
-    let listStyle = { margin: '0 20px' };
+    let listStyle = { margin: '0 20px'};
     let Avatar1 = <Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />;
     let Avatar2 = <Avatar src="https://s.gravatar.com/avatar/20b1836f8acccd107b4992a1a45a14bd?s=120" />;
 
