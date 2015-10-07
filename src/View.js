@@ -17,6 +17,9 @@ CSS.register({
     right:0,
     bottom:0,
   },
+  '.root > .rootView': {
+    display:'flex',
+  },
   // make modals float in the center
   '.root > .rootModal': {
     display: 'flex',
