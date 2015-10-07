@@ -6,6 +6,7 @@ import Divider from '../../package/Divider';
 import Avatar from '../../package/Avatar';
 import Button from '../../package/Button';
 import Title from '../../package/Title';
+import Text from '../../package/Text';
 import Summary from '../../package/Summary';
 import ChatBubbleIcon from '../../package/icons/ChatBubbleIcon';
 import StarIcon from '../../package/icons/StarIcon';
@@ -59,7 +60,7 @@ export default class ListDemo extends React.Component {
             </ListItem>
             <ListItem left={Avatar1} right={<Button subtle icon={ChatBubbleIcon}/>}>
               <Title>Chris Farmiloe</Title>
-              <Summary>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</Summary>
+              <Text>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</Text>
             </ListItem>
             <ListItem left={Avatar2} right={<Button subtle icon={ChatBubbleIcon}/>}>
               <Title lines={1}>Chris Ward</Title>
