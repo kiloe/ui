@@ -93,7 +93,7 @@ CSS.register({
       left: 100%;
       width: 0%; }
     `,
-  
+
 });
 
 
@@ -133,7 +133,7 @@ export default class Progress extends View {
   }
 
   render(){
-  
+
     let w = Math.max( 0, Math.min( this.props.value / this.props.max * 100, 100 ) );
     let buffer = Math.max( 0, Math.min( this.props.buffer / this.props.max * 100, 100 ) );
 
@@ -141,7 +141,7 @@ export default class Progress extends View {
       backgroundColor: this.getBackgroundColor(),
       width: w+'%',
     };
-    
+
     let children = [];
     if ( this.props.buffer ) { // Buffering progress bar
       let backgroundStyle = {
@@ -155,7 +155,7 @@ export default class Progress extends View {
       children.push( <span style={backgroundStyle} className="bufferBG" key="bufferBG"></span> );
       children.push( <span style={bufferStyle} className="bufferBar" key="bufferBar"></span> );
       children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
-      
+
     }
     else if ( this.props.value == undefined ) { // Indeterminate bar
       let barStyle = {
@@ -164,7 +164,7 @@ export default class Progress extends View {
       children.push( <span style={barStyle} className="progressBG" key="progressBG"></span> );
       children.push( <span style={barStyle} className="indeterminateBar1" key="indeterminateBar1"></span> );
       children.push( <span style={barStyle} className="indeterminateBar2" key="indeterminateBar2"></span> );
-    
+
     }
     else { // Normal determinate progress bar
       let backgroundStyle = {
@@ -173,8 +173,8 @@ export default class Progress extends View {
       children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
       children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
     }
-    
-    
+
+
     return super.render(children);
 
   }
