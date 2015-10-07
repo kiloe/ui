@@ -10,7 +10,7 @@ const THEME_MODES = ['light', 'dark'];
 const PALETTE_MODES = ['primary','accent','grey'];
 
 CSS.register({
-  '.root, .root > div': {
+  '.root, .root > .rootView': {
     position:'absolute',
     top:0,
     left:0,
@@ -19,12 +19,6 @@ CSS.register({
   },
   '.root > .rootView': {
     display:'flex',
-  },
-  // make modals float in the center
-  '.root > .rootModal': {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   '.view': {
     position: 'relative',
@@ -647,8 +641,8 @@ export default class View extends React.Component {
       return (
         <div className="root">
           <div className="rootView">{view}</div>
-          <div className="rootModal">{modal}</div>
-          <div className="rootTip">{tooltip}</div>
+          {modal}
+          {tooltip}
         </div>
       );
     }

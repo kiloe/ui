@@ -111,9 +111,9 @@ export default class Tooltip extends React.Component {
       instyle.opacity = '1';
     }
     return (
-      <div className="tiptext" style={style}>
-        <div style={instyle}>{txt}</div>
-      </div>
+        <div className="tiptext" style={style}>
+          <div style={instyle}>{txt}</div>
+        </div>
     );
   }
 

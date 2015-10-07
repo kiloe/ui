@@ -1,5 +1,17 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  // make modals float in the center
+  '.modal': {
+    display: 'none',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+});
 
 // Modal is component used by the root-view to render a global View
 // that overlays the root-view.
@@ -25,12 +37,15 @@ export default class Modal extends React.Component {
   }
 
   render(){
+    let style = {};
+    let modal;
     if( this.state.content ){
-      return (
-        <View layer={0} raised={3} size="intrinsic">{this.state.content}</View>
-      );
+      style.display = 'flex';
+      modal = <View layer={0} raised={3} size="intrinsic">{this.state.content}</View>;
     }
-    return <span></span>;
+    return (
+      <div className="modal" style={style}>{modal}</div>
+    );
   }
 
 }
