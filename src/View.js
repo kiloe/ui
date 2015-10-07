@@ -10,9 +10,10 @@ const PALETTE_MODES = ['primary','accent','grey'];
 
 CSS.register({
   '.view': {
+    position: 'relative',
     boxSizing: 'content-box',
     display: 'flex',
-    flex: '1 0 auto',
+    flex: '1 1 auto',
     flexDirection: 'column',
     flexWrap: 'nowrap',
     alignItems: 'stretch',
@@ -38,18 +39,15 @@ CSS.register({
     UserSelect: 'none',
   },
   '.view.scroll': {
-    position: 'absolute',
-    top:0,
-    bottom:0,
-    left:0,
-    right:0,
     overflow:'auto',
+    display: 'block',
+    // flexBasis: '100%',
     WebkitOverflowScrolling: 'touch',
   },
   '.view .view:nth-child(1)': {
     // zIndex:10
   },
-  '.view.vsplit': {
+  '.view.row': {
     flexDirection: 'row'
   },
   '.view.z1': {
@@ -158,7 +156,6 @@ export default class View extends React.Component {
   static defaultProps = {
     row: false,
     raised: 0,
-    scroll: false,
     disabled: false,
     size: 'fill',
     align: 'center',
@@ -307,7 +304,12 @@ export default class View extends React.Component {
     if( this.props.disabled ){
       cs.disabled = true;
     }
-    cs.vsplit = this.props.row;
+    if( this.props.scroll ){
+      cs.scroll = true;
+    }
+    if( this.props.row ){
+      cs.row = true;
+    }
     // only non-transparent views can be raised
     let mode = this.getThemeMode();
     if( mode != 'transparent' ){
@@ -400,20 +402,29 @@ export default class View extends React.Component {
       style.cursor = 'pointer';
     }
     if( this.props.scroll ){
-      style.position = 'relative';
+      // style.position = 'relative';
     }else if(!style.justifyContent){
       style.justifyContent =
         this.props.align == 'left' ? 'flex-start' :
         this.props.align == 'right' ? 'flex-end' :
         'center';
     }
-    if( !style.fontSize ){
-      style.fontSize = this.getScale() + 'rem';
-    }
+    style.fontSize = this.getFontSize() + 'rem';
+    style.lineHeight = this.getLineHeight() + 'rem';
     if ( this.props.divider ) {
       style.borderBottom = '1px solid ' + ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
     }
     return style;
+  }
+
+  // Number number of rems for font size (number not css value)
+  getFontSize(){
+    return this.getScale();
+  }
+
+  // Number number of rems for line height (number not css value)
+  getLineHeight(){
+    return this.getFontSize() * 1.5;
   }
 
   // isClickable returns true/false to decide if the item should
@@ -563,15 +574,6 @@ export default class View extends React.Component {
   // need to extend render.
   render(children) {
     children = children || this.props.children;
-    // wrap in a scrolly thing if scrolling
-    if( this.props.scroll ){
-      children = <View
-        className="scroll"
-        style={{justifyContent:'stretch'}}
-        row={this.props.row}>
-          {children}
-      </View>;
-    }
     // if we are the root then we might need to
     // render an additional child for the modal.
     let modal;
