@@ -51,10 +51,7 @@ export default class ListItem extends View {
 
   getStyle(){
     let style = super.getStyle();
-    style.justifyContent = 'space-between';
-    // style.padding = '8px 0px';
-    style.flexGrow = '0'; // List items shouldn't stretch out to fill the vertical space
-    // style.flex = '1 0 0';
+    // style.justifyContent = 'space-between';
     return style;
   }
 
@@ -74,7 +71,7 @@ export default class ListItem extends View {
         i == 2 ? 'right' :
         '',
       style: {
-        justifyContent: 'space-between',
+        justifyContent: 'inherit',
         margin: '0 0.5rem',
         flexShrink: i==1 ? 1 : 0,
         alignItems:
