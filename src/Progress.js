@@ -27,7 +27,75 @@ CSS.register({
   '.progress .progressBar': {
     left: '0',
   },
+  '.progress .indeterminateBar1, .progress .indeterminateBar2': {
+    WebkitAnimationDuration: '2s',
+    animationDuration: '2s',
+    WebkitAnimationIterationCount: 'infinite',
+    animationIterationCount: 'infinite',
+    WebkitAnimationTimingFunction: 'linear',
+    animationTimingFunction: 'linear',
+  },
+  '.progress .indeterminateBar1': {
+    WebkitAnimationName: 'indeterminate1',
+    animationName: 'indeterminate1',
+  },
+  '.progress .indeterminateBar2': {
+    WebkitAnimationName: 'indeterminate2',
+    animationName: 'indeterminate2',
+  },
+  '@-webkit-keyframes indeterminate1': `
+    0% {
+      left: 0%;
+      width: 0%; }
+    50% {
+      left: 25%;
+      width: 75%; }
+    75% {
+      left: 100%;
+      width: 0%; }
+    `,
+  '@keyframes indeterminate1': `
+    0% {
+      left: 0%;
+      width: 0%; }
+    50% {
+      left: 25%;
+      width: 75%; }
+    75% {
+      left: 100%;
+      width: 0%; }
+    `,
+  '@-webkit-keyframes indeterminate2': `
+    0% {
+      left: 0%;
+      width: 0%; }
+    50% {
+      left: 0%;
+      width: 0%; }
+    75% {
+      left: 0%;
+      width: 25%; }
+    100% {
+      left: 100%;
+      width: 0%; }
+    `,
+  '@keyframes indeterminate2': `
+    0% {
+      left: 0%;
+      width: 0%; }
+    50% {
+      left: 0%;
+      width: 0%; }
+    75% {
+      left: 0%;
+      width: 25%; }
+    100% {
+      left: 100%;
+      width: 0%; }
+    `,
+  
 });
+
 
 export default class Progress extends View {
 
@@ -45,7 +113,6 @@ export default class Progress extends View {
 
   static defaultProps = {
     ...View.defaultProps,
-    value: 0,
     max: 100,
     buffer: 0,
   }
@@ -74,30 +141,39 @@ export default class Progress extends View {
       backgroundColor: this.getBackgroundColor(),
       width: w+'%',
     };
-    let backgroundStyle = {
-      backgroundColor: this.getBackgroundColor(),
-    };
     
-    let bufferStyle = {};
-    if ( this.props.buffer ) {
-      backgroundStyle = {
+    let children = [];
+    if ( this.props.buffer ) { // Buffering progress bar
+      let backgroundStyle = {
         backgroundColor: this.getBackgroundColor(),
         width: (100-buffer)+'%',
       };
-      bufferStyle = {
+      let bufferStyle = {
         backgroundColor: this.getBackgroundColor(),
         width: buffer+'%',
       };
-    }
-    
-    let children = [];
-    if ( this.props.buffer ) {
       children.push( <span style={backgroundStyle} className="bufferBG" key="bufferBG"></span> );
       children.push( <span style={bufferStyle} className="bufferBar" key="bufferBar"></span> );
+      children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
+      
     }
-    else children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
+    else if ( this.props.value == undefined ) { // Indeterminate bar
+      let barStyle = {
+        backgroundColor: this.getBackgroundColor(),
+      };
+      children.push( <span style={barStyle} className="progressBG" key="progressBG"></span> );
+      children.push( <span style={barStyle} className="indeterminateBar1" key="indeterminateBar1"></span> );
+      children.push( <span style={barStyle} className="indeterminateBar2" key="indeterminateBar2"></span> );
     
-    children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
+    }
+    else { // Normal determinate progress bar
+      let backgroundStyle = {
+        backgroundColor: this.getBackgroundColor(),
+      };
+      children.push( <span style={backgroundStyle} className="progressBG" key="progressBG"></span> );
+      children.push( <span style={barStyle} className="progressBar" key="progressBar"></span> );
+    }
+    
     
     return super.render(children);
 

@@ -48,6 +48,13 @@ export default class ProgressDemo extends React.Component {
         <Progress value=${valueb} max={100} buffer=${bufferb} size={1} primary />
       </View>
     `;
+    
+    let indeterminateSrc = Doc.jsx`
+      <View style={{ justifyContent: 'space-around' }}>
+        <Progress size={1} primary />
+      </View>
+    `;
+    
     return (
       <View>
         <View row size={5}>
@@ -58,6 +65,10 @@ export default class ProgressDemo extends React.Component {
           <h2>Buffer</h2>
         </View>
         <Doc src={bufferSrc}>Making progress</Doc>
+        <View row size={5}>
+          <h2>Indeterminate</h2>
+        </View>
+        <Doc src={indeterminateSrc}>Making progress</Doc>
         <View row size={5}>
         </View>
       </View>
