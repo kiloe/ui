@@ -3,12 +3,29 @@ import cx from 'classnames';
 import {ThemeManager} from './utils/themeManager';
 import CSS from './utils/css';
 import Modal from './Modal';
+import Tooltip from './Tooltip';
 
 const SIZES = ['fill', 'intrinsic'];
 const THEME_MODES = ['light', 'dark'];
 const PALETTE_MODES = ['primary','accent','grey'];
 
 CSS.register({
+  '.root, .root > div': {
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:0,
+  },
+  '.root > .rootView': {
+    display:'flex',
+  },
+  // make modals float in the center
+  '.root > .rootModal': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   '.view': {
     position: 'relative',
     boxSizing: 'content-box', // note to self: required so that we can rely on the size prop
@@ -144,6 +161,11 @@ export default class View extends React.Component {
     divider: React.PropTypes.bool,
     // pad adds the default (theme defined) padding default is no padding
     pad: React.PropTypes.bool,
+    // tip sets the tooltip text. tooltips are text only labels that appear on hover and focus when
+    // the user hovers over an element with the cursor, focuses on an
+    // element using a keyboard (usually through the tab key), or upon
+    // touch (without releasing) in a touch UI.
+    tip: React.PropTypes.string,
   }
 
   static contextTypes = {
@@ -282,7 +304,7 @@ export default class View extends React.Component {
   // and that gets rended as a child of the root view.
   getRoot(){
     let parent = this.getParent();
-    return !parent ? this : parent;
+    return parent ? parent.getRoot() : this;
   }
 
   // isInRow returns true if the parent view that this view that contains
@@ -551,7 +573,7 @@ export default class View extends React.Component {
   // onClickOutside is the event fired when someone clicks outside of
   // an active modal. This method is only accessed on the root.
   onClickOutside(){
-    this.getModal().clearContent();
+    this.getRoot().refs.modal.clearContent();
   }
 
   // onClick is called when a click event on the View DOM node
@@ -571,39 +593,65 @@ export default class View extends React.Component {
   // like popup menus and modal dialogs.
   // Call with null to remove the modal.
   setModalContent(view){
-    this.getModal().setContent(view);
+    return this.getRoot().refs.modal.setContent(view);
   }
 
-  // Fetch the global Modal instance
-  getModal(){
-    return this.getRoot().refs.modal;
+  // showTip displays the tooltip (if available)
+  showTip(){
+    if( !this.props.tip ){
+      return;
+    }
+    let pos = this.getAbsPosition();
+    let tooltip = this.getRoot().refs.tip;
+    tooltip.show(this.props.tip, pos, this.getTheme());
+  }
+
+  // tell tooltip to go away
+  hideTip(){
+    if( !this.props.tip ){
+      return;
+    }
+    let tooltip = this.getRoot().refs.tip;
+    tooltip.hideSoon();
+  }
+
+  // Returns absolute position of this view (uses DOM obviously so
+  // only call from events).
+  getAbsPosition(){
+    return this.refs.view.getBoundingClientRect();
   }
 
   // render does what it says on the tin.
   // subclasses can call super.render(children) if they
   // need to extend render.
   render(children) {
+    // subclasses may want to pass new children
     children = children || this.props.children;
-    // if we are the root then we might need to
-    // render an additional child for the modal.
-    let modal;
-    if( this == this.getRoot() ){
-      modal = <Modal ref="modal" />;
-    }
     // main
     let view =
       <div ref="view"
       onClick={this.isClickable() || this.getRoot() == this ? this.onClick.bind(this) : undefined}
       onClickCapture={this.props.onClickCapture}
+      onMouseEnter={this.props.tip ? this.showTip.bind(this) : undefined}
+      onMouseLeave={this.props.tip ? this.hideTip.bind(this) : undefined}
       style={this.getStyle()}
       className={cx(this.getClassNames())}
       disabled={this.props.disabled}>
         {children}
-        {modal}
       </div>;
-    // if( this.props.scroll ){ //XXX: this should not be required
-    //   return <div style={{display:'flex'}}>{view}</div>;
-    // }
+    if( this == this.getRoot() ){
+      // if we are the root then we might need to
+      // maintain some additional elements for global things like modals/tooltips
+      let modal = <Modal ref="modal" />;
+      let tooltip = <Tooltip ref="tip" />;
+      return (
+        <div className="root">
+          <div className="rootView">{view}</div>
+          <div className="rootModal">{modal}</div>
+          <div className="rootTip">{tooltip}</div>
+        </div>
+      );
+    }
     return view;
   }
 

@@ -26,25 +26,9 @@ export default class Modal extends React.Component {
 
   render(){
     if( this.state.content ){
-      let props = {
-        row: false,
-        theme: {mode:'transparent'},
-        style: {
-          position: 'absolute',
-          top:0,
-          left:0,
-          right:0,
-          bottom:0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 999,
-          padding: '5rem',
-          ...this.props.style,
-        }
-      };
-      return <View {...props}>
-        <View layer={0} raised={3} theme={{mode:'light'}} size="intrinsic">{this.state.content}</View>
-      </View>;
+      return (
+        <View layer={0} raised={3} size="intrinsic">{this.state.content}</View>
+      );
     }
     return <span></span>;
   }

@@ -47,7 +47,7 @@ export default class ListDemo extends React.Component {
 
           <List raised style={listStyle}>
             <ListItem left={Avatar2}>
-              <Title lines={1}>Chris Ward</Title>
+              <Title lines={1} tip="Look at me, I'm Chris Ward">Chris Ward</Title>
               <Summary lines={1}>He's alright, I suppose. This is a single line but the text is much longer, see? Yeah!!!!!!!!</Summary>
             </ListItem>
             <ListItem left={Avatar1}>

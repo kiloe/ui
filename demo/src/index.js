@@ -174,11 +174,11 @@ export default class App extends React.Component {
           <Toolbar primary={'600'}>
             <Button onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
             <View>Title</View>
-            <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} />
-            <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} />
-            <Button onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} />
-            <Button onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  />
-            <Button onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} />
+            <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} tip="Scale up"/>
+            <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} tip="Scale down"/>
+            <Button onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} tip="Pick theme"/>
+            <Button onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  tip="Switch mode"/>
+            <Button onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} tip="Fullscreen" />
           </Toolbar>
           {this.getPage()}
         </View>
