@@ -58,7 +58,7 @@ export default class Doc extends React.Component {
     let padding = {padding:'2rem'};
     return (
       <Card>
-        <Title>{this.props.title || view.type.prototype.constructor.name}'</Title>
+        <Title>{this.props.title || 'set title prop!'}</Title>
         <View raised style={padding}>
           {view}
         </View>
