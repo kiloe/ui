@@ -39,10 +39,10 @@ export class Viewport {
           if( update ){
             this.emit('change', m);
           }
-        })
+        });
         return o;
-      },{})
-    })
+      },{});
+    });
     // If cannot use queries... start as medium (useful for testing).
     if( this.unsupported ){
       this.width.medium = true;
@@ -95,8 +95,22 @@ export class Viewport {
     // scrollTo hack doesn't work much anymore :(
   }
 
+  // return width of viewport
+  getWidth(){
+    return window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+  }
+
+  // return height of viewport
+  getHeight(){
+    return window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+  }
+
 }
 
-export const viewport = new Viewport()
+export const viewport = new Viewport();
 
 export default viewport;
