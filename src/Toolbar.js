@@ -1,5 +1,12 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.toolbar.row > .button + .button': {
+    marginLeft: 0,
+  }
+});
 
 export default class Toolbar extends View {
 
@@ -7,6 +14,12 @@ export default class Toolbar extends View {
     ...View.defaultProps,
     row: true,
     raised: 2,
+  }
+
+  getClassNames(){
+    let cs = super.getClassNames();
+    cs.toolbar = true;
+    return cs;
   }
 
   // getSize returns the height of the toolbar (in rem)
@@ -19,11 +32,5 @@ export default class Toolbar extends View {
     }
     return 3 * this.getScale();
   }
-
-  // getStyle(){
-  //   let style = super.getStyle();
-  //   style.padding = '0.5rem 0';
-  //   return style;
-  // }
 
 }
