@@ -131,7 +131,7 @@ export default class App extends React.Component {
     this.forceUpdate();
   }
 
-  getColorWheel(){
+  getColorWheel(onClose){
     return <View pad>
       <View><h1>Color Picker</h1></View>
       <ColorWheel
@@ -139,13 +139,27 @@ export default class App extends React.Component {
         onPickAccent={this.onPickAccent.bind(this)}
       />
       <View row align="right">
-        <Button outline accent label="continue"/>
+        <Button outline accent label="continue" onClick={onClose} />
       </View>
     </View>;
   }
 
   themePicker(){
-    this.refs.main.setModalContent(this.getColorWheel());
+    let onClose = () => {
+      m.pop();
+    };
+    let m = this.refs.main.pushModal({
+      view: this.getColorWheel(onClose),
+      onPop: (e) => {
+        // e.preventDefault();
+        console.info('color wheel poped from stack');
+      },
+      // onClickOutside: (e) => {
+      //   console.log('preventing onClickOutside');
+      //   e.preventDefault();
+      // },
+    });
+
   }
 
   render(){
