@@ -12,6 +12,7 @@ import InvertColorsIcon from '../../package/icons/InvertColorsIcon';
 import MenuIcon from '../../package/icons/MenuIcon';
 import ZoomInIcon from '../../package/icons/ZoomInIcon';
 import ZoomOutIcon from '../../package/icons/ZoomOutIcon';
+import MoreVertIcon from '../../package/icons/MoreVertIcon';
 import AddCircleIcon from '../../package/icons/AddCircleIcon';
 import ArrowBackIcon from '../../package/icons/ArrowBackIcon';
 import FullscreenIcon from '../../package/icons/FullscreenIcon';
@@ -29,6 +30,7 @@ import Layers from './Layers';
 import ColorWheel from './ColorWheel';
 import Typography from './Typography';
 import TextFields from './TextFields';
+import Menus from './Menus';
 
 export default class App extends React.Component {
 
@@ -114,6 +116,7 @@ export default class App extends React.Component {
       case 'layers'    :   return <Layers />;
       case 'typography':   return <Typography />;
       case 'textfields':   return <TextFields />;
+      case 'menus'     :   return <Menus />;
     }
   }
 
@@ -163,6 +166,7 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />

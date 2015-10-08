@@ -24,6 +24,10 @@ CSS.register({
   '.col > .button + .button': {
     // marginTop: '0.5rem'
   },
+  '.col > .button': {
+    paddingLeft: '0.5rem',
+    paddingRight: '0.5rem',
+  },
   '.col > .button .text': {
     padding: '0.5rem 0',
   },
@@ -138,9 +142,9 @@ export default class Button extends View {
   }
 
   getPadding(){
-    if( !this.isInRow() ){
-      return 0;
-    }
+    // if( !this.isInRow() ){
+    //   return 0;
+    // }
     return super.getPadding();
   }
 
