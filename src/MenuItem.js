@@ -43,34 +43,52 @@ export default class MenuItem extends Button {
     return cs;
   }
 
-  hasSubMenu(){
-    return React.Children.count(this.props.children) > 0;
+  hasMenu(){
+    if( React.Children.count(this.props.children) > 0 ){
+      return true;
+    }
+    return super.hasMenu();
+  }
+
+  getMenu(){
+    if( React.Children.count(this.props.children) > 0 ){
+      let menu = <Menu>
+        {this.props.children}
+      </Menu>;
+      return menu;
+    }
+    return super.getMenu();
   }
 
   getMouseEnterHandler(){
-    if( this.hasSubMenu() ){
-      return this.expand.bind(this);
+    if( this.hasMenu() ){
+      // return this.expand.bind(this);
     }
     return;
   }
 
+  getClickHandler(){
+    if( this.hasMenu() ){
+      return this.expand.bind(this);
+    }
+    return super.getClickHandler();
+  }
+
   getMouseLeaveHandler(){
-    if( this.hasSubMenu() ){
+    if( this.hasMenu() ){
       return this.contract.bind(this);
     }
     return;
   }
 
   // expand open the sub level of menu items
-  expand(){
-    // let menu = <Menu>
-    //   {this.props.children}
-    // </Menu>;
+  expand(e){
+    this.showMenu(e);
   }
 
   // contract closes the sub level of menu items
   contract(){
-
+    this.hideMenu();
   }
 
   hasIcon(){
@@ -90,14 +108,14 @@ export default class MenuItem extends Button {
   }
 
   hasTip(){
-    if( this.hasSubMenu() ){
+    if( this.hasMenu() ){
       return true;
     }
     return super.hasTip();
   }
 
   getTip(){
-    if( this.hasSubMenu() ){
+    if( this.hasMenu() ){
       return `▶`;
     }
     return super.getTip();
@@ -105,7 +123,10 @@ export default class MenuItem extends Button {
 
   getTipContent(){
     let tip = this.getTip();
-    return <Text subtle scale={1} key="tip" className="alt">{tip}</Text>;
+    let style = {
+      fontSize: (this.getFontSize() * 0.85) + 'rem',
+    };
+    return <Text subtle style={style} key="tip" className="alt">{tip}</Text>;
   }
 
 

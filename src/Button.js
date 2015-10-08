@@ -5,6 +5,7 @@ import CSS from './utils/css';
 
 CSS.register({
   '.view.button': {
+    position: 'relative',
     boxSizing: 'border-box',
     textTransform: 'uppercase',
     letterSpacing: '0',
@@ -12,7 +13,7 @@ CSS.register({
     WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     outline: 'none',
-    // textAlign: 'center',
+    // textAlign: 'center', // will break menuitem
     borderStyle: 'solid',
     borderRadius: 2,
   },
@@ -34,6 +35,9 @@ CSS.register({
   // spacing between label and icon
   '.button > .text + .icon, .button > .icon + .text': {
     marginLeft: '0.5rem'
+  },
+  '.button .button-bg': {
+    zIndex: -1,
   },
   '.button .button-hover, .button .button-focus, .button .button-press': {
     position: 'absolute',
@@ -107,7 +111,7 @@ export default class Button extends View {
 
   static propTypes = {
     ...View.propTypes,
-    // Popup menu to active with button //XXX: probably shouldn't live here
+    // Popup menu to active with button
     menu: React.PropTypes.element,
     // icon to show on button, can be either an icon element or icon class
     icon: React.PropTypes.oneOfType([
@@ -276,20 +280,37 @@ export default class Button extends View {
     return parent.getTopLayer();
   }
 
+  hasMenu(){
+    return !!this.props.menu;
+  }
+
+  getMenu(){
+    return this.props.menu;
+  }
+
+  showMenu(e){
+    e.stopPropagation();
+    this.pushRelativeModal({
+      view: this.getMenu(),
+      owner: this,
+      align: this.getMenuAlignPreference(),
+    });
+    console.log('showmenu');
+  }
+
+  getMenuAlignPreference(){
+    return ['bottom', 'top'];
+  }
+
+  hideMenu(){
+    // this.getRoot().refs.modal.pop();
+  }
+
   onClick(e){
-    if( this.props.menu ){
-      e.stopPropagation();
-      let pos = this.refs.view.getBoundingClientRect();
-      let menu = React.cloneElement(this.props.menu,{
-        style: {
-          left: pos.left,
-          top: pos.top,
-        }
-      });
-      this.setModalContent(menu);
-    } else {
-      super.onClick(e);
+    if( this.hasMenu() ){
+      this.showMenu(e);
     }
+    return super.onClick(e);
   }
 
   isClickable(){
@@ -363,7 +384,7 @@ export default class Button extends View {
       let press = {
         backgroundColor: this.getBackgroundEffectColor( this.getThemeMode() == 'light' ? 2 : -2 )
       };
-      children.push(<div key="button-backgrounds">
+      children.push(<div key="bg" className="button-bg">
           <div className="button-hover" style={hover}></div>
           <div className="button-focus button-press" style={press}></div>
       </div>);

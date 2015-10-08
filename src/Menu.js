@@ -28,6 +28,12 @@ export default class Menu extends View {
     return cs;
   }
 
+  getStyle(){
+    let style = super.getStyle();
+    style.position = 'static'; // XXX: I have no idea why this is needed, but without it menus dont work in modals!?!
+    return style;
+  }
+
   // render(){
   //   return super.render(
   //     <View size="intrinsic">{this.props.children}</View>
