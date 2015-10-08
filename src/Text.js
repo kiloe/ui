@@ -74,7 +74,7 @@ export default class Text extends View {
   getStyle(){
     let style = super.getStyle();
     style.color = this.getColor();
-    style.flexGrow = 0;
+    // style.flexGrow = 0;
     // style.flexBasis = '100%';
     return style;
   }

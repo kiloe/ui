@@ -592,19 +592,27 @@ export default class View extends React.Component {
     return this.getRoot().refs.modal.setContent(view);
   }
 
+  hasTip(){
+    return !!this.props.tip;
+  }
+
+  getTip(){
+    return this.props.tip;
+  }
+
   // showTip displays the tooltip (if available)
   showTip(){
-    if( !this.props.tip ){
+    if( !this.hasTip() ){
       return;
     }
     let pos = this.getAbsPosition();
     let tooltip = this.getRoot().refs.tip;
-    tooltip.show(this.props.tip, pos, this.getTheme());
+    tooltip.show(this.getTip(), pos, this.getTheme());
   }
 
   // tell tooltip to go away
   hideTip(){
-    if( !this.props.tip ){
+    if( !this.hasTip() ){
       return;
     }
     let tooltip = this.getRoot().refs.tip;

@@ -5,15 +5,19 @@ import Icon from './Icon';
 import CheckIcon from './icons/CheckIcon';
 
 CSS.register({
-  '.view.button.menuitem': {
+  '.button.menuitem': {
     textTransform: 'none',
   },
-  '.view.button.menuitem .text': {
+  '.button.menuitem > .text': {
     padding: '1rem',
   },
-  '.view.button.menuitem .icon': {
+  '.button.menuitem > .icon': {
     marginLeft: '0.5rem',
-  }
+  },
+  '.button.menuitem > .alt': {
+    alignSelf: 'center',
+    marginLeft: '3rem',
+  },
 });
 
 export default class MenuItem extends Button {
@@ -39,15 +43,19 @@ export default class MenuItem extends Button {
     return cs;
   }
 
+  hasSubMenu(){
+    return React.Children.count(this.props.children) > 0;
+  }
+
   getMouseEnterHandler(){
-    if( React.Children.count(this.props.children) > 0 ){
+    if( this.hasSubMenu() ){
       return this.expand.bind(this);
     }
     return;
   }
 
   getMouseLeaveHandler(){
-    if( React.Children.count(this.props.children) > 0 ){
+    if( this.hasSubMenu() ){
       return this.contract.bind(this);
     }
     return;
@@ -81,5 +89,32 @@ export default class MenuItem extends Button {
     return super.getIcon();
   }
 
+  hasTip(){
+    if( this.hasSubMenu() ){
+      return true;
+    }
+    return super.hasTip();
+  }
+
+  getTip(){
+    if( this.hasSubMenu() ){
+      return `▶`;
+    }
+    return super.getTip();
+  }
+
+  getTipContent(){
+    let tip = this.getTip();
+    return <Text subtle scale={1} key="tip" className="alt">{tip}</Text>;
+  }
+
+
+  getContent(){
+    let children = super.getContent();
+    if( this.hasTip() ){
+      children.push(this.getTipContent());
+    }
+    return children;
+  }
 
 }

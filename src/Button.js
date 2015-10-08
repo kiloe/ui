@@ -12,7 +12,7 @@ CSS.register({
     WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     outline: 'none',
-    textAlign: 'center',
+    // textAlign: 'center',
     borderStyle: 'solid',
     borderRadius: 2,
   },
@@ -344,14 +344,14 @@ export default class Button extends View {
       color: this.getTextColor(),
 
     };
-    return <Text key="label" {...props}>{this.getLabel()}</Text>;
+    return <Text size="fill" key="label" {...props}>{this.getLabel()}</Text>;
   }
 
   getTabIndex(){
     return '-1';
   }
 
-  render(){
+  getContent(){
     let children = [];
     // :hover. :focus and :active are all handled with hidden backgrounds. I totally came up with this idea on my own and didn't have to ask anyone.
     if ( !this.props.disabled ) { // No other states if it's disabled, yo!
@@ -374,7 +374,11 @@ export default class Button extends View {
     if( this.hasLabel() ){
       children.push(this.getLabelContent());
     }
-    return super.render(children);
+    return children;
+  }
+
+  render(){
+    return super.render(this.getContent());
   }
 
 }
