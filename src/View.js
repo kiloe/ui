@@ -410,8 +410,7 @@ export default class View extends React.Component {
   // Classes extending from View can override/extend this method
   // to add their own CSS properties.
   getStyle(){
-    let style = this.props.style || {};
-    style = {...style}; // React doesn't want us update old style
+    let style = {};
     let size = this.getSize();
 
     if( typeof size == 'number' ){
@@ -447,6 +446,15 @@ export default class View extends React.Component {
     }
     if( this.props.divider ){
       style.borderColor = ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
+    }
+    return style;
+  }
+
+  // allow style prop to override component defined styles
+  getMergedStyle(){
+    let style = this.getStyle();
+    if( this.props.style ){
+      return {...style, ...this.props.style};
     }
     return style;
   }
@@ -701,7 +709,7 @@ export default class View extends React.Component {
       onClickCapture={this.props.onClickCapture}
       onMouseEnter={this.getMouseEnterHandler()}
       onMouseLeave={this.getMouseLeaveHandler()}
-      style={this.getStyle()}
+      style={this.getMergedStyle()}
       className={cx(this.getClassNames())}
       disabled={this.props.disabled}
       tabIndex={this.getTabIndex()}>{children}</div>;
