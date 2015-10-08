@@ -6,17 +6,9 @@ CSS.register({
   '.tiptext': {
     position: 'absolute',
     pointerEvents: 'none',
-    transition: {
-      width: '500ms ease',
-      height: '500ms ease',
-      opacity: '500ms ease',
-    },
-    opacity:0,
     zIndex: 9999,
     textAlign: 'center',
     overflow: 'visible',
-    width: 0,
-    height: 0,
   },
   '.tiptext > div': {
     position:'relative',
@@ -24,8 +16,37 @@ CSS.register({
     padding: '0.5rem',
     overflow: 'hidden',
     margin: '0 50% 0 -50%',
-    opacity: 0,
-  }
+    animationDuration: '300ms',
+    animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    animationFillMode: 'forwards',
+    transformOrigin: 'top center',
+  },
+  '.tiptext.on > div': {
+    animationName: 'tipgrow',
+  },
+  '@keyframes tipgrow': `
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  `,
+  '.tiptext.off > div': {
+    animationName: 'tipshrink',
+  },
+  '@keyframes tipshrink': `
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+  `,
 });
 
 export default class Tooltip extends React.Component {
@@ -75,6 +96,7 @@ export default class Tooltip extends React.Component {
   render(){
     let style = {};
     let instyle = {};
+    let cs = 'tiptext';
     if( this.state.theme ){
       let theme = this.state.theme;
       let mode = theme.getMode();
@@ -110,9 +132,12 @@ export default class Tooltip extends React.Component {
       style.width = 'auto';
       style.height = 'auto';
       instyle.opacity = '1';
+      cs += ' on';
+    }else{
+      cs += ' off';
     }
     return (
-        <div className="tiptext" style={style}>
+        <div className={cs} style={style}>
           <div style={instyle}>{txt}</div>
         </div>
     );

@@ -22,7 +22,10 @@ CSS.register({
   },
   // spacing between adjacent buttons in col
   '.col > .button + .button': {
-    marginTop: '0.5rem'
+    // marginTop: '0.5rem'
+  },
+  '.col > .button .text': {
+    padding: '0.5rem 0',
   },
   // spacing between label and icon
   '.button > .text + .icon, .button > .icon + .text': {
@@ -41,7 +44,7 @@ CSS.register({
     opacity:'1',
   },
   '.button:focus:not(:active) .button-focus': {
-    opacity:'1',
+    opacity:'0.1',
   },
   '.button:active .button-press': {
     opacity:'1',
@@ -93,7 +96,6 @@ CSS.register({
       opacity: 0;
       background-size: 1000% 1000%;
     }
-
   `
 });
 

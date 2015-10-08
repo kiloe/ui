@@ -302,6 +302,11 @@ export default class View extends React.Component {
     return parent ? parent.getRoot() : this;
   }
 
+  // Is this component the root?
+  isRoot(){
+    return this.getRoot() == this;
+  }
+
   // isInRow returns true if the parent view that this view that contains
   // this view has been set to "row"
   isInRow(){
@@ -459,7 +464,13 @@ export default class View extends React.Component {
   // wether or not to show :hover or other indictators that the
   // component is clickable. Override in subclass to disable.
   isClickable(){
-    return !this.props.disabled && this.props.onClick;
+    if( this.props.disabled ){
+      return false;
+    }
+    if( this.getClickHandler() ){
+      return true;
+    }
+    return false;
   }
 
   // getThemeConfig fetches the active palette configuration.
@@ -565,23 +576,6 @@ export default class View extends React.Component {
     return scale;
   }
 
-  // onClickOutside is the event fired when someone clicks outside of
-  // an active modal. This method is only accessed on the root.
-  onClickOutside(){
-    this.getRoot().refs.modal.clearContent();
-  }
-
-  // onClick is called when a click event on the View DOM node
-  // is triggered.
-  onClick(e){
-    if( this.getRoot() == this ){
-      this.onClickOutside(e);
-    }
-    if( this.isClickable() && this.props.onClick ){
-      this.props.onClick(e);
-    }
-  }
-
   // Calling this method with a react element will
   // cause the element to be rendered as a child of the root.
   // This allows for a single modal element to be rendered for things
@@ -620,6 +614,65 @@ export default class View extends React.Component {
     return this.props.tabIndex;
   }
 
+  getMouseEnterHandler(){
+    if( this.props.tip || this.props.onMouseEnter ){
+      return this.onMouseEnter.bind(this);
+    }
+    return;
+  }
+
+  onMouseEnter(e){
+    if( this.props.tip ){
+      this.showTip();
+    }
+    if( this.props.onMouseEnter ){
+      return this.props.onMouseEnter(e);
+    }
+    return;
+  }
+
+  getMouseLeaveHandler(){
+    if( this.props.tip || this.props.onMouseLeave ){
+      return this.onMouseLeave.bind(this);
+    }
+    return;
+  }
+
+  onMouseLeave(e){
+    if( this.props.tip ){
+      this.hideTip();
+    }
+    if( this.props.onMouseLeave ){
+      return this.props.onMouseLeave(e);
+    }
+    return;
+  }
+
+  getClickHandler(){
+    if( this.props.onClick){
+      return this.onClick.bind(this);
+    }
+    return;
+  }
+
+  // onClickOutside is the event fired when someone clicks outside of
+  // an active modal. This method is only accessed on the root.
+  onClickOutside(){
+    this.getRoot().refs.modal.clearContent();
+  }
+
+  // onClick is called when a click event on the View DOM node
+  // is triggered.
+  onClick(e){
+    if( this.props.tip ){
+      this.hideTip();
+    }
+    if( this.props.onClick ){
+      return this.props.onClick(e);
+    }
+    return;
+  }
+
   // render does what it says on the tin.
   // subclasses can call super.render(children) if they
   // need to extend render.
@@ -629,21 +682,21 @@ export default class View extends React.Component {
     // main
     let view = <div
       ref="view"
-      onClick={this.isClickable() || this.getRoot() == this ? this.onClick.bind(this) : undefined}
+      onClick={this.getClickHandler()}
       onClickCapture={this.props.onClickCapture}
-      onMouseEnter={this.props.tip ? this.showTip.bind(this) : undefined}
-      onMouseLeave={this.props.tip ? this.hideTip.bind(this) : undefined}
+      onMouseEnter={this.getMouseEnterHandler()}
+      onMouseLeave={this.getMouseLeaveHandler()}
       style={this.getStyle()}
       className={cx(this.getClassNames())}
       disabled={this.props.disabled}
       tabIndex={this.getTabIndex()}>{children}</div>;
-    if( this == this.getRoot() ){
+    if( this.isRoot() ){
       // if we are the root then we might need to
       // maintain some additional elements for global things like modals/tooltips
       let modal = <Modal ref="modal" />;
       let tooltip = <Tooltip ref="tip" />;
       return (
-        <div className="root">
+        <div className="root" onClick={this.onClickOutside.bind(this)}>
           <div className="rootView">{view}</div>
           {modal}
           {tooltip}
