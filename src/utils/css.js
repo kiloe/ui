@@ -17,15 +17,7 @@ let globalStyles = {
   'html,body,#app': {
     margin:0,
     padding: 0,
-    display: 'flex',
-    flex: '0 0 100%',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-    alignItems: 'stretch',
-    alignContent: 'stretch',
-    position: 'relative',
-    overflow: 'hidden',
+    position: 'fixed',
     height: '100%',
     width: '100%',
     background: '#ccc'

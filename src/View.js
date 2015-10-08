@@ -19,9 +19,9 @@ CSS.register({
   },
   '.root > .rootView': {
     display:'flex',
+    zIndex: 0,
   },
   '.view': {
-    position: 'relative',
     boxSizing: 'content-box', // note to self: required so that we can rely on the size prop
     display: 'flex',
     flex: '1', // let items take up what they need when theres room or squash+clip when not
@@ -43,19 +43,16 @@ CSS.register({
       flexBasis: CSS.transitions.swift,
       flex: CSS.transitions.swift,
     },
-    // zIndex: 1,
     WebkitUserSelect: 'none',
     MozUserSelect: 'none',
     msUserSelect: 'none',
     UserSelect: 'none',
   },
   '.view.scroll': {
+    position: 'relative',
     overflow:'auto',
     display: 'block', // XXX: unexpected layout? it might be this... it's here because otherwise fast-path scrolling doesn't want to work
     WebkitOverflowScrolling: 'touch',
-  },
-  '.view .view:nth-child(1)': {
-    // zIndex:10
   },
   '.view.row': {
     flexDirection: 'row'
@@ -308,7 +305,8 @@ export default class View extends React.Component {
 
   // Is this component the root?
   isRoot(){
-    return this.getRoot() == this;
+    let parent = this.getParent();
+    return parent ? false : true;
   }
 
   // isInRow returns true if the parent view that this view that contains
@@ -482,7 +480,7 @@ export default class View extends React.Component {
     if( this.props.disabled ){
       return false;
     }
-    if( this.getClickHandler() ){
+    if( this.props.onClick ){
       return true;
     }
     return false;
@@ -591,13 +589,37 @@ export default class View extends React.Component {
     return scale;
   }
 
-  // Calling this method with a react element will
-  // cause the element to be rendered as a child of the root.
-  // This allows for a single modal element to be rendered for things
-  // like popup menus and modal dialogs.
-  // Call with null to remove the modal.
-  setModalContent(view){
-    return this.getRoot().refs.modal.setContent(view);
+  // Add a modal dialog/menu etc to be displayed upon the rootView
+  pushModal(m){
+    return this.getRoot().refs.modal.push(m);
+  }
+
+  // Remove the topmost dialog/menu from the modal stack
+  popModal(){
+    return this.getRoot().refs.modal.pop();
+  }
+  //
+  // Add a modal dialog/menu etc to be displayed upon the rootView
+  pushRelativeModal(m){
+    return this.getScrollParent().refs.relmodal.push(m);
+  }
+
+  // Remove the topmost dialog/menu from the modal stack
+  popRelativeModal(){
+    return this.getScrollParent().refs.relmodal.pop();
+  }
+
+  // fetch the parent responsible for scrolling
+  // this may be root view, but may be some other parent with scroll=true
+  getScrollParent(){
+    let parent = this.getParent();
+    if( !parent ){
+      return this;
+    }
+    if( parent.props.scroll ){
+      return parent;
+    }
+    return parent.getScrollParent();
   }
 
   hasTip(){
@@ -672,16 +694,22 @@ export default class View extends React.Component {
   }
 
   getClickHandler(){
-    if( this.props.onClick){
+    if( this.props.onClick || this.props.scroll ){
       return this.onClick.bind(this);
     }
     return;
   }
 
-  // onClickOutside is the event fired when someone clicks outside of
-  // an active modal. This method is only accessed on the root.
-  onClickOutside(){
-    this.getRoot().refs.modal.clearContent();
+  // onClickRootView is fired when an event bubbles all the way to the rootView
+  // do not inherit/override this it does not make sense
+  onClickRootView(e){
+    console.log('root calling onClickOutside');
+    this.refs.modal.onClickOutside(e);
+  }
+
+  onClickScrollParentView(e){
+    console.log('scroll parent calling onClickOutside');
+    this.refs.relmodal.onClickOutside(e);
   }
 
   // onClick is called when a click event on the View DOM node
@@ -691,7 +719,12 @@ export default class View extends React.Component {
       this.hideTip();
     }
     if( this.props.onClick ){
-      return this.props.onClick(e);
+      this.props.onClick(e);
+    }
+    if( !e.isDefaultPrevented() ){
+      if( this.props.scroll ){
+        this.onClickScrollParentView(e);
+      }
     }
     return;
   }
@@ -702,6 +735,11 @@ export default class View extends React.Component {
   render(children) {
     // subclasses may want to pass new children
     children = children || this.props.children;
+    // if we are a scrolling thing, then we need a relative modal
+    let relModal;
+    if( this.props.scroll ){
+      relModal = <Modal ref="relmodal" />;
+    }
     // main
     let view = <div
       ref="view"
@@ -712,14 +750,14 @@ export default class View extends React.Component {
       style={this.getMergedStyle()}
       className={cx(this.getClassNames())}
       disabled={this.props.disabled}
-      tabIndex={this.getTabIndex()}>{children}</div>;
+      tabIndex={this.getTabIndex()}>{children}{relModal}</div>;
     if( this.isRoot() ){
       // if we are the root then we might need to
       // maintain some additional elements for global things like modals/tooltips
       let modal = <Modal ref="modal" />;
       let tooltip = <Tooltip ref="tip" />;
       return (
-        <div className="root" onClick={this.onClickOutside.bind(this)}>
+        <div className="root" onClick={this.onClickRootView.bind(this)}>
           <div className="rootView">{view}</div>
           {modal}
           {tooltip}
