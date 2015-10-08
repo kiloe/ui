@@ -86,6 +86,10 @@ CSS.register({
     filter: 'grayscale(100%)',
     WebkitFilter: 'grayscale(100%)',
   },
+  '.view.divider': {
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+  },
 });
 
 // View is a flex-box building block.
@@ -331,6 +335,9 @@ export default class View extends React.Component {
     if( this.props.scroll ){
       cs.scroll = true;
     }
+    if ( this.props.divider ) {
+      cs.divider = true;
+    }
     if( this.props.row ){
       cs.row = true;
     }else{
@@ -438,8 +445,8 @@ export default class View extends React.Component {
     if( this.props.pad ){
       style.padding = this.getPadding() + 'rem';
     }
-    if ( this.props.divider ) {
-      style.borderBottom = '1px solid ' + ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
+    if( this.props.divider ){
+      style.borderColor = ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
     }
     return style;
   }

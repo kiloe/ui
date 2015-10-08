@@ -151,7 +151,7 @@ export default class Button extends View {
   getSize(){
     // The 'intrinsic' size of an icon-only button is to maintain the aspect ratio
     // of the cross-axis ie. if container's height=10 then icon's width=10
-    if( !this.props.label && this.props.size == 'intrinsic' ){
+    if( !this.hasLabel() && this.props.size == 'intrinsic' ){
       let parent = this.getParent();
       if( parent ){
         let parentSize = parent.getSize();
@@ -172,7 +172,7 @@ export default class Button extends View {
     // buttons without labels are round...
     // but since 'fill' would cause weird aspect ratios
     // 'fill' buttons are always square
-    if( !this.props.label && this.props.size != 'fill' ){
+    if( !this.hasLabel() && this.props.size != 'fill' ){
       cs.circular = true;
     }
     if( this.props.subtle ){
@@ -189,7 +189,7 @@ export default class Button extends View {
     if( this.props.align == 'right' ){
       style.flexDirection = 'row-reverse'; //Reverse the order (e.g. label then icon)
     }
-    if( !this.props.label ){
+    if( !this.hasLabel() ){
       style.justifyContent = 'center';
     }
     style.borderColor = this.getBorderColor();
@@ -299,25 +299,38 @@ export default class Button extends View {
     return super.isClickable();
   }
 
-  // getIcon returns the icon as an element or undefined if no icon prop
+  hasIcon(){
+    return !!this.props.icon;
+  }
+
   getIcon(){
-    if( !this.props.icon ){
-      return;
-    }
+    return this.props.icon;
+  }
+
+  // getIcon returns the icon as an element or undefined if no icon prop
+  getIconContent(){
     let props = {
       key:'icon',
       size:'intrinsic',
       outline: this.props.outline,
       color: this.getTextColor(),
     };
-    if( this.props.icon instanceof Function ){
-      let Icon = this.props.icon;
+    let Icon = this.getIcon();
+    if( Icon instanceof Function ){
       return <Icon {...props} />;
     }
-    return React.cloneElement(this.props.icon, props);
+    return React.cloneElement(Icon, props);
+  }
+
+  hasLabel(){
+    return !!this.props.label;
   }
 
   getLabel(){
+    return this.props.label;
+  }
+
+  getLabelContent(){
     let props = {
       style: {
         cursor: this.isClickable() ? 'pointer' : 'default',
@@ -331,13 +344,12 @@ export default class Button extends View {
       color: this.getTextColor(),
 
     };
-    return <Text key="label" {...props}>{this.props.label}</Text>;
+    return <Text key="label" {...props}>{this.getLabel()}</Text>;
   }
 
   getTabIndex(){
     return '-1';
   }
-
 
   render(){
     let children = [];
@@ -356,11 +368,11 @@ export default class Button extends View {
           <div className="button-focus button-press" style={press}></div>
       </div>);
     }
-    if( this.props.icon ){
-      children.push(this.getIcon());
+    if( this.hasIcon() ){
+      children.push(this.getIconContent());
     }
-    if( this.props.label ){
-      children.push(this.getLabel());
+    if( this.hasLabel() ){
+      children.push(this.getLabelContent());
     }
     return super.render(children);
   }

@@ -20,7 +20,6 @@ export default class Menu extends View {
     raised: true,
     size: 'intrinsic',
     theme: {mode: 'light'},
-    // row: true,
   }
 
   getClassNames(){

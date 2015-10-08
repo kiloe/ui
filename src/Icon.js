@@ -23,19 +23,15 @@ export default class Icon extends View {
     return 'transparent';
   }
 
-  constructor(...args){
-    super(...args);
-    this.state = {active:false};
-  }
-
   getClassNames(){
     let cs = super.getClassNames();
     cs.icon = true;
     return cs;
   }
 
+  // Extend this
   getSVG(){
-    throw new Error('Icon cannot be used directly... require something from ./icons');
+    return <svg viewBox="0 0 48 48"></svg>;
   }
 
   // getSize of the icon to display. Unless overrided by size prop
