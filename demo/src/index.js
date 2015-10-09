@@ -31,6 +31,7 @@ import ColorWheel from './ColorWheel';
 import Typography from './Typography';
 import TextFields from './TextFields';
 import Menus from './Menus';
+import SelectFields from './SelectFields';
 
 export default class App extends React.Component {
 
@@ -107,16 +108,17 @@ export default class App extends React.Component {
 
   getPage(){
     switch ( this.state.page ){
-      case 'buttons'   :   return <Buttons />;
-      case 'palette'   :   return <Palette />;
-      case 'lists'     :   return <Lists />;
-      case 'icons'     :   return <Icons />;
-      case 'progress'  :   return <ProgressBars />;
-      case 'cards'     :   return <Cards />;
-      case 'layers'    :   return <Layers />;
-      case 'typography':   return <Typography />;
-      case 'textfields':   return <TextFields />;
-      case 'menus'     :   return <Menus />;
+      case 'buttons'      :   return <Buttons />;
+      case 'palette'      :   return <Palette />;
+      case 'lists'        :   return <Lists />;
+      case 'icons'        :   return <Icons />;
+      case 'progress'     :   return <ProgressBars />;
+      case 'cards'        :   return <Cards />;
+      case 'layers'       :   return <Layers />;
+      case 'typography'   :   return <Typography />;
+      case 'textfields'   :   return <TextFields />;
+      case 'menus'        :   return <Menus />;
+      case 'selecfields'  :   return <SelectFields />;
     }
   }
 
@@ -145,22 +147,24 @@ export default class App extends React.Component {
   }
 
   themePicker(){
+    let m;
     let onClose = () => {
       console.info('popping color wheel from stack via the callback thing');
       m.pop();
     };
-    let m = this.refs.main.getFixedModal().push({
-      view: this.getColorWheel(onClose),
-      onPop: (e) => {
-        // e.preventDefault();
-        console.info('color wheel poped from stack',e);
-      },
-      onClickOutside: (e) => {
-        e.preventDefault();
-        console.info('preventing default onClickOutside for color wheel',e);
-      },
-    });
-
+    let onClickOutside = (e) => {
+      e.preventDefault();
+      console.info('clicked outside of color wheel');
+    };
+    let setM = (modal) => {
+      m = modal;
+    };
+    let modals = this.refs.main.getFixedModal();
+    modals.splice(0, Infinity,
+      <ModalItem ref={setM} onClickOutside={onClickOutside} shade={true}>
+        {this.getColorWheel(onClose)}
+      </ModalItem>
+    );
   }
 
   render(){
@@ -181,6 +185,7 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="SelectFields" onClick={this.open('selecfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
