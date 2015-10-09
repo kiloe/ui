@@ -99,7 +99,6 @@ export default class Modal extends React.Component {
     let stack = this.state.stack.slice();
     let handle = this._push(stack,m);
     this.setState({stack});
-    console.log('push',stack);
     return handle;
   }
 
@@ -153,20 +152,17 @@ export default class Modal extends React.Component {
   popTo(view){
     let idx = this.indexOf(view);
     if( idx === -1 ){
-      console.warn(`view ${view} was not found in stack`);
       return false;
     }
     let n = this.state.stack.length - idx;
     let stack = this._popN(n);
     this.setState({stack});
-    console.log('popTo',stack);
   }
 
   // this is the main "pop" that actually does the work
   // pop at most n items
   // returns new stack, but does not set state
   _popN(n){
-    console.log('_popN(',n,')');
     let popped = 0;
     for(let i=0; i<n; i++){
       let m = this.state.stack[this.state.stack.length - 1];
@@ -177,7 +173,6 @@ export default class Modal extends React.Component {
       if( e.isDefaultPrevented() ){
         break;
       }
-      console.log('_popN',i,e);
       popped++;
       if( e.isPropagationStopped() ){
         break;
@@ -194,7 +189,6 @@ export default class Modal extends React.Component {
   popAll(){
     let stack = this._popN(-1);
     this.setState({stack});
-    console.log('popAll',stack);
   }
 
   // unwind down to (and including) the i-th item and push m
@@ -202,11 +196,9 @@ export default class Modal extends React.Component {
   // i=1 would leave 1 item on the stack
   replaceFrom(i,m){
     let n = this.state.stack.length - i;
-    console.log(this.state.stack.length);
     let stack = this._popN(n);
     let handle = this._push(stack, m);
     this.setState({stack});
-    console.log('replaceFrom',i,m, `aka popN(${n}) then push`);
     return handle;
   }
 
