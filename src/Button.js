@@ -288,21 +288,34 @@ export default class Button extends View {
     return this.props.menu;
   }
 
+  // menu depth
+  getDepth(){
+    return 0;
+  }
+
   showMenu(e){
     e.stopPropagation();
-    this.getRelativeModal().push({
+    this.getRelativeModal().replaceFrom(this.getDepth(), {
       view: this.getMenu(),
       owner: this,
-      align: this.getMenuAlignPreference(),
+      onClickOutside: (e) => {
+        e.stopPropagation(); // only pop as far as this thing
+      },
+      ...this.getMenuConfig(),
     });
   }
 
-  getMenuAlignPreference(){
-    return ['bottom', 'top'];
+  getClickHandler(){
+    if( this.hasMenu() ){
+      return this.onClick.bind(this);
+    }
+    return super.getClickHandler();
   }
 
-  hideMenu(){
-    // this.getRoot().refs.modal.pop();
+  getMenuConfig(){
+    return {
+      obscure: true, // tells the popup to cover the emiting button rather than go beside it
+    };
   }
 
   onClick(e){

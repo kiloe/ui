@@ -18,7 +18,7 @@ CSS.register({
     animationDuration: '300ms',
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     animationFillMode: 'forwards',
-    transformOrigin: 'top center',
+    transformOrigin: '50% 50%',
     animationName: 'modalin',
   },
   '@keyframes modalin': `
@@ -119,6 +119,10 @@ export default class Modal extends React.Component {
     m.pop = () => {
       this.popTo(m.view);
     };
+    // use a random key to prevent react trying to be clever and reusing
+    // the DOM elements. This ensures that the intrinsic sizes of dialogs
+    // get calculated correctly and that the animation fires.
+    // modals are not performance sensitive so this should be ok....I think
     m.key = Math.random();
     stack.push(m);
     return m;
@@ -243,12 +247,11 @@ export default class Modal extends React.Component {
         if( !ownerNode ){
           throw new Error(`cannot use a non View owner`);
         }
-        pos = {
-          left: ownerNode.offsetLeft,
-          top: ownerNode.offsetTop,
-        };
+        pos = {};
         // if owner's node is already in one of our modals
-        // then offset from that
+        // then start offset from that
+        let scrollTop = 0;
+        let scrollLeft = 0;
         let ownerModal;
         for(let i=0; i<this.state.stack.length; i++){
           let ownerRoot = this.nodeForModalItem(i);
@@ -258,24 +261,65 @@ export default class Modal extends React.Component {
           }
         }
         if( ownerModal ){
-          pos.top += ownerModal.parentNode.offsetTop;
-          pos.left += ownerModal.parentNode.offsetLeft;
+          scrollTop = ownerModal.parentNode.offsetTop;
+          scrollLeft = ownerModal.parentNode.offsetLeft;
         }
-        // align right of owner
-        pos.left += ownerNode.offsetWidth;
-        style.transformOrigin = 'top left';
+        // if no alignment assume left
+        // XXX: it would be better to guess based on position on screen
+        if( !m.top && !m.left && !m.bottom && !m.right ){
+          console.log('no alignment set, assuming left', m);
+          m.left = true;
+        }
+        if( m.left ){
+          pos.top = scrollTop + ownerNode.offsetTop;
+          pos.right = scrollLeft + ownerNode.offsetLeft;
+          if( !m.obscure ){
+            pos.right += ownerNode.offsetWidth;
+          }
+          style.transformOrigin = 'top right';
+        } else if( m.right ){
+          pos.top = scrollTop + ownerNode.offsetTop;
+          pos.left = scrollLeft + ownerNode.offsetLeft + ownerNode.offsetWidth;
+          if( m.obscure ){
+            pos.left -= ownerNode.offsetWidth;
+          }
+          style.transformOrigin = 'top left';
+        } else if( m.top ){
+          pos.bottom = scrollTop + ownerNode.offsetTop;
+          pos.left = scrollLeft + ownerNode.offsetLeft;
+          if( m.obscure ){
+            pos.bottom -= ownerNode.offsetHeight;
+          }
+          style.transformOrigin = 'bottom center';
+        } else if( m.bottom ){
+          pos.top = scrollTop + ownerNode.offsetTop;
+          pos.left = scrollLeft + ownerNode.offsetLeft;
+          if( !m.obscure ){
+            pos.top -= ownerNode.offsetHeight;
+          }
+          style.transformOrigin = 'top center';
+        }
+        // if obscuring, ensure wide enough to cover emiting element
+        if( m.obscure ){
+          style.minWidth = ownerNode.offsetWidth;
+        }
       }
       if( pos ){
         style.display = 'block';
-        style.position = 'absolute',
-        style.left = pos.left;
-        style.top = pos.top;
+        style.position = 'absolute';
+        if( pos.left ){
+          style.left = pos.left;
+        }
+        if( pos.top ){
+          style.top = pos.top;
+        }
+        if( pos.right ){
+          style.right = pos.right;
+        }
+        if( pos.bottom ){
+          style.bottom = pos.bottom;
+        }
       }
-      // use a random key to prevent react trying to be clever and reusing
-      // the DOM elements. This ensures that the intrinsic sizes of dialogs
-      // get calculated correctly and that the animation fires.
-      // modals are not performance sensitive so this should be ok....I think
-      let key = Math.random();
       return (
         <div key={m.key} className="modal" style={style}>
           <View ref={ref} layer={0} raised={3} size="intrinsic">{m.view}</View>;

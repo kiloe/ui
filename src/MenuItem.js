@@ -62,51 +62,27 @@ export default class MenuItem extends Button {
     return  React.cloneElement(super.getMenu(),props);
   }
 
+  getMenuConfig(){
+    return {
+      obscure: false,
+      right: true,
+    };
+  }
+
   getDepth(){
     return this.getParent().getDepth();
   }
 
-  showMenu(e){
-    e.stopPropagation();
-    this.getRelativeModal().replaceFrom(this.getDepth(), {
-      view: this.getMenu(),
-      owner: this,
-      align: this.getMenuAlignPreference(),
-      onClickOutside: (e) => {
-        e.stopPropagation(); // only pop as far as this thing
-      },
-    });
-  }
-
-  getClickHandler(){
-    if( this.hasMenu() ){
-      return this.expand.bind(this);
-    }
-    return super.getClickHandler();
-  }
-
   getMouseEnterHandler(){
     // if( this.hasMenu() ){
-    //   return this.expand.bind(this);
     // }
     return;
   }
 
   getMouseLeaveHandler(){
     // if( this.hasMenu() ){
-    //   return this.contract.bind(this);
     // }
     return;
-  }
-
-  // expand open the sub level of menu items
-  expand(e){
-    this.showMenu(e);
-  }
-
-  // contract closes the sub level of menu items
-  contract(){
-    this.hideMenu();
   }
 
   hasIcon(){

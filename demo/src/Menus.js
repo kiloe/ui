@@ -14,7 +14,7 @@ export default class MenusDemo extends React.Component {
           <Menu>
             <MenuItem label="Refresh" />
             <MenuItem label="Help & feedback" />
-            <MenuItem label="Settings" />
+            <MenuItem label="Settings" disabled />
             <MenuItem label="Sign out" />
           </Menu>
         `,
@@ -24,6 +24,23 @@ export default class MenusDemo extends React.Component {
           Each menu item is a discrete option or action that can affect the app, the view, or selected elements within a view.
 
           Menus should not be used as a primary method for navigation within an app.
+        `
+      },
+      {
+        title: 'Popup Menus',
+        src: Doc.jsx`
+          <Button icon={MenuIcon} menu={
+            <Menu>
+              <MenuItem label="Add Attachment" />
+              <MenuItem label="Forward" />
+              <MenuItem label="Delete" />
+              <Divider />
+              <MenuItem label="Delete" />
+            </Menu>
+          } />
+        `,
+        info:`
+          Menus are positioned over their emitting elements such that the currently selected menu item appears on top of the emitting element.
         `
       },
       {

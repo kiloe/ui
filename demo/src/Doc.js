@@ -59,7 +59,7 @@ export default class Doc extends React.Component {
     return (
       <Card>
         <Title>{this.props.title || 'set title prop!'}</Title>
-        <View raised style={padding}>
+        <View raised style={padding} row>
           {view}
         </View>
         <Text>

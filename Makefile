@@ -129,5 +129,5 @@ distclean: clean
 
 #--------------------------------------
 
-.PHONY: default test demo clean distclean publish watch unwatch icons demo_and_reload
+.PHONY: default test demo clean distclean publish package watch unwatch icons demo_and_reload
 
