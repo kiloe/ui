@@ -691,18 +691,6 @@ export default class View extends React.Component {
     return;
   }
 
-  // onClickRootView is fired when an event bubbles all the way to the rootView
-  // do not inherit/override this it does not make sense
-  onClickRootView(e){
-    console.log('root calling onClickOutside');
-    this.refs.modal.onClickOutside(e);
-  }
-
-  onClickScrollParentView(e){
-    console.log('scroll parent calling onClickOutside');
-    this.refs.relmodal.onClickOutside(e);
-  }
-
   // onClick is called when a click event on the View DOM node
   // is triggered.
   onClick(e){
@@ -711,11 +699,6 @@ export default class View extends React.Component {
     }
     if( this.props.onClick ){
       this.props.onClick(e);
-    }
-    if( !e.isDefaultPrevented() ){
-      if( this.props.scroll ){
-        this.onClickScrollParentView(e);
-      }
     }
     return;
   }
@@ -748,7 +731,7 @@ export default class View extends React.Component {
       let modal = <Modal ref="modal" />;
       let tooltip = <Tooltip ref="tip" />;
       return (
-        <div className="root" onClick={this.onClickRootView.bind(this)}>
+        <div className="root">
           <div className="rootView">{view}</div>
           {modal}
           {tooltip}
