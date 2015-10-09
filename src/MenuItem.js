@@ -72,7 +72,9 @@ export default class MenuItem extends Button {
       view: this.getMenu(),
       owner: this,
       align: this.getMenuAlignPreference(),
-      onClickOutside: false,
+      onClickOutside: (e) => {
+        e.stopPropagation(); // only pop as far as this thing
+      },
     });
   }
 
