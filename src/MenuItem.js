@@ -65,7 +65,7 @@ export default class MenuItem extends Button {
   getMenuConfig(){
     return {
       obscure: false,
-      right: true,
+      direction: 'right',
     };
   }
 

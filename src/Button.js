@@ -2,6 +2,7 @@ import React from 'react';
 import View from './View';
 import Text from './Text';
 import CSS from './utils/css';
+import ModalItem from './ModalItem';
 
 CSS.register({
   '.view.button': {
@@ -136,6 +137,11 @@ export default class Button extends View {
     align: 'center',
     size: 'intrinsic',
     pad: true,
+  }
+
+  constructor(...args){
+    super(...args);
+    this.menuKey = Math.random().toString(); // unique (ish) key for menu modals
   }
 
   getRaise(){
@@ -293,16 +299,24 @@ export default class Button extends View {
     return 0;
   }
 
-  showMenu(e){
-    e.stopPropagation();
-    this.getRelativeModal().replaceFrom(this.getDepth(), {
-      view: this.getMenu(),
+  showMenu(){
+    let modals = this.getRelativeModal();
+    let props = {
       owner: this,
-      onClickOutside: (e) => {
-        e.stopPropagation(); // only pop as far as this thing
-      },
+      key: this.menuKey,
       ...this.getMenuConfig(),
-    });
+    };
+    let regMenu = (menu) => {
+      this.menu = menu;
+    };
+    modals.splice(this.getDepth(), Infinity,
+      <ModalItem ref={regMenu} {...props}>{this.getMenu()}</ModalItem>
+    );
+  }
+
+  // give a menu a globally unique key
+  getMenuKey(){
+
   }
 
   getClickHandler(){
