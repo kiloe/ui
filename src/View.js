@@ -589,24 +589,15 @@ export default class View extends React.Component {
     return scale;
   }
 
-  // Add a modal dialog/menu etc to be displayed upon the rootView
-  pushModal(m){
-    return this.getRoot().refs.modal.push(m);
+  // Add a modal dialog/menu etc to be displayed relative to the viewport
+  getFixedModal(){
+    return this.getRoot().refs.modal;
   }
 
-  // Remove the topmost dialog/menu from the modal stack
-  popModal(){
-    return this.getRoot().refs.modal.pop();
-  }
-  //
-  // Add a modal dialog/menu etc to be displayed upon the rootView
-  pushRelativeModal(m){
-    return this.getScrollParent().refs.relmodal.push(m);
-  }
-
-  // Remove the topmost dialog/menu from the modal stack
-  popRelativeModal(){
-    return this.getScrollParent().refs.relmodal.pop();
+  // Get a referance to the Modal for displaying content relative to
+  // the current scrolling View
+  getRelativeModal(){
+    return this.getScrollParent().refs.relmodal;
   }
 
   // fetch the parent responsible for scrolling

@@ -3,6 +3,7 @@ import Button from './Button';
 import CSS from './utils/css';
 import Icon from './Icon';
 import CheckIcon from './icons/CheckIcon';
+import Menu from './Menu';
 
 CSS.register({
   '.button.menuitem': {
@@ -51,20 +52,28 @@ export default class MenuItem extends Button {
   }
 
   getMenu(){
+    let props = {depth:this.getDepth()+1};
     if( React.Children.count(this.props.children) > 0 ){
-      let menu = <Menu>
+      let menu = <Menu {...props}>
         {this.props.children}
       </Menu>;
       return menu;
     }
-    return super.getMenu();
+    return  React.cloneElement(super.getMenu(),props);
   }
 
-  getMouseEnterHandler(){
-    if( this.hasMenu() ){
-      // return this.expand.bind(this);
-    }
-    return;
+  getDepth(){
+    return this.getParent().getDepth();
+  }
+
+  showMenu(e){
+    e.stopPropagation();
+    this.getRelativeModal().replaceFrom(this.getDepth(), {
+      view: this.getMenu(),
+      owner: this,
+      align: this.getMenuAlignPreference(),
+      onClickOutside: false,
+    });
   }
 
   getClickHandler(){
@@ -74,10 +83,17 @@ export default class MenuItem extends Button {
     return super.getClickHandler();
   }
 
+  getMouseEnterHandler(){
+    // if( this.hasMenu() ){
+    //   return this.expand.bind(this);
+    // }
+    return;
+  }
+
   getMouseLeaveHandler(){
-    if( this.hasMenu() ){
-      return this.contract.bind(this);
-    }
+    // if( this.hasMenu() ){
+    //   return this.contract.bind(this);
+    // }
     return;
   }
 

@@ -290,12 +290,11 @@ export default class Button extends View {
 
   showMenu(e){
     e.stopPropagation();
-    this.pushRelativeModal({
+    this.getRelativeModal().push({
       view: this.getMenu(),
       owner: this,
       align: this.getMenuAlignPreference(),
     });
-    console.log('showmenu');
   }
 
   getMenuAlignPreference(){

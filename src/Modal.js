@@ -8,7 +8,6 @@ CSS.register({
   },
   '.modal': {
     display: 'flex',
-    pointerEvents: 'none',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -61,6 +60,14 @@ class PopEvent {
   stopPropagation(){
     this.propagationStopped = true;
   }
+
+  isDefaultPrevented(){
+    return this.defaultPrevented;
+  }
+
+  isPropagationStopped(){
+    return this.propagationStopped;
+  }
 }
 
 
@@ -73,9 +80,8 @@ export default class Modal extends React.Component {
   constructor(...args){
     super(...args);
     this.state = {stack:[]};
+    this.uid = 0;
   }
-
-
 
   // push adds a View to the stack and triggers a render
   // Usage:
@@ -90,6 +96,15 @@ export default class Modal extends React.Component {
   // ...later
   // m.pop()
   push(m){
+    let stack = this.state.stack.slice();
+    let handle = this._push(stack,m);
+    this.setState({stack});
+    console.log('push',stack);
+    return handle;
+  }
+
+  // add m to stack
+  _push(stack, m){
     if( !m.view ){
       throw new Error(`cannot push ${m.view} on to the modal stack`);
     }
@@ -102,85 +117,97 @@ export default class Modal extends React.Component {
     if( m.onClickOutside === false ){
       m.onClickOutside = (e) => e.preventDefault();
     }
-    let stack = this.state.stack.slice();
-    stack.push(m);
-    this.setState({stack});
     m.pop = () => {
       this.popTo(m.view);
     };
+    m.key = Math.random();
+    stack.push(m);
     return m;
   }
 
   // pop removes the topmost View from the stack and triggers a render.
   // if the item on the stack has an onPop handler, then it will be called.
-  // it returns the popped view.
   // if the onPop event prevented the item from getting popped it returns false.
   // it is a no op and returns null if the stack is empty
   pop(){
-    let e = this._pop();
-    if( !e.defaultPrevented ){
-      this.setState({
-        stack: this.state.stack.slice(0, -1)
-      });
-    }
-    return e.view;
-  }
-
-  // do the pop without updating the state
-  // returns the pop event
-  _pop(){
     if( this.state.stack.length == 0 ){
       return null;
     }
-    let m = this.state.stack[this.state.stack.length - 1];
-    let e = new PopEvent(m.view);
-    if( m.onPop ){
-      m.onPop(e);
-    }
-    return e;
+    let stack = this._popN(1);
+    return this.setState({stack});
   }
 
-  isInStack(view){
+  // find view in stack items
+  indexOf(view){
     for(let i=0; i<this.state.stack.length; i++){
       if( this.state.stack[i].view == view ){
-        return true;
+        return i;
       }
     }
-    return false;
+    return -1;
   }
 
   // popTo will pop modals from the stack upto (and including) view
   // if m is not in the stack this is a noop
   // if m is falsey it will pop everything
   popTo(view){
-    if( !this.isInStack(view) ){
+    let idx = this.indexOf(view);
+    if( idx === -1 ){
+      console.warn(`view ${view} was not found in stack`);
       return false;
     }
+    let n = this.state.stack.length - idx;
+    let stack = this._popN(n);
+    this.setState({stack});
+    console.log('popTo',stack);
+  }
+
+  // this is the main "pop" that actually does the work
+  // pop at most n items
+  // returns new stack, but does not set state
+  _popN(n){
+    console.log('_popN(',n,')');
     let popped = 0;
-    for(let i=this.state.stack.length-1; i>-1; i--){
-      let e = this._pop();
-      if( e.defaultPrevented){
+    for(let i=0; i<n; i++){
+      let m = this.state.stack[this.state.stack.length - 1];
+      let e = new PopEvent(m.view);
+      if( m.onPop ){
+        m.onPop(e);
+      }
+      if( e.isDefaultPrevented() ){
         break;
       }
+      console.log('_popN',i,e);
       popped++;
-      if( e.propagationStopped ){
-        break;
-      }
-      if( e.view == view ){
+      if( e.isPropagationStopped() ){
         break;
       }
     }
     if( popped > 0 ){
-      this.setState({
-        stack: this.state.stack.slice(0, this.state.stack.length-popped)
-      });
+      return this.state.stack.slice(0, this.state.stack.length-popped);
     }
+    return this.state.stack.slice();
   }
 
   // popAll resets the stack, clearing all modals and firing their onPop event
   // one-by-one. The process can be halted by an onPop event calling stopPropagation
   popAll(){
-    return this.popTo(null);
+    let stack = this._popN(-1);
+    this.setState({stack});
+    console.log('popAll',stack);
+  }
+
+  // unwind down to (and including) the i-th item and push m
+  // ie. i=0 will mean the entire stack will have been cleared
+  // i=1 would leave 1 item on the stack
+  replaceFrom(i,m){
+    let n = this.state.stack.length - i;
+    console.log(this.state.stack.length);
+    let stack = this._popN(n);
+    let handle = this._push(stack, m);
+    this.setState({stack});
+    console.log('replaceFrom',i,m, `aka popN(${n}) then push`);
+    return handle;
   }
 
   nodeForModalItem(i){
@@ -215,7 +242,6 @@ export default class Modal extends React.Component {
   }
 
   render(){
-    let enableEvents = {pointerEvents:'auto'};
     let modals = this.state.stack.map((m,i) => {
       let ref = 'view_'+i;
       let style = {};
@@ -253,9 +279,14 @@ export default class Modal extends React.Component {
         style.left = pos.left;
         style.top = pos.top;
       }
+      // use a random key to prevent react trying to be clever and reusing
+      // the DOM elements. This ensures that the intrinsic sizes of dialogs
+      // get calculated correctly and that the animation fires.
+      // modals are not performance sensitive so this should be ok....I think
+      let key = Math.random();
       return (
-        <div key={i} className="modal" style={style}>
-          <View ref={ref} style={enableEvents} layer={0} raised={3} size="intrinsic">{m.view}</View>;
+        <div key={m.key} className="modal" style={style}>
+          <View ref={ref} layer={0} raised={3} size="intrinsic">{m.view}</View>;
         </div>
       );
     });

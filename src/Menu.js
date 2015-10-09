@@ -12,7 +12,7 @@ export default class Menu extends View {
 
   static propTypes = {
     ...View.propTypes,
-    style: React.PropTypes.object,
+    depth: React.PropTypes.number, // internal use for modal
   }
 
   static defaultProps = {
@@ -20,6 +20,7 @@ export default class Menu extends View {
     raised: true,
     size: 'intrinsic',
     theme: {mode: 'light'},
+    depth: 0,
   }
 
   getClassNames(){
@@ -34,9 +35,8 @@ export default class Menu extends View {
     return style;
   }
 
-  // render(){
-  //   return super.render(
-  //     <View size="intrinsic">{this.props.children}</View>
-  //   );
-  // }
+  getDepth(){
+    return this.props.depth || 0;
+  }
+
 }

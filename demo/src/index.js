@@ -146,18 +146,19 @@ export default class App extends React.Component {
 
   themePicker(){
     let onClose = () => {
+      console.info('popping color wheel from stack via the callback thing');
       m.pop();
     };
-    let m = this.refs.main.pushModal({
+    let m = this.refs.main.getFixedModal().push({
       view: this.getColorWheel(onClose),
       onPop: (e) => {
         // e.preventDefault();
-        console.info('color wheel poped from stack');
+        console.info('color wheel poped from stack',e);
       },
-      // onClickOutside: (e) => {
-      //   console.log('preventing onClickOutside');
-      //   e.preventDefault();
-      // },
+      onClickOutside: (e) => {
+        e.preventDefault();
+        console.info('preventing default onClickOutside for color wheel',e);
+      },
     });
 
   }
