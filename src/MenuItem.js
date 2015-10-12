@@ -38,6 +38,17 @@ export default class MenuItem extends Button {
     align: 'left',
   }
 
+  static childContextTypes = {
+    ...Button.childContextTypes,
+    depth: React.PropTypes.number,
+  }
+
+  getChildContext(){
+    let cxt = super.getChildContext();
+    cxt.depth = this.getDepth();
+    return cxt;
+  }
+
   getClassNames(){
     let cs = super.getClassNames();
     cs.menuitem = true;
@@ -54,12 +65,10 @@ export default class MenuItem extends Button {
   getMenu(){
     let props = {depth:this.getDepth()+1};
     if( React.Children.count(this.props.children) > 0 ){
-      let menu = <Menu {...props}>
+      return <Menu {...props}>
         {this.props.children}
       </Menu>;
-      return menu;
     }
-    return  React.cloneElement(super.getMenu(),props);
   }
 
   getMenuConfig(){
@@ -70,7 +79,7 @@ export default class MenuItem extends Button {
   }
 
   getDepth(){
-    return this.getParent().getDepth();
+    return this.context.depth;
   }
 
   getMouseEnterHandler(){
@@ -83,6 +92,10 @@ export default class MenuItem extends Button {
     // if( this.hasMenu() ){
     // }
     return;
+  }
+
+  getClickHandler(){
+    return this.toggleMenu;
   }
 
   hasIcon(){

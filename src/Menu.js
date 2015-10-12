@@ -23,6 +23,17 @@ export default class Menu extends View {
     depth: 0,
   }
 
+  static childContextTypes = {
+    ...View.childContextTypes,
+    depth: React.PropTypes.number,
+  }
+
+  getChildContext(){
+    let cxt = super.getChildContext();
+    cxt.depth = this.getDepth();
+    return cxt;
+  }
+
   getClassNames(){
     let cs = super.getClassNames();
     cs.menu = true;

@@ -2,7 +2,7 @@ import React from 'react';
 import View from './View';
 import Text from './Text';
 import CSS from './utils/css';
-import ModalItem from './ModalItem';
+import Modal from './Modal';
 
 CSS.register({
   '.view.button': {
@@ -162,9 +162,8 @@ export default class Button extends View {
     // The 'intrinsic' size of an icon-only button is to maintain the aspect ratio
     // of the cross-axis ie. if container's height=10 then icon's width=10
     if( !this.hasLabel() && this.props.size == 'intrinsic' ){
-      let parent = this.getParent();
-      if( parent ){
-        let parentSize = parent.getSize();
+      if( this.context && this.context.size ){
+        let parentSize = this.context.size;
         if( typeof parentSize == 'number' ){
           return parentSize;
         }
@@ -211,6 +210,14 @@ export default class Button extends View {
     return style;
   }
 
+  getLayer(){
+    return this.context.layer;
+  }
+
+  getRegisterLayerHandler(){
+    return; // don't bother registering buttons as layers
+  }
+
   getBackgroundColor(hueOffset) {
     if( this.props.outline ){
       let theme = this.getTheme();
@@ -249,43 +256,6 @@ export default class Button extends View {
     return this.getTheme().getBorderWidth();
   }
 
-  // buttons inherit layer from parent
-  getLayer() {
-    let parent = this.getParent();
-    if( !parent ){
-      return 0;
-    }
-    return parent.getLayer();
-  }
-
-  // raised buttons do not report back so this is a noop
-  reportLayerNumberToRootLayer(){
-    return;
-  }
-
-  // raised buttons do not report back so this is a noop
-  forceLayerCalc(){
-    return;
-  }
-
-  // buttons inherit layer from parent
-  getRootLayer(){
-    let parent = this.getParent();
-    if( !parent ){
-      return this;
-    }
-    return parent.getRootLayer();
-  }
-
-  // buttons inherit layer from parent
-  getTopLayer(){
-    let parent = this.getParent();
-    if( !parent ){
-      return 0;
-    }
-    return parent.getTopLayer();
-  }
-
   hasMenu(){
     return !!this.props.menu;
   }
@@ -294,34 +264,33 @@ export default class Button extends View {
     return this.props.menu;
   }
 
+  getMenuContent(){
+    let key = this.getID()+'_menu';
+    let props = {
+      key: key,
+      id: key,
+      relative: true,
+      owner: this,
+      onClickOutside: this.toggleMenu,
+      ...this.getMenuConfig(),
+    };
+    return <Modal {...props} >
+      {this.getMenu()}
+    </Modal>;
+  }
+
   // menu depth
   getDepth(){
     return 0;
   }
 
-  showMenu(){
-    let modals = this.getRelativeModal();
-    let props = {
-      owner: this,
-      key: this.menuKey,
-      ...this.getMenuConfig(),
-    };
-    let regMenu = (menu) => {
-      this.menu = menu;
-    };
-    modals.splice(this.getDepth(), Infinity,
-      <ModalItem ref={regMenu} {...props}>{this.getMenu()}</ModalItem>
-    );
-  }
-
-  // give a menu a globally unique key
-  getMenuKey(){
-
+  toggleMenu = () => {
+    this.setState({showMenu: !this.state.showMenu});
   }
 
   getClickHandler(){
     if( this.hasMenu() ){
-      return this.onClick.bind(this);
+      return this.toggleMenu;
     }
     return super.getClickHandler();
   }
@@ -330,13 +299,6 @@ export default class Button extends View {
     return {
       obscure: true, // tells the popup to cover the emiting button rather than go beside it
     };
-  }
-
-  onClick(e){
-    if( this.hasMenu() ){
-      this.showMenu(e);
-    }
-    return super.onClick(e);
   }
 
   isClickable(){
@@ -420,6 +382,9 @@ export default class Button extends View {
     }
     if( this.hasLabel() ){
       children.push(this.getLabelContent());
+    }
+    if( this.hasMenu() && this.state.showMenu ){
+      children.push(this.getMenuContent());
     }
     return children;
   }
