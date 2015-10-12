@@ -24,6 +24,7 @@
     "camelize": "^1.0.0",
     "http-server": "^0.8.5",
     "react": "^0.14.0",
+    "react-addons-shallow-compare": "^0.14.0",
     "react-addons-test-utils": "^0.14.0-beta3",
     "react-dom": "^0.14.0",
     "watchify": "^3.4.0"
