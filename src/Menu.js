@@ -44,7 +44,6 @@ export default class Menu extends View {
   }
 
   hideParent = () => {
-    console.log('clicked menu');
     if( this.props.parent ){
       this.props.parent.hideMenu();
     }

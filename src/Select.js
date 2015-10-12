@@ -45,11 +45,7 @@ export default class Select extends MenuItem {
   }
 
   select(opt){
-    this.menu.pop();
-    this.setState({selected: opt}, () => {
-      // this.menu.forceUpdate();
-      // this.showMenu();
-    });
+    this.setState({selected: opt});
   }
 
   // normalize options input
@@ -76,7 +72,7 @@ export default class Select extends MenuItem {
 
   getMenu(){
     return (
-      <Menu>
+      <Menu parent={this}>
         {this.getItems()}
       </Menu>
     );
