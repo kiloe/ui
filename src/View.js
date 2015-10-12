@@ -818,7 +818,6 @@ export default class View extends React.Component {
 
   // setModal add a modal to this View's overlay
   setModal(owner, modal){
-    console.log('setModal', modal);
     if( !this.props.scroll && !this.isRoot() ){
       throw new Error('setModals only available to scrolling or root views');
     }
@@ -847,7 +846,6 @@ export default class View extends React.Component {
       }
     }
     modals = modals.sort((a,b) => a.props.id > b.props.id);
-    console.log('update modals', modals);
     this.modals = modals.reverse();
     this.currentModalHash = this.getModalHash(modals);
     setTimeout(() => {
@@ -868,7 +866,6 @@ export default class View extends React.Component {
     if( !this.props.scroll && !this.isRoot() ){
       throw new Error('getModals only available to scrolling or root views');
     }
-    console.log('getModals', this.modals);
     return this.modals || [];
   }
 
