@@ -18,9 +18,8 @@ CSS.register({
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     animationFillMode: 'forwards',
     transformOrigin: '50% 50%',
-    animationName: 'modalin',
   },
-  '@keyframes modalin': `
+  '@keyframes modalScaleIn': `
     0% {
       opacity: 0;
       transform: scale(0);
@@ -30,17 +29,14 @@ CSS.register({
       transform: scale(1);
     }
   `,
-  '.modal .inner.off': {
-    animationName: 'modalout',
-  },
-  '@keyframes modalout': `
+  '@keyframes modalSlideDown': `
     0% {
-      opacity: 1;
-      transform: scale(1);
+      opacity: 0;
+      transform: translateY(-10px) scaleY(0.5);
     }
     100% {
-      opacity: 0;
-      transform: scale(0);
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
     }
   `,
 });
@@ -183,11 +179,15 @@ export default class Modal extends React.Component {
 
   render(){
     let innerStyle = {};
+    innerStyle.animationName = 'modalScaleIn';
     let style = {};
     if( this.props.owner ){ // attached to element (top/left will be set once DOM available)
       style.position = 'absolute';
       style.display = 'block';
       innerStyle.transformOrigin = this.getOrigin();
+      if( this.props.direction == 'bottom' ){
+        innerStyle.animationName = 'modalSlideDown';
+      }
     }else{ // fullscreen
       style.position = 'fixed';
       style.top = 0;

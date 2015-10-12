@@ -23,10 +23,23 @@ export default class Dialogs extends React.Component {
 
     let data = [
       {
+        title: 'Modal',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Modal id="modalexample" onClickOutside={stopDemo}>
+            <Text>This is modal content</Text>
+          </Modal>
+        `,
+        info:`
+          You can render a Modal anywhere and it will display it's content overlayed on the screen.
+          Modal is a low-level component for displaying overlay content. You probably want a Dialog really...
+        `
+      },
+      {
         title: 'Dialog',
         clickToRun: true,
         src: Doc.jsx`
-          <Dialog id="example" shade onClickOutside={stopDemo}>
+          <Dialog id="dialogexample" onClickOutside={stopDemo}>
             <Title>Modal Dialog</Title>
             <Text>Any content can appear within a Dialog</Text>
             <View row align="right">
@@ -36,7 +49,8 @@ export default class Dialogs extends React.Component {
           </Dialog>
         `,
         info:`
-          Place a Modal or Dialog anywhere to overlay content.
+          Dialog is a common form of Modal, it shows it's content overlayed and raised on the screen, with
+          a "shade". Simply render it somewhere to have it displayed.
         `
       },
       {
@@ -47,7 +61,7 @@ export default class Dialogs extends React.Component {
             <View style={{padding: '10rem'}}>
               <Text>This is the outter dialog</Text>
               <Dialog id="inner" onClickOutside={stopDemo}>
-                <Text>This is the inner dialog</Text>
+                <Text>This inner dialog is displayed on top as it is nested within another dialog</Text>
               </Dialog>
               <Text>This is the outter dialog</Text>
               <Text>This is the outter dialog</Text>
@@ -58,7 +72,7 @@ export default class Dialogs extends React.Component {
           </Dialog>
         `,
         info:`
-          Place a Modal or Dialog anywhere to overlay content.
+          Dialogs can be used within dialogs. The inner-most dialog will be on the top.
         `
       },
     ];

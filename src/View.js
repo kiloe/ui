@@ -197,7 +197,6 @@ export default class View extends React.Component {
     disabled: false,
     size: 'fill',
     align: 'center',
-    divider: false,
   }
 
   constructor(props, ...args){
@@ -511,7 +510,7 @@ export default class View extends React.Component {
       style.padding = this.getPadding() + 'rem';
     }
     if( this.props.divider ){
-      style.borderColor = ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
+      style.borderBottomColor = ( this.getTheme().getMode() == 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.12)' );
     }
     return style;
   }

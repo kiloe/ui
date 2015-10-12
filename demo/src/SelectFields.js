@@ -9,7 +9,25 @@ export default class SelectFields extends React.Component {
   render(){
     let data = [
       {
-        title: 'Select',
+        title: 'Select with array of strings',
+        src: Doc.jsx`
+          <Select placeholder="Select Language" options={['English','French','Spanish']} />
+        `,
+        info:`
+          Pass an Array of strings as options.
+        `
+      },
+      {
+        title: 'Select with comma seperated values',
+        src: Doc.jsx`
+          <Select placeholder="Select Language" options={'English,French,Spanish'} />
+        `,
+        info:`
+          Pass a CSV string as options.
+        `
+      },
+      {
+        title: 'Select with Object options',
         src: Doc.jsx`
           <Select placeholder="Select Language" options={{
             English: 'en',
@@ -18,7 +36,47 @@ export default class SelectFields extends React.Component {
           }} />
         `,
         info:`
-          Select fields are basically menus
+          Use an Object to build the key/values of simple lists when you don't case about the order.
+        `
+      },
+      {
+        title: 'Select with Array options',
+        src: Doc.jsx`
+          <Select placeholder="Select Language" options={[
+            {key:'English', value:'en'},
+            {key:'French', value:'fr'},
+            {key:'Spanish', value:'es'},
+          ]} />
+        `,
+        info:`
+          Use an Array of {key:x,value:y} Objects for simple lists when order is important.
+        `
+      },
+      {
+        title: 'Select with groups',
+        src: Doc.jsx`
+          <Select placeholder="Select Language" options={[
+            {group: "common", options: [
+              {key:'English', value:'en'},
+            ]},
+            {group: "other", options: [
+              {key:'French', value:'fr'},
+              {key:'Spanish', value:'es'},
+            ]},
+          ]} />
+        `,
+        info:`
+          Add group keys when you want to group options but do not care about the order.
+        `
+      },
+      {
+        title: 'Select with required and pre-selected value',
+        src: Doc.jsx`
+          <Select required options="English,French,Spanish" value="French"/>
+        `,
+        info:`
+          Use 'required' to remove the 'none' option.
+          Set value to a value to have it pre-selected.
         `
       },
     ];
