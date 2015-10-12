@@ -203,41 +203,6 @@ export default class View extends React.Component {
   constructor(props, ...args){
     super(props, ...args);
     this._id = Math.random().toString(); // XXX: come up with something better
-    this.state = {};
-    this.idleState = {};
-    if( props.raised ){
-      this.hasEverBeenRaised = true;
-    }
-  }
-
-  // setStateWhenIdle works like setState, only it batches for a much longer time
-  // 500-1000ms. It's primaily used to ease mass updates of the root layer when
-  // components are added/removed all at once.
-  setStateWhenIdle(o){
-    for(let k in o){
-      this.idleState[k] = o[k];
-    }
-    this.clearIdleTimer();
-    this.idleTimer = setTimeout(this._setStateWhenIdle,10);
-  }
-
-  _setStateWhenIdle = () => {
-    if( !this.idleTimer ){
-      return;
-    }
-    this.clearIdleTimer();
-    if( !this.mounted ){
-      return;
-    }
-    this.setState(this.idleState);
-    this.idleState = {};
-  }
-
-  clearIdleTimer(){
-    if( this.idleTimer ){
-      clearTimeout(this.idleTimer);
-      this.idleTimer = null;
-    }
   }
 
   componentDidMount(){
@@ -250,8 +215,6 @@ export default class View extends React.Component {
     this.mounted = false;
     // remove layer
     this.layerWillUnmount();
-    // ignore any pending state
-    this.clearIdleTimer();
     // tell overlays we are gone
     this.getRoot().clearModals(this);
     this.getScrollParent().clearModals(this);
@@ -295,7 +258,7 @@ export default class View extends React.Component {
   // DONE: props
   // DONE: state (for topLayer / modals)
   // DONE: context
-  // TODO: theme config (since default theme may have been altered)
+  // DONE: theme config (since default theme may have been altered)
   shouldComponentUpdate(nextProps, nextState, nextContext){
     let propsDiffers = Object.keys(this.constructor.propTypes).some((k) => {
       if( k == 'style' ){
@@ -335,9 +298,11 @@ export default class View extends React.Component {
     if( cxtDiffers ){
       return true;
     }
+    // check if state has changed
     if( !shallowEqual(this.state, nextState) ){
       return true;
     }
+    // check if modals have changed
     if( this.lastRenderedModalHash != this.currentModalHash ){
       return true;
     }
@@ -398,9 +363,6 @@ export default class View extends React.Component {
   }
 
   // The first View to be rendered becomes the "root".
-  // All descentant Views can tell the root to alter it's state.
-  // This is how modals work... a child View can setState({modal: component})
-  // and that gets rended as a child of the root view.
   getRoot(){
     if( this.context && this.context.root ){
       return this.context.root;
