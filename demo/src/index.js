@@ -123,35 +123,35 @@ export default class App extends React.Component {
     }
   }
 
-  onPickPrimary(name){
+  onPickPrimary = (name) => {
     UI.theme.primaryPalette = name;
     this.forceUpdate();
   }
 
-  onPickAccent(name, hue){
+  onPickAccent = (name, hue) => {
     UI.theme.accentPalette = name;
     UI.theme.accentHue = hue;
     this.forceUpdate();
   }
 
-  getColorWheel(onClose){
+  getColorWheel(){
     return <View pad>
       <View><h1>Color Picker</h1></View>
       <ColorWheel
-        onPickPrimary={this.onPickPrimary.bind(this)}
-        onPickAccent={this.onPickAccent.bind(this)}
+        onPickPrimary={this.onPickPrimary}
+        onPickAccent={this.onPickAccent}
       />
       <View row align="right">
-        <Button outline accent label="continue" onClick={onClose} />
+        <Button outline accent label="continue" onClick={this.closeThemePicker} />
       </View>
     </View>;
   }
 
-  openThemePicker(){
+  openThemePicker = () => {
     this.setState({showWheel: true});
   }
 
-  closeThemePicker(){
+  closeThemePicker = () => {
     console.log('closing');
     this.setState({showWheel: false});
   }
@@ -161,7 +161,7 @@ export default class App extends React.Component {
   render(){
     let modal;
     if( this.state.showWheel ){
-      modal = <Modal key="color-wheel" onClickOutside={this.closeThemePicker.bind(this)} shade={true}>
+      modal = <Modal id="color-wheel" onClickOutside={this.closeThemePicker} shade={true}>
         {this.getColorWheel()}
       </Modal>;
     }
@@ -198,7 +198,7 @@ export default class App extends React.Component {
             <View>Title</View>
             <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} tip="Scale up"/>
             <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} tip="Scale down"/>
-            <Button onClick={this.openThemePicker.bind(this)} icon={<FormatPaintIcon/>} tip="Pick theme"/>
+            <Button onClick={this.openThemePicker} icon={<FormatPaintIcon/>} tip="Pick theme"/>
             <Button onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  tip="Switch mode"/>
             <Button onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} tip="Fullscreen" />
           </Toolbar>

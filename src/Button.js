@@ -271,7 +271,7 @@ export default class Button extends View {
       id: key,
       relative: true,
       owner: this,
-      onClickOutside: this.toggleMenu,
+      onClickOutside: this.onClickOutsideMenu,
       ...this.getMenuConfig(),
     };
     return <Modal {...props} >
@@ -279,13 +279,26 @@ export default class Button extends View {
     </Modal>;
   }
 
-  // menu depth
-  getDepth(){
-    return 0;
+  onClickOutsideMenu = () => {
+    this.hideMenu();
   }
 
-  toggleMenu = () => {
-    this.setState({showMenu: !this.state.showMenu});
+  hideMenu = () => {
+    this.setState({showMenu: false});
+  }
+
+  showMenu = (e) => {
+    e.stopPropagation();
+    this.setState({showMenu: true});
+  }
+
+  toggleMenu = (e) => {
+    let showMenu = this.state.showMenu;
+    if( showMenu || !this.hasMenu() ){
+      this.hideMenu(e);
+    } else {
+      this.showMenu(e);
+    }
   }
 
   getClickHandler(){

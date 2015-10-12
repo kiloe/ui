@@ -104,14 +104,9 @@ export default class Select extends MenuItem {
     return true;
   }
 
-  getDepth(){
-    return 0;
-  }
-
   hasTip(){
     return false;
   }
-
 
 }
 

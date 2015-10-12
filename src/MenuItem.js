@@ -31,22 +31,13 @@ export default class MenuItem extends Button {
     //   checked=true: Show as selected
     //   checked=false: Show as unselected
     checked: React.PropTypes.bool,
+    // parent is the parent menuitem
+    parent: React.PropTypes.object,
   }
 
   static defaultProps = {
     ...Button.defaultProps,
     align: 'left',
-  }
-
-  static childContextTypes = {
-    ...Button.childContextTypes,
-    depth: React.PropTypes.number,
-  }
-
-  getChildContext(){
-    let cxt = super.getChildContext();
-    cxt.depth = this.getDepth();
-    return cxt;
   }
 
   getClassNames(){
@@ -63,12 +54,21 @@ export default class MenuItem extends Button {
   }
 
   getMenu(){
-    let props = {depth:this.getDepth()+1};
     if( React.Children.count(this.props.children) > 0 ){
-      return <Menu {...props}>
-        {this.props.children}
+      return <Menu parent={this}>
+        {React.Children.map(this.props.children, (item) => {
+          return React.cloneElement(item, {parent: this});
+        })}
       </Menu>;
     }
+  }
+
+  getClickHandler(){
+    return this.toggleCascadingMenu;
+  }
+
+  toggleCascadingMenu = (e) => {
+    this.toggleMenu(e);
   }
 
   getMenuConfig(){
@@ -76,10 +76,6 @@ export default class MenuItem extends Button {
       obscure: false,
       direction: 'right',
     };
-  }
-
-  getDepth(){
-    return this.context.depth;
   }
 
   getMouseEnterHandler(){
@@ -92,10 +88,6 @@ export default class MenuItem extends Button {
     // if( this.hasMenu() ){
     // }
     return;
-  }
-
-  getClickHandler(){
-    return this.toggleMenu;
   }
 
   hasIcon(){

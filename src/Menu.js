@@ -12,7 +12,7 @@ export default class Menu extends View {
 
   static propTypes = {
     ...View.propTypes,
-    depth: React.PropTypes.number, // internal use for modal
+    parent: React.PropTypes.object, // internal use parent menu
   }
 
   static defaultProps = {
@@ -20,18 +20,11 @@ export default class Menu extends View {
     raised: true,
     size: 'intrinsic',
     theme: {mode: 'light'},
-    depth: 0,
   }
 
   static childContextTypes = {
     ...View.childContextTypes,
     depth: React.PropTypes.number,
-  }
-
-  getChildContext(){
-    let cxt = super.getChildContext();
-    cxt.depth = this.getDepth();
-    return cxt;
   }
 
   getClassNames(){
@@ -46,8 +39,15 @@ export default class Menu extends View {
     return style;
   }
 
-  getDepth(){
-    return this.props.depth || 0;
+  getClickHandler(){
+    return this.hideParent;
+  }
+
+  hideParent = () => {
+    console.log('clicked menu');
+    if( this.props.parent ){
+      this.props.parent.hideMenu();
+    }
   }
 
 }

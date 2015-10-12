@@ -72,7 +72,6 @@ export default class Modal extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    return true;
     if( !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState) ){
       return true;
     }
