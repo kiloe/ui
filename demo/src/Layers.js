@@ -24,17 +24,17 @@ class Split extends React.Component {
     this.state = {};
   }
 
-  onSplit(){
+  onSplit = () => {
     this.setState({split: true});
   }
 
-  onMerge(){
+  onMerge = () => {
     if( this.props.parent ){
       this.props.parent.setState({split: false});
     }
   }
 
-  onCyclePaletteMode(){
+  onCyclePaletteMode = () => {
     let m = this.state.mode || 0;
     m++;
     if( m == Split.MODES.length ){
@@ -53,7 +53,7 @@ class Split extends React.Component {
     }, 100);
   }
 
-  onToggleLock(){
+  onToggleLock = () => {
     this.setState({lock: !this.state.lock});
   }
 
@@ -71,10 +71,10 @@ class Split extends React.Component {
       <Split parent={this} raised={this.state.raised} key="a" row={!this.props.row} />,
       <Split parent={this} raised={this.state.raised} key="b" row={!this.props.row} />
     ] : <View key="a" row style={{alignItems: 'center'}}>
-      <Button style={btn} raised icon={CallSplitIcon} onClick={this.onSplit.bind(this)} />
-      <Button style={btn} icon={this.state.lock ? LockOpenIcon : LockIcon} onClick={this.onToggleLock.bind(this)} />
-      <Button style={btn} icon={DeleteIcon} onClick={this.onMerge.bind(this)} />
-      <Button style={btn} icon={ColorizeIcon} onClick={this.onCyclePaletteMode.bind(this)} />
+      <Button style={btn} raised icon={CallSplitIcon} onClick={this.onSplit} />
+      <Button style={btn} icon={this.state.lock ? LockOpenIcon : LockIcon} onClick={this.onToggleLock} />
+      <Button style={btn} icon={DeleteIcon} onClick={this.onMerge} />
+      <Button style={btn} icon={ColorizeIcon} onClick={this.onCyclePaletteMode} />
     </View>;
     let initprops = this.props.initprops || {};
     if( this.state.lock ){

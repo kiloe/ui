@@ -19,6 +19,7 @@ import FullscreenIcon from '../../package/icons/FullscreenIcon';
 import ColorLensIcon from '../../package/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon';
 import LayersIcon from '../../package/icons/LayersIcon';
+import Modal from '../../package/Modal';
 
 import Buttons from './Buttons';
 import Palette from './Palette';
@@ -146,30 +147,27 @@ export default class App extends React.Component {
     </View>;
   }
 
-  themePicker(){
-    let m;
-    let onClose = () => {
-      console.info('popping color wheel from stack via the callback thing');
-      m.pop();
-    };
-    let onClickOutside = (e) => {
-      e.preventDefault();
-      console.info('clicked outside of color wheel');
-    };
-    let setM = (modal) => {
-      m = modal;
-    };
-    let modals = this.refs.main.getFixedModal();
-    modals.splice(0, Infinity,
-      <ModalItem ref={setM} onClickOutside={onClickOutside} shade={true}>
-        {this.getColorWheel(onClose)}
-      </ModalItem>
-    );
+  openThemePicker(){
+    this.setState({showWheel: true});
   }
 
+  closeThemePicker(){
+    console.log('closing');
+    this.setState({showWheel: false});
+  }
+
+
+
   render(){
+    let modal;
+    if( this.state.showWheel ){
+      modal = <Modal key="color-wheel" onClickOutside={this.closeThemePicker.bind(this)} shade={true}>
+        {this.getColorWheel()}
+      </Modal>;
+    }
     return (
-      <View ref="main" row scale={this.state.scale}>
+      <View ref="main" modal={modal} row scale={this.state.scale}>
+        {modal}
         <Drawer docked="huge" raised={3} hide={this.state.sidebarHidden} active={this.state.sidebarActive}>
           <Toolbar layer={0} accent>
             <View>Demo-crazy</View>
@@ -200,7 +198,7 @@ export default class App extends React.Component {
             <View>Title</View>
             <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} tip="Scale up"/>
             <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} tip="Scale down"/>
-            <Button onClick={this.themePicker.bind(this)} icon={<FormatPaintIcon/>} tip="Pick theme"/>
+            <Button onClick={this.openThemePicker.bind(this)} icon={<FormatPaintIcon/>} tip="Pick theme"/>
             <Button onClick={this.toggleThemeMode.bind(this)} icon={<InvertColorsIcon/>}  tip="Switch mode"/>
             <Button onClick={this.toggleFullscreen.bind(this)} icon={<FullscreenIcon/>} tip="Fullscreen" />
           </Toolbar>

@@ -1,9 +1,12 @@
 import React from 'react';
+import shallowEqual from 'fbjs/lib/shallowEqual';
+import ReactDOM from 'react-dom';
 import cx from 'classnames';
-import {ThemeManager} from './utils/themeManager';
+import {defaultTheme,ThemeManager} from './utils/themeManager';
 import CSS from './utils/css';
-import Modal from './Modal';
+import Overlay from './Overlay';
 import Tooltip from './Tooltip';
+// import shallowCompare from 'react-addons-shallow-compare';
 
 const SIZES = ['fill', 'intrinsic'];
 const THEME_MODES = ['light', 'dark'];
@@ -165,11 +168,27 @@ export default class View extends React.Component {
   }
 
   static contextTypes = {
-    parent: React.PropTypes.object,
+    root: React.PropTypes.object,
+    row: React.PropTypes.bool,
+    theme: React.PropTypes.object,
+    layer: React.PropTypes.number,
+    topLayer: React.PropTypes.number,
+    scale: React.PropTypes.number,
+    scrollParent: React.PropTypes.object,
+    size: React.PropTypes.number,
+    registerLayer: React.PropTypes.func,
   }
 
   static childContextTypes = {
-    parent: React.PropTypes.object,
+    root: React.PropTypes.object.isRequired,
+    row: React.PropTypes.bool,
+    theme: React.PropTypes.object.isRequired,
+    layer: React.PropTypes.number.isRequired,
+    topLayer: React.PropTypes.number,
+    scale: React.PropTypes.number.isRequired,
+    scrollParent: React.PropTypes.object.isRequired,
+    size: React.PropTypes.number,
+    registerLayer: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -183,6 +202,7 @@ export default class View extends React.Component {
 
   constructor(props, ...args){
     super(props, ...args);
+    this._id = Math.random().toString(); // XXX: come up with something better
     this.state = {};
     this.idleState = {};
     if( props.raised ){
@@ -198,10 +218,10 @@ export default class View extends React.Component {
       this.idleState[k] = o[k];
     }
     this.clearIdleTimer();
-    this.idleTimer = setTimeout(this._setStateWhenIdle.bind(this),700);
+    this.idleTimer = setTimeout(this._setStateWhenIdle,10);
   }
 
-  _setStateWhenIdle(){
+  _setStateWhenIdle = () => {
     if( !this.idleTimer ){
       return;
     }
@@ -209,19 +229,7 @@ export default class View extends React.Component {
     if( !this.mounted ){
       return;
     }
-    // shallow equal - can be removed once shouldComponentUpdate is implemented
-    let changed = (() => {
-      for(let k in this.idleState){
-        if(this.state[k] != this.idleState[k]){
-          return true;
-        }
-        console.log('not chnaged');
-        return false;
-      }
-    })();
-    if( changed ){
-      this.setState(this.idleState);
-    }
+    this.setState(this.idleState);
     this.idleState = {};
   }
 
@@ -234,64 +242,156 @@ export default class View extends React.Component {
 
   componentDidMount(){
     this.mounted = true;
-    this.reportLayerNumberToRootLayer();
+    this.layerDidUpdate();
   }
 
   componentWillUnmount(){
     // mark as unmounted
     this.mounted = false;
+    // remove layer
+    this.layerWillUnmount();
     // ignore any pending state
     this.clearIdleTimer();
-    // XXX: need to tell root layer we are nolonger here
-    // this is important if we were previously the top layer,
-    // but how will root layer know who is next in line?
-    // for now the quick solution is to just forceupdate the tree
-    // from the rootLayer down... but this is gonna be prohibitatively
-    // expensive for complex layouts so need a better solution!
-    this.forceLayerCalc(true);
+    // tell overlays we are gone
+    this.getRoot().clearModals(this);
+    this.getScrollParent().clearModals(this);
+    delete this._modals;
   }
 
-  componentWillReceiveProps(props){
-    if( props.raised ){
-      this.hasEverBeenRaised = true;
+  componentDidUpdate(){
+    this.layerDidUpdate();
+  }
+
+  layerDidUpdate(){
+    let reg = this.getRegisterLayerHandler();
+    if( this.oldLayerHandler && reg != this.oldLayerHandler ){
+      this.oldLayerHandler(this.getID(), null);
+      this.oldLayerHandler = null;
     }
-    this.reportLayerNumberToRootLayer(props);
-  }
-
-  forceLayerCalc(unmounting){
-    let root = this.getRootLayer();
-    if( unmounting && root == this ){
+    if( !reg ){
       return;
     }
-    if( this.hasEverBeenRaised ){
-      root.setStateWhenIdle({topLayer: 0});
+    if( this.props.layer === 0 ){
+      return;
     }
+    reg(this.getID(), this.getLayer());
+  }
+
+  layerWillUnmount(){
+    let reg = this.getRegisterLayerHandler();
+    if( !reg ){
+      return;
+    }
+    reg(this.getID(), null);
+  }
+
+  componentWillReceiveProps(){
+    this.oldLayerHandler = this.getRegisterLayerHandler();
   }
 
   // XXX: implement this... but it's going to be tricky
-  shouldComponentUpdate(){
-    // keeping a note of things to track:
-    // * viewport values (need a way to opt in to listening to viewport sizes)
-    // * props/state etc
-    // * value of 'parent' ref from context
-    // * theme config (since default theme may have been altered)
-    // * topLayer
-    return true;
+  // keeping a note of things to track:
+  // TODO: viewport values (need a way to opt in to listening to viewport sizes)
+  // DONE: props
+  // DONE: state (for topLayer / modals)
+  // DONE: context
+  // TODO: theme config (since default theme may have been altered)
+  shouldComponentUpdate(nextProps, nextState, nextContext){
+    let propsDiffers = Object.keys(this.constructor.propTypes).some((k) => {
+      if( k == 'style' ){
+        return !shallowEqual(this.props[k], nextProps[k]);
+      }
+      if( k == 'theme' ){
+        return !shallowEqual(this.props[k], nextProps[k]);
+      }
+      return this.props[k] !== nextProps[k];
+    });
+    if( propsDiffers ){
+      return true;
+    }
+    for( let k in nextProps ){
+      if( typeof this.constructor.propTypes[k] != 'undefined' ){
+        continue;
+      }
+      if( this.props[k] != nextProps[k] ){
+        return true;
+      }
+    }
+    for( let k in this.props ){
+      if( typeof this.constructor.propTypes[k] != 'undefined' ){
+        continue;
+      }
+      if( this.props[k] != nextProps[k] ){
+        return true;
+      }
+    }
+
+    let cxtDiffers = Object.keys(this.constructor.contextTypes).some((k) => {
+      if( k == 'theme' ){
+        return !shallowEqual(this.context.theme, nextContext.theme);
+      }
+      return this.context[k] !== nextContext[k];
+    });
+    if( cxtDiffers ){
+      return true;
+    }
+    if( !shallowEqual(this.state, nextState) ){
+      return true;
+    }
+    return false;
   }
 
   // getChildContext returns the context for children
   getChildContext(){
     return {
-      parent: this,
+      root: this.getRoot(),
+      row: this.props.row,
+      theme: this.getThemeConfig(),
+      layer: this.getLayer(),
+      topLayer: this.getTopLayer(),
+      scale: this.getScale(),
+      scrollParent: this.getScrollParent(),
+      size: this.getSize(),
+      registerLayer: this.getRegisterLayerHandler(),
     };
   }
 
-  // getParent fetches parent View
-  getParent(){
-    if( !this.context ){
-      return undefined;
+  getRegisterLayerHandler(){
+    if( this.props.layer === 0 ){
+      if( !this._registerLayer ){
+        this._registerLayer = this.registerLayer.bind(this);
+      }
+      return this._registerLayer;
     }
-    return this.context.parent;
+    if( this.getRaise() ){
+      if( this.context && this.context.registerLayer ){
+        return this.context.registerLayer;
+      }
+    }
+  }
+
+  registerLayer(id, layerNumber){
+    if( !this.childLayers ){
+      this.childLayers = {};
+    }
+    if( layerNumber === null ){
+      delete this.childLayers[id];
+    } else {
+      this.childLayers[id] = layerNumber;
+    }
+    this.updateLayerState();
+  }
+
+  updateLayerState(){
+    if( !this.childLayers ){
+      return;
+    }
+    let layers = Object.keys(this.childLayers).map(k => this.childLayers[k]);
+    let topLayer = Math.max(0, ...layers);
+    if( topLayer != this.topLayer ){
+      this.topLayer = topLayer;
+      this.setState({topLayer: this.topLayer});
+    }
   }
 
   // The first View to be rendered becomes the "root".
@@ -299,21 +399,24 @@ export default class View extends React.Component {
   // This is how modals work... a child View can setState({modal: component})
   // and that gets rended as a child of the root view.
   getRoot(){
-    let parent = this.getParent();
-    return parent ? parent.getRoot() : this;
+    if( this.context && this.context.root ){
+      return this.context.root;
+    }
+    return this;
   }
 
   // Is this component the root?
   isRoot(){
-    let parent = this.getParent();
-    return parent ? false : true;
+    return this.getRoot() == this;
   }
 
   // isInRow returns true if the parent view that this view that contains
   // this view has been set to "row"
   isInRow(){
-    let parent = this.getParent();
-    return parent ? parent.props.row : View.defaultProps.row;
+    if( this.context && this.context.row ){
+      return this.context.row;
+    }
+    return View.defaultProps.row;
   }
 
   // getClassNames builds and returns all CSS classes
@@ -489,8 +592,10 @@ export default class View extends React.Component {
   // getThemeConfig fetches the active palette configuration.
   // It merges the palette configs from props/parent/global.
   getThemeConfig(){
-    let parent = this.getParent();
-    let inheritedTheme = parent ? parent.getThemeConfig() : {};
+    let inheritedTheme = defaultTheme;
+    if( this.context && this.context.theme ){
+      inheritedTheme = this.context.theme;
+    }
     let shortcutPaletteMode = PALETTE_MODES.filter(name => {
       return !!this.props[name];
     })[0];
@@ -524,6 +629,21 @@ export default class View extends React.Component {
     return new ThemeManager(this.getThemeConfig());
   }
 
+  getTopLayer(){
+    if( this.props.layer === 0 ){
+      if( this.state && typeof this.state.topLayer == 'number' ){
+        return this.state.topLayer;
+      }
+      return this.getLayer();
+    }else{
+      let layer = this.getLayer();
+      if( this.context && typeof this.context.topLayer == 'number' && this.context.topLayer > layer){
+        return this.context.topLayer;
+      }
+      return layer;
+    }
+  }
+
   // getLayer returns the current (or inherited) layer number
   getLayer(nextProps){
     let props = nextProps || this.props;
@@ -531,57 +651,18 @@ export default class View extends React.Component {
     if( typeof layer == 'number' ){
       return layer;
     }
-    let parent = this.getParent();
-    layer = parent ? parent.getLayer() : 0;
+    layer = 0;
+    if( this.context && typeof this.context.layer == 'number' ){
+      layer = this.context.layer;
+    }
     return this.getRaise(nextProps) ? layer+1 : layer;
-  }
-
-  reportLayerNumberToRootLayer(nextProps){
-    let n = this.getLayer(nextProps);
-    this.getRootLayer(nextProps).setTopLayer(n);
-  }
-
-  setTopLayer(n){
-    if( typeof this.state.topLayer != 'number' || n > this.state.topLayer ){
-      this.setState({topLayer: n});
-    }
-  }
-
-  // The root layer is the first View in the parent chain that has layer=0
-  // else it's the root-view.
-  getRootLayer(nextProps){
-    let props = nextProps || this.props;
-    if( props.layer === 0 ){
-      return this;
-    }
-    let parent = this.getParent();
-    if( !parent ){
-      return this;
-    }
-    return parent.getRootLayer();
-  }
-
-  // getTopLayer returns the topmost layer number by asking
-  // the rootLayer (the layer with layer==0) for it's highest numbered child layer
-  getTopLayer(){
-    if( this == this.getRootLayer() ){
-      if( typeof this.state.topLayer == 'number' ){
-        return this.state.topLayer;
-      }
-    }
-    let parent = this.getParent();
-    if( !parent ){
-      return 0;
-    }
-    return parent.getTopLayer();
   }
 
   // getScale returns the current (or inherited) scale factor
   getScale(){
     let scale = this.props.scale;
     if( typeof scale != 'number' ){
-      let parent = this.getParent();
-      scale = parent ? parent.getScale() : 1;
+      scale = this.context && this.context.scale;
     }
     if( typeof scale != 'number' ){
       return 1;
@@ -589,28 +670,26 @@ export default class View extends React.Component {
     return scale;
   }
 
-  // Add a modal dialog/menu etc to be displayed relative to the viewport
-  getFixedModal(){
-    return this.getRoot().refs.modal;
+  // Get a referance to the Modal for displaying content relative to root view
+  getFixedOverlay(){
+    return this.getRoot().refs.fixedOverlay;
   }
 
-  // Get a referance to the Modal for displaying content relative to
-  // the current scrolling View
-  getRelativeModal(){
-    return this.getScrollParent().refs.relmodal;
+  // Get a referance to the overlay for displaying content relative to scroll view
+  getRelativeOverlay(){
+    return this.getScrollParent().refs.relativeOverlay;
   }
 
   // fetch the parent responsible for scrolling
   // this may be root view, but may be some other parent with scroll=true
   getScrollParent(){
-    let parent = this.getParent();
-    if( !parent ){
+    if( this.props.scroll ){
       return this;
     }
-    if( parent.props.scroll ){
-      return parent;
+    if( this.context && this.context.scrollParent ){
+      return this.context.scrollParent;
     }
-    return parent.getScrollParent();
+    return this.getRoot();
   }
 
   hasTip(){
@@ -652,12 +731,12 @@ export default class View extends React.Component {
 
   getMouseEnterHandler(){
     if( this.props.tip || this.props.onMouseEnter ){
-      return this.onMouseEnter.bind(this);
+      return this.onMouseEnter;
     }
     return;
   }
 
-  onMouseEnter(e){
+  onMouseEnter = (e) => {
     if( this.props.tip ){
       this.showTip();
     }
@@ -669,12 +748,12 @@ export default class View extends React.Component {
 
   getMouseLeaveHandler(){
     if( this.props.tip || this.props.onMouseLeave ){
-      return this.onMouseLeave.bind(this);
+      return this.onMouseLeave;
     }
     return;
   }
 
-  onMouseLeave(e){
+  onMouseLeave = (e) => {
     if( this.props.tip ){
       this.hideTip();
     }
@@ -686,14 +765,14 @@ export default class View extends React.Component {
 
   getClickHandler(){
     if( this.props.onClick || this.props.scroll ){
-      return this.onClick.bind(this);
+      return this.onClick;
     }
     return;
   }
 
   // onClick is called when a click event on the View DOM node
   // is triggered.
-  onClick(e){
+  onClick = (e) => {
     if( this.props.tip ){
       this.hideTip();
     }
@@ -703,16 +782,138 @@ export default class View extends React.Component {
     return;
   }
 
+  // registerModals extracts any Modal components from the children
+  // and registers them with the appriate overlay, the overlay part of the
+  // tree will get rendered on the next cycle.
+  registerModals(children){
+    let fixed = this.getRoot();
+    let relative= this.getScrollParent();
+    fixed.clearModals(this, true);
+    relative.clearModals(this, false);
+    let newChildren = React.Children.map(children, (child) => {
+      if( !child ){
+        return false;
+      }
+      if( !child.type || child.type !== Modal ){
+        return child;
+      }
+      if( child.props && child.props.relative ){
+        relative.setModal(this, child);
+      } else {
+        fixed.setModal(this, child);
+      }
+      return false;
+    });
+    if( newChildren ){
+      return newChildren.filter(child => child);
+    }
+    return newChildren;
+  }
+
+  // setModal add a modal to this View's overlay
+  setModal(owner, modal){
+    if( !this.props.scroll && !this.isRoot() ){
+      throw new Error('setModals only available to scrolling or root views');
+    }
+    if( !this._modals ){
+      this._modals = {};
+    }
+    let id = owner.getID();
+    if( !this._modals[id] ){
+      this._modals[id] = [];
+    }
+    this._modals[id].push(modal);
+    this.updateModalState();
+  }
+
+  updateModalState(){
+    if( !this.props.scroll && !this.isRoot() ){
+      throw new Error('setModalState only available to scrolling or root views');
+    }
+    this.prevModalHash = this.modalHash;
+    let modals = [];
+    for( let id in this._modals ){
+      for( let modal of this._modals[id] ){
+        if( !modal.props.id ){
+          throw new Error('Modals must have their key prop set to something unique (bit like key)');
+        }
+        modals.push(modal);
+      }
+    }
+    modals = modals.sort((a,b) => a.props.id > b.props.id);
+    this.modalHash = modals.map((m) => m.props.id).join(':');
+    if( this.prevModalHash != this.modalHash ){
+      this.setStateWhenIdle({modals: modals});
+    }
+  }
+
+  getModals(){
+    if( !this.props.scroll && !this.isRoot() ){
+      throw new Error('getModals only available to scrolling or root views');
+    }
+    if( !this.state ){
+      return;
+    }
+    if( !this.state.modals ){
+      return;
+    }
+    return this.state.modals;
+  }
+
+  // clearModal removes modals from this View's overlay
+  // if fixed is set true remove only fixed modals
+  // if fixed is set false remove only relative modals
+  // if fixed is undefined remove all modals
+  clearModals(owner, fixed){
+    if( !this.props.scroll && !this.isRoot() ){
+      throw new Error('clearModals only available to scrolling or root views');
+    }
+    let id = owner.getID();
+    if( !this._modals ){
+      return;
+    }
+    let modals = this._modals[id];
+    // if nothing set, then nothing to be done
+    if( !modals ){
+      return;
+    }
+    // if kind not set, just delete everything
+    if( typeof relative == 'undefined' ){
+      delete this._modals[id];
+    } else {
+      // filter out kind
+      modals = modals
+        .filter(modal => fixed && modal.props.relative);
+      // if no modals left, delete the owner key
+      if( modals.length == 0 ){
+        delete this._modals[id];
+      } else {
+        // otherwise set new list
+        this._modals[id] = modals;
+      }
+    }
+    this.updateModalState();
+  }
+
+  // getID returns the components unique id
+  getID(){
+    return this._id;
+  }
+
   // render does what it says on the tin.
   // subclasses can call super.render(children) if they
   // need to extend render.
   render(children) {
     // subclasses may want to pass new children
     children = children || this.props.children;
-    // if we are a scrolling thing, then we need a relative modal
-    let relModal;
-    if( this.props.scroll ){
-      relModal = <Modal ref="relmodal" />;
+    // extact Modals from children
+    children = this.registerModals(children);
+    // if we are a scrolling thing or root then we need an overlay
+    let overlay;
+    if( this.props.scroll || this.isRoot() ){
+      overlay = <Overlay key="overlay">
+        {this.getModals()}
+      </Overlay>;
     }
     // main
     let view = <div
@@ -724,17 +925,13 @@ export default class View extends React.Component {
       style={this.getMergedStyle()}
       className={cx(this.getClassNames())}
       disabled={this.props.disabled}
-      tabIndex={this.getTabIndex()}>{children}{relModal}</div>;
+      tabIndex={this.getTabIndex()}>{children}{overlay}</div>;
+    // if we are the root then we have other things to do
     if( this.isRoot() ){
-      // if we are the root then we might need to
-      // maintain some additional elements for global things like modals/tooltips
-      let modal = <Modal ref="modal" />;
-      let tooltip = <Tooltip ref="tip" />;
       return (
         <div className="root">
           <div className="rootView">{view}</div>
-          {modal}
-          {tooltip}
+          <Tooltip ref="tip" />
         </div>
       );
     }
@@ -742,3 +939,5 @@ export default class View extends React.Component {
   }
 
 }
+
+import Modal from './Modal';
