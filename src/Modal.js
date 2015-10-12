@@ -122,7 +122,6 @@ export default class Modal extends React.Component {
       while( ownerWrapper && ownerWrapper.className != 'modal' ){
         ownerWrapper = ownerWrapper.parentNode;
       }
-      console.log('using owner wrapper', ownerWrapper);
       ownerWrapperTop = ownerWrapper.offsetTop;
       ownerWrapperLeft = ownerWrapper.offsetLeft;
     }
@@ -176,7 +175,6 @@ export default class Modal extends React.Component {
     if( this.props.onClickOutside ){
       this.props.onClickOutside(e);
     }
-    console.log('clieked outside');
   }
 
   render(){
