@@ -2,6 +2,9 @@ import React from 'react';
 import View from '../../package/View';
 import Card from '../../package/Card';
 import Text from '../../package/Text';
+import Title from '../../package/Title';
+import Button from '../../package/Button';
+import PlayArrowIcon from '../../package/icons/PlayArrowIcon';
 import * as babel from 'babel';
 import {exec} from './all';
 
@@ -46,15 +49,51 @@ function clean(src){
   return src;
 }
 
+// Globall function to stop all Doc demos
+// To be used in jsx doc examples to stop/start the example
+let demos = {};
+window.stopDemo = function(){
+  for(let id in demos){
+    demos[id].onStopDemo();
+  }
+}
+
 // Doc renders it's children and the raw source of the children in
 // a little tabbed pane/card so you can see how it is made
 export default class Doc extends React.Component {
 
   static jsx = jsx
 
+  constructor(...args){
+    super(...args);
+    this.state = {};
+    this.id = Math.random().toString();
+  }
+
+  componentDidMount(){
+    demos[this.id] = this;
+  }
+
+  componentWillUnmount(){
+    delete demos[this.id];
+  }
+
+  onStopDemo = () => {
+    this.setState({running: false});
+  }
+
+  run = () => {
+    this.setState({running: true});
+  }
+
   render(){
     let src = clean(this.props.src);
-    let view = compile(src);
+    let view;
+    if( this.props.clickToRun && !this.state.running ){
+      view = <Button icon={PlayArrowIcon} onClick={this.run} />;
+    } else {
+      view = compile(src);
+    }
     let padding = {padding:'2rem'};
     return (
       <Card onClick={this.props.onClick}>

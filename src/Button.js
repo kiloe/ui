@@ -14,7 +14,6 @@ CSS.register({
     WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     outline: 'none',
-    // textAlign: 'center', // will break menuitem
     borderStyle: 'solid',
     borderRadius: 2,
   },

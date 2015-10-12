@@ -1,8 +1,6 @@
 import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
-import Headline from '../../package/Headline';
-import Button from '../../package/Button';
 
 
 export default class Dialogs extends React.Component {
@@ -23,32 +21,52 @@ export default class Dialogs extends React.Component {
 
   render(){
 
-    let doc = <Button label="show dialog" raised onClick={this.show} />;
-    if( this.state.show ){
-      let src = Doc.jsx`
-        <Dialog id="example" shade onClickOutside={hideDialog}>
-          <Title>Modal Dialog</Title>
-          <Text>Any content can appear within a Dialog</Text>
-          <View row>
-            <Dialog id="dialog-in-dialog">
-              <Text>Even Dialogs can be in Dialogs</Text>
-            </Dialog>
-          </View>
-          <View row align="right">
-            <Button label="Cancel" outline subtle onClick={hideDialog} />
-            <Button label="Continue" primary outline subtle onClick={hideDialog} />
-          </View>
-        </Dialog>
-      `;
-      doc = <Doc key="modaldialog" title="Modal Diloag" src={src} onClick={this.hide}>
-        Place a Modal or Dialog anywhere to overlay content.
-      </Doc>;
-    }
+    let data = [
+      {
+        title: 'Dialog',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Dialog id="example" shade onClickOutside={stopDemo}>
+            <Title>Modal Dialog</Title>
+            <Text>Any content can appear within a Dialog</Text>
+            <View row align="right">
+              <Button label="Cancel" outline subtle onClick={stopDemo} />
+              <Button label="Continue" primary outline subtle onClick={stopDemo} />
+            </View>
+          </Dialog>
+        `,
+        info:`
+          Place a Modal or Dialog anywhere to overlay content.
+        `
+      },
+      {
+        title: 'Dialog in Dialog',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Dialog id="outter" shade>
+            <View style={{padding: '10rem'}}>
+              <Text>This is the outter dialog</Text>
+              <Dialog id="inner" onClickOutside={stopDemo}>
+                <Text>This is the inner dialog</Text>
+              </Dialog>
+              <Text>This is the outter dialog</Text>
+              <Text>This is the outter dialog</Text>
+              <Text>This is the outter dialog</Text>
+              <Text>This is the outter dialog</Text>
+              <Text>This is the outter dialog</Text>
+            </View>
+          </Dialog>
+        `,
+        info:`
+          Place a Modal or Dialog anywhere to overlay content.
+        `
+      },
+    ];
+
     return (
       <View scroll>
-        <Headline>Dialogs</Headline>
         <View>
-          {doc}
+          {data.map((x,i) => <Doc key={i} title={x.title} clickToRun={x.clickToRun} src={x.src}>{x.info}</Doc>)}
         </View>
       </View>
     );
