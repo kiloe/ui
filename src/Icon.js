@@ -45,9 +45,8 @@ export default class Icon extends View {
     // The 'intrinsic' size of an icon is to maintain the aspect ratio
     // of the cross-axis ie. if container's height=10 then icon's width=10
     if( this.props.size == 'intrinsic' ){
-      let parent = this.getParent();
-      if( parent ){
-        let parentSize = parent.getSize();
+      if( this.context && this.context.size ){
+        let parentSize = this.context.size;
         if( typeof parentSize == 'number' ){
           return parentSize;
         }
