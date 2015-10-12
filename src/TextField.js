@@ -12,7 +12,7 @@ export default class TextField extends View {
 
   static propTypes = {
     ...View.propTypes,
-    
+
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     name: React.PropTypes.string,
@@ -30,22 +30,23 @@ export default class TextField extends View {
 
   static defaultProps = {
     ...View.defaultProps,
-    value: "",
-    placeholder: "",
+    value: '',
+    placeholder: '',
     multiLine: false,
-    type: "text",
+    type: 'text',
     rows: 1,
     required: false,
   }
 
-  getInitialState() {
-    return {value: ''};
+  constructor(...args){
+    super(...args);
+    this.state = this.state || {};
+    this.state.value = '';
   }
-  
+
   componentDidMount(){
     this.setState({ value: this.props.value });
   }
-
 
   getClassNames(){
     let cs = super.getClassNames();
@@ -53,12 +54,10 @@ export default class TextField extends View {
     return cs;
   }
 
-
   getStyle(){
     let style = super.getStyle();
     return style;
   }
-  
 
   // getIcon returns the icon as an element or undefined if no icon prop
   getIcon(){
@@ -77,31 +76,31 @@ export default class TextField extends View {
     }
     return React.cloneElement(this.props.icon, props);
   }
-  
+
   handleChange(event) {
     this.setState({value: event.target.value});
   }
 
   render(){
     let children = [];
-    
+
     if( this.props.icon ){
       children.push(this.getIcon());
     }
-    
-    children.push( 
-      <input 
-        value={this.state.value} 
-        placeholder={this.props.placeholder} 
+
+    children.push(
+      <input
+        value={this.state.value}
+        placeholder={this.props.placeholder}
         name={this.props.name}
-        type={this.props.type} 
+        type={this.props.type}
         required={this.props.required}
-        maxlength={this.props.maxlength}
+        maxLength={this.props.maxlength}
         onChange={this.handleChange}
         disabled={this.props.disabled}
       />
       );
-    
+
     return super.render(children);
 
   }

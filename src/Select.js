@@ -24,7 +24,7 @@ export default class Select extends MenuItem {
 
   constructor(...args){
     super(...args);
-    this.state.selected = null;
+    this.state = this.state || {};
   }
 
   getClassNames(){

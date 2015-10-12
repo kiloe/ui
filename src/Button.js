@@ -141,7 +141,7 @@ export default class Button extends View {
 
   constructor(...args){
     super(...args);
-    this.menuKey = Math.random().toString(); // unique (ish) key for menu modals
+    this.state = this.state || {};
   }
 
   getRaise(){
