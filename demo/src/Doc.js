@@ -57,7 +57,7 @@ export default class Doc extends React.Component {
     let view = compile(src);
     let padding = {padding:'2rem'};
     return (
-      <Card>
+      <Card onClick={this.props.onClick}>
         <Title>{this.props.title || 'set title prop!'}</Title>
         <View raised style={padding} row>
           {view}

@@ -338,6 +338,9 @@ export default class View extends React.Component {
     if( !shallowEqual(this.state, nextState) ){
       return true;
     }
+    if( this.lastRenderedModalHash != this.currentModalHash ){
+      return true;
+    }
     return false;
   }
 
@@ -794,7 +797,10 @@ export default class View extends React.Component {
       if( !child ){
         return false;
       }
-      if( !child.type || child.type !== Modal ){
+      if( !child.type ){
+        return child;
+      }
+      if( child.type !== Modal && !(child.type.prototype instanceof Modal) ){
         return child;
       }
       if( child.props && child.props.relative ){
@@ -812,6 +818,7 @@ export default class View extends React.Component {
 
   // setModal add a modal to this View's overlay
   setModal(owner, modal){
+    console.log('setModal', modal);
     if( !this.props.scroll && !this.isRoot() ){
       throw new Error('setModals only available to scrolling or root views');
     }
@@ -830,7 +837,6 @@ export default class View extends React.Component {
     if( !this.props.scroll && !this.isRoot() ){
       throw new Error('setModalState only available to scrolling or root views');
     }
-    this.prevModalHash = this.modalHash;
     let modals = [];
     for( let id in this._modals ){
       for( let modal of this._modals[id] ){
@@ -841,23 +847,29 @@ export default class View extends React.Component {
       }
     }
     modals = modals.sort((a,b) => a.props.id > b.props.id);
-    this.modalHash = modals.map((m) => m.props.id).join(':');
-    if( this.prevModalHash != this.modalHash ){
-      this.setStateWhenIdle({modals: modals});
+    console.log('update modals', modals);
+    this.modals = modals.reverse();
+    this.currentModalHash = this.getModalHash(modals);
+    setTimeout(() => {
+      if( this.currentModalHash != this.lastRenderedModalHash ){
+        this.forceUpdate();
+      }
+    },0);
+  }
+
+  getModalHash(modals){
+    if( !modals ){
+      return;
     }
+    return modals.map((m) => m.props.id).join(':');
   }
 
   getModals(){
     if( !this.props.scroll && !this.isRoot() ){
       throw new Error('getModals only available to scrolling or root views');
     }
-    if( !this.state ){
-      return;
-    }
-    if( !this.state.modals ){
-      return;
-    }
-    return this.state.modals;
+    console.log('getModals', this.modals);
+    return this.modals || [];
   }
 
   // clearModal removes modals from this View's overlay
@@ -911,8 +923,10 @@ export default class View extends React.Component {
     // if we are a scrolling thing or root then we need an overlay
     let overlay;
     if( this.props.scroll || this.isRoot() ){
-      overlay = <Overlay key="overlay">
-        {this.getModals()}
+      let modals = this.getModals();
+      this.lastRenderedModalHash = this.getModalHash(modals);
+      overlay = <Overlay key="overlay" >
+        {modals}
       </Overlay>;
     }
     // main

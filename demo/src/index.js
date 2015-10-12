@@ -19,7 +19,8 @@ import FullscreenIcon from '../../package/icons/FullscreenIcon';
 import ColorLensIcon from '../../package/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon';
 import LayersIcon from '../../package/icons/LayersIcon';
-import Modal from '../../package/Modal';
+import Dialog from '../../package/Dialog';
+import Headline from '../../package/Headline';
 
 import Buttons from './Buttons';
 import Palette from './Palette';
@@ -33,6 +34,7 @@ import Typography from './Typography';
 import TextFields from './TextFields';
 import Menus from './Menus';
 import SelectFields from './SelectFields';
+import Dialogs from './Dialogs';
 
 export default class App extends React.Component {
 
@@ -120,6 +122,7 @@ export default class App extends React.Component {
       case 'textfields'   :   return <TextFields />;
       case 'menus'        :   return <Menus />;
       case 'selecfields'  :   return <SelectFields />;
+      case 'dialogs'      :   return <Dialogs />;
     }
   }
 
@@ -132,19 +135,6 @@ export default class App extends React.Component {
     UI.theme.accentPalette = name;
     UI.theme.accentHue = hue;
     this.forceUpdate();
-  }
-
-  getColorWheel(){
-    return <View pad>
-      <View><h1>Color Picker</h1></View>
-      <ColorWheel
-        onPickPrimary={this.onPickPrimary}
-        onPickAccent={this.onPickAccent}
-      />
-      <View row align="right">
-        <Button outline accent label="continue" onClick={this.closeThemePicker} />
-      </View>
-    </View>;
   }
 
   openThemePicker = () => {
@@ -161,9 +151,16 @@ export default class App extends React.Component {
   render(){
     let modal;
     if( this.state.showWheel ){
-      modal = <Modal id="color-wheel" onClickOutside={this.closeThemePicker} shade={true}>
-        {this.getColorWheel()}
-      </Modal>;
+      modal = <Dialog id="color-wheel" onClickOutside={this.closeThemePicker}>
+        <Headline>Color Picker</Headline>
+        <ColorWheel
+          onPickPrimary={this.onPickPrimary}
+          onPickAccent={this.onPickAccent}
+        />
+        <View row align="right">
+          <Button outline accent label="continue" onClick={this.closeThemePicker} />
+        </View>
+      </Dialog>;
     }
     return (
       <View ref="main" modal={modal} row scale={this.state.scale}>
@@ -185,6 +182,7 @@ export default class App extends React.Component {
             <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="SelectFields" onClick={this.open('selecfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
             <View/>
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
             <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />

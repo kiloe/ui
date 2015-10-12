@@ -177,6 +177,10 @@ export default class Modal extends React.Component {
     }
   }
 
+  getContent(){
+    return React.Children.only(this.props.children);
+  }
+
   render(){
     let innerStyle = {};
     let style = {};
@@ -194,10 +198,7 @@ export default class Modal extends React.Component {
         style.backgroundColor = 'rgba(0,0,0,0.2)';
       }
     }
-    let view = React.cloneElement(
-      React.Children.only(this.props.children),
-      {ref:'inner'}
-    );
+    let view = React.cloneElement(this.getContent(),{ref:'inner'});
     return (
       <div ref="wrapper" className="modal" style={style}>
         <div ref="inner" className="inner" style={innerStyle}>{view}</div>
