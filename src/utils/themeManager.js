@@ -289,7 +289,7 @@ export class ThemeManager {
   }
 
   getBorderWidth(){
-    return '0.07142857142857142rem';
+    return '1px';
   }
 
   getFontFamily(){

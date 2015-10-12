@@ -5,8 +5,8 @@ import CSS from './utils/css';
 import Text from './Text';
 
 CSS.register({
-  '.select': {
-    borderBottom: '1px solid black',
+  '.select .alt': {
+    transform: 'scaleY(0.6)',
   },
   '.select.closed > .menuitem': {
   },
@@ -42,6 +42,12 @@ export default class Select extends MenuItem {
       })),
       React.PropTypes.object,
     ])
+  }
+
+  static defaultProps = {
+    ...MenuItem.defaultProps,
+    divider: true,
+    tip: '▼',
   }
 
   constructor(...args){
@@ -206,7 +212,11 @@ export default class Select extends MenuItem {
   }
 
   hasTip(){
-    return false;
+    return true;
+  }
+
+  getTip(){
+    return this.props.tip;
   }
 
 }
