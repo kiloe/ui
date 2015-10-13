@@ -26,8 +26,11 @@ export default class Dialogs extends React.Component {
         title: 'Modal',
         clickToRun: true,
         src: Doc.jsx`
-          <Modal id="modalexample" onClickOutside={stopDemo}>
-            <Text>This is modal content</Text>
+          <Modal id="modalexample" onClickOutside={stopDemo} pos={{bottom:50,right:50}}>
+            <View pad accent>
+              <Text>This is modal content</Text>
+              <Text>Click anywhere to dismiss</Text>
+            </View>
           </Modal>
         `,
         info:`
@@ -39,11 +42,11 @@ export default class Dialogs extends React.Component {
         title: 'Dialog',
         clickToRun: true,
         src: Doc.jsx`
-          <Dialog id="dialogexample" onClickOutside={stopDemo}>
+          <Dialog id="dialogexample">
             <Title>Modal Dialog</Title>
             <Text>Any content can appear within a Dialog</Text>
+            <Divider style={{marginTop:'1rem'}} />
             <View row align="right">
-              <Button label="Cancel" outline subtle onClick={stopDemo} />
               <Button label="Continue" primary outline subtle onClick={stopDemo} />
             </View>
           </Dialog>
@@ -58,17 +61,15 @@ export default class Dialogs extends React.Component {
         clickToRun: true,
         src: Doc.jsx`
           <Dialog id="outter" shade>
-            <View style={{padding: '10rem'}}>
-              <Text>This is the outter dialog</Text>
-              <Dialog id="inner" onClickOutside={stopDemo}>
-                <Text>This inner dialog is displayed on top as it is nested within another dialog</Text>
-              </Dialog>
-              <Text>This is the outter dialog</Text>
-              <Text>This is the outter dialog</Text>
-              <Text>This is the outter dialog</Text>
-              <Text>This is the outter dialog</Text>
-              <Text>This is the outter dialog</Text>
-            </View>
+            <Text>This is the outter dialog</Text>
+            <Dialog id="inner" onClickOutside={stopDemo}>
+              <Text>This inner dialog is displayed on top as it is nested within another dialog</Text>
+            </Dialog>
+            <Text>This is the outter dialog</Text>
+            <Text>This is the outter dialog</Text>
+            <Text>This is the outter dialog</Text>
+            <Text>This is the outter dialog</Text>
+            <Text>This is the outter dialog</Text>
           </Dialog>
         `,
         info:`

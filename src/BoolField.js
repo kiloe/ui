@@ -3,7 +3,7 @@ import View from './View';
 import CSS from './utils/css';
 
 CSS.register({
-  '.switch,.checkbox,.radio': {
+  '.toggle': {
     alignSelf: 'flex-start',
     alignItems: 'center',
   },
@@ -37,7 +37,7 @@ CSS.register({
   '.switch > input:checked + .control .marker': {
     left: '20px',
   },
-  '.checkbox .control': {
+  '.checkbox .control, .radio .control': {
     display: 'none',
   },
   '.checkbox input': {
@@ -68,11 +68,46 @@ CSS.register({
     borderTopStyle: 'none',
     borderRightStyle: 'none',
   },
-  '.checkbox > .text, .switch > .text': {
+  '.radio input': {
+    position: 'relative',
+    cursor: 'pointer',
+    appearance: 'none',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
+    outline: 0,
+    width: '1.2rem',
+    height: '1.2rem',
+    borderRadius: '50%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'black', // XXX: needs settings from theme
+  },
+  '.radio input:before': {
+    content: `''`,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    zIndex: '1',
+    width: '100%',
+    height: '100%',
+    background: 'black', // XXX: needs setting from theme
+    transition: 'all 0.3s ease-in-out',
+    transform: 'scale(0)',
+    transformOrigin: '50% 50%',
+    borderRadius: '50%',
+  },
+  '.radio input:checked:before': {
+    transform: 'scale(0.65)',
+    transformOrigin: '50% 50%',
+  },
+  '.toggle > .text': {
     paddingLeft: '.5rem',
   },
-  '.row > .checkbox + .checkbox': {
+  '.row > .toggle + .toggle': {
     marginLeft: '1rem',
+  },
+  '.col > .toggle + .toggle': {
+    marginTop: '0.5rem',
   },
 
 });
@@ -131,6 +166,8 @@ export default class BoolField extends View {
     cs.toggle = true;
     if( this.props.switch ){
       cs.switch = true;
+    } else if( this.props.radio ){
+      cs.radio = true;
     } else {
       cs.checkbox = true;
     }

@@ -55,6 +55,10 @@ export default class Text extends View {
     if( this.props.color ){
       return this.props.color;
     }
+    let inheritedTheme = this.context ? this.context.theme : {};
+    if( inheritedTheme.paletteMode != 'grey' ){
+      return this.getTheme().getTextColor(false, this.getLayer(), this.getTopLayer());
+    }
     return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer());
   }
 

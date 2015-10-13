@@ -183,7 +183,11 @@ export default class Modal extends React.Component {
   render(){
     let innerStyle = {};
     innerStyle.animationName = 'modalScaleIn';
+    innerStyle.pointerEvents = 'auto';
     let style = {};
+    if( !this.props.shade ){
+      style.pointerEvents = 'none';
+    }
     if( this.props.owner ){ // attached to element (top/left will be set once DOM available)
       style.position = 'absolute';
       style.display = 'block';
@@ -195,6 +199,12 @@ export default class Modal extends React.Component {
       style.position = 'fixed';
       style.top = 0;
       style.left = 0;
+      if( this.props.pos ){
+        innerStyle.position = 'absolute';
+        for(let k in this.props.pos ){
+          innerStyle[k] = this.props.pos[k];
+        }
+      }
       style.width = '100%';
       style.height = '100%';
       if( this.props.shade ){
