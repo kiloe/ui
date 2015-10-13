@@ -12,7 +12,6 @@ CSS.register({
     width: '40px',
     height: '16px',
     borderRadius: '8px',
-    background: 'rgba(0,0,0,0.26)',
     transition: 'background 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
     verticalAlign: 'middle',
     cursor: 'pointer',
@@ -24,7 +23,6 @@ CSS.register({
     left: '-4px',
     width: '24px',
     height: '24px',
-    background: '#fafafa',
     boxShadow: '0 2px 8px rgba(0,0,0,0.28)',
     borderRadius: '50%',
     transition: 'left 0.28s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -43,11 +41,6 @@ export default class Switch extends View {
     super(...args);
     this.state = this.state || {};
     this.state.value = this.getInitialValue();
-  }
-
-  componentWillReceiveProps(nextProps){
-    super.componentWillReceiveProps(nextProps);
-    this.state.value = this.getInitialValue(nextProps);
   }
 
   getInitialValue(nextProps){
@@ -88,16 +81,21 @@ export default class Switch extends View {
   render(){
     let fid = this.getFieldId();
     let checked = this.getValue();
-    let labelStyle = {};
+    let trackStyle = {};
     let knobStyle = {}; //hehe
+    let isLight = this.getThemeMode() == 'light';
     if( checked ){
       let theme = this.getTheme({paletteMode:'primary'});
-      labelStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), theme.getMode()=='light' ? -2 : 2);
-      knobStyle.background = theme.getBackgroundColor(false, this.getLayer()+1, this.getTopLayer());
+      trackStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? -2 : 1);
+      knobStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer());
+    } else {
+      let theme = this.getTheme();
+      trackStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 3 : -2);
+      knobStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 0 : -1);
     }
     return super.render([
       <input id={fid} type="checkbox" hidden="hidden" checked={this.getValue()} onChange={this.onChange} />,
-      <label htmlFor={fid} style={labelStyle}>
+      <label htmlFor={fid} style={trackStyle}>
         <span className="knob" style={knobStyle} ></span>
       </label>
     ]);
