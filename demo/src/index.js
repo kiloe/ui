@@ -34,7 +34,7 @@ import Typography from './Typography';
 import TextFields from './TextFields';
 import Menus from './Menus';
 import SelectFields from './SelectFields';
-import ToggleFields from './ToggleFields';
+import BoolFields from './BoolFields';
 import Dialogs from './Dialogs';
 
 export default class App extends React.Component {
@@ -122,7 +122,7 @@ export default class App extends React.Component {
       case 'typography'   :   return <Typography />;
       case 'textfields'   :   return <TextFields />;
       case 'selecfields'  :   return <SelectFields />;
-      case 'togglefields' :   return <ToggleFields />;
+      case 'boolfields'   :   return <BoolFields />;
       case 'menus'        :   return <Menus />;
       case 'dialogs'      :   return <Dialogs />;
     }
@@ -181,9 +181,9 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Progress" onClick={this.open('progress')} />
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
-            <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
-            <Button icon={<MoreVertIcon/>} align="left" label="SelectFields" onClick={this.open('selecfields')}/>
-            <Button icon={<MoreVertIcon/>} align="left" label="ToggleFields" onClick={this.open('togglefields')}/>
+            <Button icon={<TextFormatIcon/>} align="left" label="Text Fields" onClick={this.open('textfields')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Select Fields" onClick={this.open('selecfields')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Bool Fields" onClick={this.open('boolfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
             <View/>

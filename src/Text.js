@@ -102,7 +102,10 @@ export default class Text extends View {
         <span className="after" style={contentStyle}/>;
       </div>);
     }
-    return super.render(<div className="content">{this.props.children}</div>);
+    let Tag = this.props.htmlFor ? React.DOM.label : React.DOM.div;
+    return super.render(
+      Tag({className: 'content', htmlFor: this.props.htmlFor}, this.props.children)
+    );
   }
 
 
