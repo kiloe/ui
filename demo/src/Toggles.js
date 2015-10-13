@@ -52,6 +52,19 @@ export default class Toggles extends React.Component {
           Round Toggles are often prefured for 'radio' buttons (see Select)
         `
       },
+      {
+        title: 'Icon Toggle',
+        src: Doc.jsx`
+          <View row>
+            <Toggle icon={CloudIcon} />
+            <Toggle icon={StarIcon} />
+            <Toggle icon={FavoriteIcon} />
+          </View>
+        `,
+        info:`
+          Set an icon to use it as a toggle switch.
+        `
+      },
     ];
     return (
       <View scroll>

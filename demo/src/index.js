@@ -183,7 +183,7 @@ export default class App extends React.Component {
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="Text Fields" onClick={this.open('textfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Select Fields" onClick={this.open('selecfields')}/>
-            <Button icon={<MoreVertIcon/>} align="left" label="Bool Fields" onClick={this.open('toggles')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Toggle Fields" onClick={this.open('toggles')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
             <View/>

@@ -144,7 +144,7 @@ export default class Toggle extends View {
   }
 
   getValue(){
-    if( this.props.checked != 'undefined' ){
+    if( typeof this.props.checked != 'undefined' ){
       return this.props.checked;
     }
     return this.state.value;
@@ -189,14 +189,44 @@ export default class Toggle extends View {
     return this._fid;
   }
 
+  getIcon(){
+    return this.props.icon;
+  }
+
+  hasIcon(){
+    return !!this.props.icon;
+  }
+
+  // getIcon returns the icon as an element or undefined if no icon prop
+  getIconContent(){
+    let props = {
+      key:'icon',
+      size:'intrinsic',
+      outline: true,
+      subtle: true,
+      color: this.getTextColor(),
+    };
+    if( this.getValue() ){
+      let theme = this.getTheme({paletteMode:'primary'});
+      props.color = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer());
+      props.outline = false;
+    }
+    let Icon = this.getIcon();
+    if( Icon instanceof Function ){
+      return <Icon {...props} />;
+    }
+    return React.cloneElement(Icon, props);
+  }
+
   render(){
     let fid = this.getFieldId();
     let checked = this.getValue();
     let controlStyle = {};
     let markerStyle = {}; //hehe
     let isLight = this.getThemeMode() == 'light';
-    let hideInput = this.props.switch ? 'hidden' : undefined;
+    let hideInput = this.props.switch || this.hasIcon() ? 'hidden' : undefined;
     if( checked && !this.props.disabled ){
+      console.log('checked');
       let theme = this.getTheme({paletteMode:'primary'});
       controlStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? -2 : 1);
       markerStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer());
@@ -205,12 +235,16 @@ export default class Toggle extends View {
       controlStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 3 : -2);
       markerStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 0 : -1);
     }
+    let control = <label htmlFor={fid} className="control" style={controlStyle}>
+      <span className="marker" style={markerStyle} ></span>
+    </label>;
+    if( this.hasIcon() ){
+      control = <label htmlFor={fid}>{this.getIconContent()}</label>;
+    }
     let children = [
       <View row style={{overflow:'visible'}} size="intrinsic">
         <input id={fid} type="checkbox" hidden={hideInput} checked={this.getValue()} onChange={this.onChange} />
-        <label htmlFor={fid} className="control" style={controlStyle}>
-          <span className="marker" style={markerStyle} ></span>
-        </label>
+        {control}
       </View>
     ];
     if( this.props.label ){
