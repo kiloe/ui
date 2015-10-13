@@ -589,8 +589,12 @@ export default class View extends React.Component {
   }
 
   // getTheme returns the merged palette.
-  getTheme(){
-    return new ThemeManager(this.getThemeConfig());
+  getTheme(overrides){
+    let cfg = this.getThemeConfig();
+    if( overrides ){
+      cfg = {...cfg, ...overrides};
+    }
+    return new ThemeManager(cfg);
   }
 
   getTopLayer(){

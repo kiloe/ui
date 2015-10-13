@@ -105,13 +105,9 @@ export class ThemeManager {
   getBackgroundColor( hue, layer, topLayer, hueOffset = 0 ) {
     if ( this.cfg.mode == 'transparent' ) return this.getTransparent(); //XXX: Still not sure about the 'transparent' mode
 
-    let color = this._getBackgroundColorObjectWithSwitch( hue, layer, topLayer );
+    let color = this._getBackgroundColorObject( hue, layer, topLayer );
 
     return this.getColorFromPalette( color.palette, color.hue, color.alpha, hueOffset );
-  }
-
-  _getBackgroundColorObjectWithSwitch( hue, layer, topLayer ) {
-    return this._getBackgroundColorObject( hue, layer, topLayer );
   }
 
   _getBackgroundColorObject( hue, layer, topLayer ) {

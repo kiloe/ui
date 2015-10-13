@@ -34,6 +34,7 @@ import Typography from './Typography';
 import TextFields from './TextFields';
 import Menus from './Menus';
 import SelectFields from './SelectFields';
+import ToggleFields from './ToggleFields';
 import Dialogs from './Dialogs';
 
 export default class App extends React.Component {
@@ -120,8 +121,9 @@ export default class App extends React.Component {
       case 'layers'       :   return <Layers />;
       case 'typography'   :   return <Typography />;
       case 'textfields'   :   return <TextFields />;
-      case 'menus'        :   return <Menus />;
       case 'selecfields'  :   return <SelectFields />;
+      case 'togglefields' :   return <ToggleFields />;
+      case 'menus'        :   return <Menus />;
       case 'dialogs'      :   return <Dialogs />;
     }
   }
@@ -181,6 +183,7 @@ export default class App extends React.Component {
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="TextFields" onClick={this.open('textfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="SelectFields" onClick={this.open('selecfields')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="ToggleFields" onClick={this.open('togglefields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
             <View/>
