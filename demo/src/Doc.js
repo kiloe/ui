@@ -2,7 +2,6 @@ import React from 'react';
 import View from '../../package/View';
 import Card from '../../package/Card';
 import Text from '../../package/Text';
-import Title from '../../package/Title';
 import Button from '../../package/Button';
 import PlayArrowIcon from '../../package/icons/PlayArrowIcon';
 import * as babel from 'babel';
@@ -56,7 +55,7 @@ window.stopDemo = function(){
   for(let id in demos){
     demos[id].onStopDemo();
   }
-}
+};
 
 // Doc renders it's children and the raw source of the children in
 // a little tabbed pane/card so you can see how it is made
@@ -97,7 +96,7 @@ export default class Doc extends React.Component {
     let padding = {padding:'2rem'};
     return (
       <Card onClick={this.props.onClick}>
-        <Title>{this.props.title || 'set title prop!'}</Title>
+        <Text title>{this.props.title || 'set title prop!'}</Text>
         <View raised style={padding} row>
           {view}
         </View>

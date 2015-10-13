@@ -42,6 +42,16 @@ export default class Text extends View {
     color: React.PropTypes.string,
     // subtle makes the text more muted, it's basically a shortcut for setting theme={textMode:'secondary'}
     subtle: React.PropTypes.bool,
+    // display makes the text almost unusably large
+    display: React.PropTypes.bool,
+    // headline is larger than title, it's for things like page headings
+    headline: React.PropTypes.bool,
+    // title marks the text as a title and sets the size accordingly
+    title: React.PropTypes.bool,
+    // subheading is a bit smaller than title
+    subheading: React.PropTypes.bool,
+    // hint is very small
+    hint: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -73,6 +83,29 @@ export default class Text extends View {
       cs.clamp = true;
     }
     return cs;
+  }
+
+  getSizeMultiplier(){
+    if( this.props.display ){
+      return 5;
+    }
+    if( this.props.headline ){
+      return 2.4;
+    }
+    if( this.props.title ){
+      return 1.5;
+    }
+    if( this.props.subheading ){
+      return 1.1;
+    }
+    if( this.props.hint ){
+      return 0.8;
+    }
+    return 1;
+  }
+
+  getFontSize(){
+    return super.getFontSize() * this.getSizeMultiplier();
   }
 
   getStyle(){

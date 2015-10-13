@@ -20,7 +20,6 @@ import ColorLensIcon from '../../package/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon';
 import LayersIcon from '../../package/icons/LayersIcon';
 import Dialog from '../../package/Dialog';
-import Headline from '../../package/Headline';
 
 import Buttons from './Buttons';
 import Palette from './Palette';
@@ -154,7 +153,7 @@ export default class App extends React.Component {
     let modal;
     if( this.state.showWheel ){
       modal = <Dialog id="color-wheel" onClickOutside={this.closeThemePicker}>
-        <Headline>Color Picker</Headline>
+        <Text headline>Color Picker</Text>
         <ColorWheel
           onPickPrimary={this.onPickPrimary}
           onPickAccent={this.onPickAccent}
@@ -196,7 +195,7 @@ export default class App extends React.Component {
         <View onClickCapture={this.clickBody.bind(this)}>
           <Toolbar primary={'600'}>
             <Button onClick={this.toggleMenu.bind(this)} icon={<MenuIcon/>} />
-            <View>Title</View>
+            <View>KUI</View>
             <Button onClick={this.scaleUp.bind(this)} icon={<ZoomInIcon/>} tip="Scale up"/>
             <Button onClick={this.scaleDown.bind(this)} icon={<ZoomOutIcon/>} tip="Scale down"/>
             <Button onClick={this.openThemePicker} icon={<FormatPaintIcon/>} tip="Pick theme"/>

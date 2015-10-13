@@ -5,9 +5,7 @@ import ListItem from '../../package/ListItem';
 import Divider from '../../package/Divider';
 import Avatar from '../../package/Avatar';
 import Button from '../../package/Button';
-import Title from '../../package/Title';
 import Text from '../../package/Text';
-import Summary from '../../package/Summary';
 import ChatBubbleIcon from '../../package/icons/ChatBubbleIcon';
 import StarIcon from '../../package/icons/StarIcon';
 
@@ -39,67 +37,67 @@ export default class ListDemo extends React.Component {
         <View row style={{ justifyContent: 'space-around' }}>
 
           <List raised style={listStyle}>
-            <ListItem left={<StarIcon accent size={1.6} />} right={Avatar1}><Title lines={1}>Janet Perkins</Title></ListItem>
-            <ListItem left={1.6} right={Avatar2}><Title lines={1}>Mary Johnson</Title></ListItem>
-            <ListItem left={1.6} right={Avatar1}><Title lines={1}>Peter Carlsson</Title></ListItem>
-            <ListItem left={1.6} right={Avatar2}><Title lines={1}>Trevor Hansen</Title></ListItem>
+            <ListItem left={<StarIcon accent size={1.6} />} right={Avatar1}><Text subheading lines={1}>Janet Perkins</Text></ListItem>
+            <ListItem left={1.6} right={Avatar2}><Text title lines={1}>Mary Johnson</Text></ListItem>
+            <ListItem left={1.6} right={Avatar1}><Text title lines={1}>Peter Carlsson</Text></ListItem>
+            <ListItem left={1.6} right={Avatar2}><Text title lines={1}>Trevor Hansen</Text></ListItem>
           </List>
 
           <List raised style={listStyle}>
             <ListItem left={Avatar2}>
-              <Title lines={1} tip="Look at me, I'm Chris Ward">Chris Ward</Title>
-              <Summary lines={1}>He's alright, I suppose. This is a single line but the text is much longer, see? Yeah!!!!!!!!</Summary>
+              <Text title lines={1} tip="Look at me, I'm Chris Ward">Chris Ward</Text>
+              <Text lines={1}>He's alright, I suppose. This is a single line but the text is much longer, see? Yeah!!!!!!!!</Text>
             </ListItem>
             <ListItem left={Avatar1}>
-              <Title lines={1}>Chris Ward</Title>
-              <Summary lines={2}>He's alright, I suppose. This is a DOUBLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Summary>
+              <Text title lines={1}>Chris Ward</Text>
+              <Text lines={2}>He's alright, I suppose. This is a DOUBLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Text>
             </ListItem>
             <ListItem left={Avatar2}>
-              <Title lines={1}>Chris Ward</Title>
-              <Summary lines={3}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Summary>
+              <Text title lines={1}>Chris Ward</Text>
+              <Text lines={3}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Text>
             </ListItem>
             <ListItem left={Avatar1} right={<Button subtle icon={ChatBubbleIcon}/>}>
-              <Title>Chris Farmiloe</Title>
+              <Text title>Chris Farmiloe</Text>
               <Text>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</Text>
             </ListItem>
             <ListItem left={Avatar2} right={<Button subtle icon={ChatBubbleIcon}/>}>
-              <Title lines={1}>Chris Ward</Title>
-              <Summary lines={1}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Summary>
+              <Text title lines={1}>Chris Ward</Text>
+              <Text lines={1}>He's alright, I suppose. This is a TRIPLE line but the text is much longer, see? Yeah!!!!!!!! What else shall I write here? What else shall I write here? What else shall I write here? What else shall I write here?</Text>
             </ListItem>
             <ListItem left={Avatar1} right={<Button subtle icon={ChatBubbleIcon}/>}>
-              <Title>Chris Farmiloe</Title>
-              <Summary>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</Summary>
+              <Text title>Chris Farmiloe</Text>
+              <Text>Who? This should wrap over to as many lines as it needs. How about this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this? And this?</Text>
             </ListItem>
             <Divider style={div} />
             <ListItem left={Avatar2}>
-              <Title>Chris Ward</Title>
+              <Text title>Chris Ward</Text>
             </ListItem>
             <ListItem left={Avatar1}>
-              <Title>Chris Farmiloe</Title>
+              <Text title>Chris Farmiloe</Text>
             </ListItem>
             <Divider style={div} />
             <ListItem left={Avatar2}>
-              <Title>Chris Ward</Title>
+              <Text title>Chris Ward</Text>
             </ListItem>
             <ListItem left={Avatar1}>
-              <Title>Chris Farmiloe</Title>
+              <Text title>Chris Farmiloe</Text>
             </ListItem>
           </List>
 
           <List raised style={listStyle}>
-            <ListItem><Summary style={{ fontWeight: 'bold' }}>Recent chat</Summary></ListItem>
-            <ListItem left={Avatar1} right={<Button accent subtle icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Janet Perkins</Title></ListItem>
-            <ListItem left={Avatar2} right={<Button accent subtle disabled icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Mary Johnson</Title></ListItem>
-            <ListItem left={Avatar1} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Jeff Jefferson</Title></ListItem>
-            <ListItem left={3.5} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Jeff Jefferson</Title></ListItem>
-            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Jeff Jefferson</Title></ListItem>
-            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Title lines={1}>Jeff Jefferson</Title></ListItem>
+            <ListItem><Text style={{ fontWeight: 'bold' }}>Recent chat</Text></ListItem>
+            <ListItem left={Avatar1} right={<Button accent subtle icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Janet Perkins</Text></ListItem>
+            <ListItem left={Avatar2} right={<Button accent subtle disabled icon={<ChatBubbleIcon/>} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Mary Johnson</Text></ListItem>
+            <ListItem left={Avatar1} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Jeff Jefferson</Text></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Jeff Jefferson</Text></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Jeff Jefferson</Text></ListItem>
+            <ListItem left={3.5} right={<Button accent subtle disabled icon={ChatBubbleIcon} onClick={this.secondaryClick.bind(this)}/>} onClick={this.primaryClick.bind(this)}><Text title lines={1}>Jeff Jefferson</Text></ListItem>
             <Divider/>
-            <ListItem><Summary style={{ fontWeight: 'bold' }}>Previous chats</Summary></ListItem>
-            <ListItem left={Avatar1}><Title lines={1}>Janet Perkins</Title></ListItem>
-            <ListItem left={3.5} left={Avatar2}><Title lines={1}>Mary Johnson</Title></ListItem>
-            <ListItem left={1.6} left={Avatar1}><Title lines={1}>Peter Carlsson</Title></ListItem>
-            <ListItem left={1.6} left={Avatar2}><Title lines={1}>Trevor Hansen</Title></ListItem>
+            <ListItem><Text style={{ fontWeight: 'bold' }}>Previous chats</Text></ListItem>
+            <ListItem left={Avatar1}><Text title lines={1}>Janet Perkins</Text></ListItem>
+            <ListItem left={3.5} left={Avatar2}><Text title lines={1}>Mary Johnson</Text></ListItem>
+            <ListItem left={1.6} left={Avatar1}><Text title lines={1}>Peter Carlsson</Text></ListItem>
+            <ListItem left={1.6} left={Avatar2}><Text title lines={1}>Trevor Hansen</Text></ListItem>
           </List>
 
         </View>

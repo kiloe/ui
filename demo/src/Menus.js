@@ -1,7 +1,6 @@
 import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
-import Headline from '../../package/Headline';
 
 
 export default class MenusDemo extends React.Component {
@@ -144,7 +143,6 @@ export default class MenusDemo extends React.Component {
     ];
     return (
       <View scroll>
-        <Headline>Menus</Headline>
         <View>
           {data.map((x,i) => <Doc key={i} title={x.title} src={x.src}>{x.info}</Doc>)}
         </View>

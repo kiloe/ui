@@ -1,7 +1,6 @@
 import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
-import Headline from '../../package/Headline';
 
 
 export default class TextFieldDemo extends React.Component {
@@ -72,14 +71,13 @@ export default class TextFieldDemo extends React.Component {
     ];
     return (
       <View scroll>
-        <Headline>Text Fields</Headline>
         <View>
           {data.map((x,i) => <Doc key={i} title={x.title} src={x.src}>{x.info}</Doc>)}
         </View>
       </View>
     );
   }
-  
-  
+
+
 }
 
