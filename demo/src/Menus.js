@@ -131,6 +131,7 @@ export default class MenusDemo extends React.Component {
                 <MenuItem label="Paragraph spacing before" tip="1.2" />
                 <MenuItem label="Paragraph spacing after" tip="1.5" />
               </MenuItem>
+              <Divider />
               <MenuItem label="Add space before paragraph" />
               <MenuItem label="Add space after paragraph" />
             </MenuItem>

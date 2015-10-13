@@ -79,6 +79,15 @@ export default class SelectFields extends React.Component {
           Set value to a value to have it pre-selected.
         `
       },
+      {
+        title: 'Select with lots of values',
+        src: Doc.jsx`
+          <Select required options={Array.apply(0, Array(100)).map((_,i) => i+'')} value="50"/>
+        `,
+        info:`
+          Select option should appear over the selectbox when expanded.
+        `
+      },
     ];
     return (
       <View scroll>

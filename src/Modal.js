@@ -18,6 +18,8 @@ CSS.register({
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     animationFillMode: 'forwards',
     transformOrigin: '50% 50%',
+    // maxHeight: '100vh',
+    // maxWidth: '100vw',
   },
   '@keyframes modalScaleIn': `
     0% {
@@ -76,15 +78,16 @@ export default class Modal extends React.Component {
 
   // move the modal wrapper to the correct place
   updatePosition(){
-    let style = this.refs.wrapper.style;
+    let ownerNode = this.getOwnerNode();
+    let wrapper = this.refs.wrapper;
     let pos = this.getPosition();
     for(let k in pos){
-      style[k] = pos[k] + 'px';
+      wrapper.style[k] = pos[k] + 'px';
     }
+    // if onscuring then make sure we completely cover the owner
     if( this.props.obscure ){
-      let ownerNode = this.getOwnerNode();
       if( ownerNode ){
-        this.refs.inner.style.minWidth = ownerNode.offsetWidth + 'px';
+        this.refs.inner.firstChild.style.minWidth = ownerNode.offsetWidth + 'px';
       }
     }
   }
@@ -198,10 +201,11 @@ export default class Modal extends React.Component {
         style.backgroundColor = 'rgba(0,0,0,0.2)';
       }
     }
-    let view = React.cloneElement(this.getContent(),{ref:'inner'});
     return (
       <div ref="wrapper" className="modal" style={style}>
-        <div ref="inner" className="inner" style={innerStyle}>{view}</div>
+        <div ref="inner" className="inner" style={innerStyle}>
+          {this.getContent()}
+        </div>
       </div>
     );
   }

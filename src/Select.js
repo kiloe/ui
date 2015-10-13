@@ -60,6 +60,64 @@ export default class Select extends MenuItem {
     this.state.selected = this.getInitialValue(nextProps);
   }
 
+  gotSelectedRef(ref){
+    this._selected = ref;
+    if( !this._selected ){
+      return;
+    }
+    if( this._menu ){
+      this.gotSelectedAndMenuRefs();
+    }
+  }
+
+  gotMenuRef(ref){
+    this._menu = ref;
+    if( !this._menu ){
+      return;
+    }
+    if( this._selected ){
+      this.gotSelectedAndMenuRefs();
+    }
+  }
+
+  getOptionCount(){
+    return this.getOptionData().reduce((n,group) => {
+      return n + group.options.length;
+    },0);
+  }
+
+  gotSelectedAndMenuRefs(){
+    // If the list is really long then shift it around so that it fits on the
+    // screen with the selected item under the position.
+    //
+    // XXX: this entire thing is basically wrong and needs alot of work...
+    //
+    if( this.getOptionCount() > 10 ){
+      setTimeout(() => {
+        // shift menu so that the selected item is directly over the selectbox
+        let modal = this._menu.refs.view.parentNode.parentNode;
+        let selectedNode = this._selected.refs.view;
+        let scroll = this.getScrollParent().refs.view;
+        let viewableHeight = scroll.offsetHeight - 40;
+        let modalHeight = modal.offsetHeight;
+        if( modalHeight > viewableHeight ){
+          modalHeight = viewableHeight;
+          this._menu.refs.view.parentNode.style.height = (modalHeight) + 'px';
+          this._menu.refs.view.style.overflow = 'auto';
+        }
+        let shiftY = (modal.offsetTop + modalHeight) - (scroll.scrollTop + viewableHeight);
+        if( shiftY > 0 ){
+          modal.style.top = (modal.offsetTop - shiftY + 20) + 'px';
+          modal.style.overflowY = 'scroll';
+          modal.style.margin = '4px'; // keep raise
+        }
+        setTimeout(() => {
+          modal.scrollTop = selectedNode.offsetTop - shiftY;
+        },1);
+      },1);
+    }
+  }
+
   getClassNames(){
     let cs = super.getClassNames();
     cs.select = true;
@@ -172,6 +230,7 @@ export default class Select extends MenuItem {
         let checked = selectedValue == opt.value;
         items.push(<SelectItem
           key={opt.key}
+          ref={checked ? this.gotSelectedRef.bind(this) : undefined}
           checked={checked}
           label={opt.key}
           onClick={this.select.bind(this,opt)}
@@ -182,8 +241,10 @@ export default class Select extends MenuItem {
   }
 
   getMenu(){
+    this._menu = null;
+    this._selected = null;
     return (
-      <Menu parent={this}>
+      <Menu parent={this} ref={this.gotMenuRef.bind(this)}>
         {this.getItems()}
       </Menu>
     );

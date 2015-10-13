@@ -118,7 +118,7 @@ export default class MenuItem extends Button {
 
   getTip(){
     if( this.hasMenu() ){
-      return `▶`;
+      return <div style={{transform:'scaleX(0.6)'}}>▶</div>;
     }
     return super.getTip();
   }
