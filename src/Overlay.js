@@ -1,7 +1,7 @@
 import React from 'react';
 import CSS from './utils/css';
 import ReactDOM from 'react-dom';
-import shallowEqual from 'fbjs/lib/shallowEqual';
+import shallowEqual from './utils/shallowEqual';
 
 // Overlay
 CSS.register({

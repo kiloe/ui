@@ -13,7 +13,8 @@
   "license": "MIT",
   "peerDependencies": {
     "react": ">=0.14.0",
-    "react-dom": ">=0.14.0"
+    "react-dom": ">=0.14.0",
+    "react-addons-shallow-compare": ">=0.14.0"
   },
   "devDependencies": {
     "babel": "^5.8.21",
@@ -26,8 +27,7 @@
     "react": "^0.14.0",
     "react-addons-shallow-compare": "^0.14.0",
     "react-addons-test-utils": "^0.14.0-beta3",
-    "react-dom": "^0.14.0",
-    "watchify": "^3.4.0"
+    "react-dom": "^0.14.0"
   },
   "dependencies": {
     "classnames": "^2.1.5"

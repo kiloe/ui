@@ -6,6 +6,7 @@ CSS.register({
   '.view.icon': {
     position: 'relative',
     alignItems: 'center',
+    overflow: 'visible',
   }
 });
 

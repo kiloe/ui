@@ -1,5 +1,5 @@
 import React from 'react';
-import shallowEqual from 'fbjs/lib/shallowEqual';
+import shallowEqual from './utils/shallowEqual';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
 import {defaultTheme,ThemeManager} from './utils/themeManager';

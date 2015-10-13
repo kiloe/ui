@@ -226,7 +226,6 @@ export default class Toggle extends View {
     let isLight = this.getThemeMode() == 'light';
     let hideInput = this.props.switch || this.hasIcon() ? 'hidden' : undefined;
     if( checked && !this.props.disabled ){
-      console.log('checked');
       let theme = this.getTheme({paletteMode:'primary'});
       controlStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? -2 : 1);
       markerStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer());

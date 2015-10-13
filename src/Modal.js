@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CSS from './utils/css';
-import shallowEqual from 'fbjs/lib/shallowEqual';
+import shallowEqual from './utils/shallowEqual';
 
 // Modal
 

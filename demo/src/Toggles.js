@@ -55,10 +55,10 @@ export default class Toggles extends React.Component {
       {
         title: 'Icon Toggle',
         src: Doc.jsx`
-          <View row>
-            <Toggle icon={CloudIcon} />
-            <Toggle icon={StarIcon} />
-            <Toggle icon={FavoriteIcon} />
+          <View>
+            <Toggle icon={CloudIcon} label="Enable Clouds" />
+            <Toggle icon={StarIcon} label="Star this" />
+            <Toggle icon={FavoriteIcon} label="Heart that" />
           </View>
         `,
         info:`
