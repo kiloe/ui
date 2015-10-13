@@ -3,7 +3,7 @@ import MenuItem from './MenuItem';
 import SelectItem from './SelectItem';
 import CSS from './utils/css';
 import Text from './Text';
-import BoolField from './BoolField';
+import Toggle from './Toggle';
 
 CSS.register({
   '.select .alt': {
@@ -220,7 +220,7 @@ export default class Select extends MenuItem {
     let items = [];
     let data = this.getOptionData();
     let grouped = data.length > 1;
-    let Item = this.props.radio ? BoolField : SelectItem;
+    let Item = this.props.radio ? Toggle : SelectItem;
     if( !this.props.required ){
       items.push(<Item
         key="__none"

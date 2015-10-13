@@ -10,7 +10,7 @@ CSS.register({
   '.switch': {
     overflow: 'visible',
   },
-  '.switch > .control': {
+  '.switch .control': {
     display: 'inline-block',
     position: 'relative',
     width: '40px',
@@ -20,7 +20,7 @@ CSS.register({
     verticalAlign: 'middle',
     cursor: 'pointer',
   },
-  '.switch > .control .marker': {
+  '.switch .control .marker': {
     content: `''`,
     position: 'absolute',
     top: '-4px',
@@ -31,13 +31,13 @@ CSS.register({
     borderRadius: '50%',
     transition: 'left 0.28s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
   },
-  '.switch > .control:active .marker': {
+  '.switch .control:active .marker': {
     boxShadow: '0 2px 8px rgba(0,0,0,0.28), 0 0 0 20px rgba(128,128,128,0.1)',
   },
-  '.switch > input:checked + .control .marker': {
+  '.switch input:checked + .control .marker': {
     left: '20px',
   },
-  '.checkbox .control, .radio .control': {
+  '.checkbox .control, .round .control': {
     display: 'none',
   },
   '.checkbox input': {
@@ -68,7 +68,7 @@ CSS.register({
     borderTopStyle: 'none',
     borderRightStyle: 'none',
   },
-  '.radio input': {
+  '.round input': {
     position: 'relative',
     cursor: 'pointer',
     appearance: 'none',
@@ -82,7 +82,7 @@ CSS.register({
     borderWidth: 1,
     borderColor: 'black', // XXX: needs settings from theme
   },
-  '.radio input:before': {
+  '.round input:before': {
     content: `''`,
     position: 'absolute',
     left: 0,
@@ -96,7 +96,7 @@ CSS.register({
     transformOrigin: '50% 50%',
     borderRadius: '50%',
   },
-  '.radio input:checked:before': {
+  '.round input:checked:before': {
     transform: 'scale(0.65)',
     transformOrigin: '50% 50%',
   },
@@ -113,7 +113,7 @@ CSS.register({
 });
 
 
-export default class BoolField extends View {
+export default class Toggle extends View {
 
   static propTypes = {
     ...View.propTypes,
@@ -166,8 +166,8 @@ export default class BoolField extends View {
     cs.toggle = true;
     if( this.props.switch ){
       cs.switch = true;
-    } else if( this.props.radio ){
-      cs.radio = true;
+    } else if( this.props.round ){
+      cs.round = true;
     } else {
       cs.checkbox = true;
     }
@@ -206,7 +206,7 @@ export default class BoolField extends View {
       markerStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 0 : -1);
     }
     let children = [
-      <View row>
+      <View row style={{overflow:'visible'}} size="intrinsic">
         <input id={fid} type="checkbox" hidden={hideInput} checked={this.getValue()} onChange={this.onChange} />
         <label htmlFor={fid} className="control" style={controlStyle}>
           <span className="marker" style={markerStyle} ></span>

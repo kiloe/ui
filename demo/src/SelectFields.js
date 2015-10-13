@@ -29,7 +29,7 @@ export default class SelectFields extends React.Component {
       {
         title: 'Select with Object options',
         src: Doc.jsx`
-          <Select placeholder="Select Language" options={{
+          <Select placeholder="Select Language" value="es" options={{
             English: 'en',
             French: 'fr',
             Spanish: 'es',
