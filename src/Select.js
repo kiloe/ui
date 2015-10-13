@@ -59,10 +59,6 @@ export default class Select extends MenuItem {
     this.state.selected = this.getInitialValue();
   }
 
-  componentWillReceiveProps(nextProps){
-    this.state.selected = this.getInitialValue(nextProps);
-  }
-
   gotSelectedRef(ref){
     this._selected = ref;
     if( !this._selected ){
@@ -128,6 +124,9 @@ export default class Select extends MenuItem {
       cs.open = true;
     } else {
       cs.closed = true;
+    }
+    if( this.props.radio ){
+      delete cs.button;
     }
     return cs;
   }
@@ -198,8 +197,11 @@ export default class Select extends MenuItem {
 
   getInitialValue(nextProps){
     let v = (this.props || nextProps || {}).value;
-    if( typeof v == 'string' ){
-      v = {key:v, value:v};
+    if( typeof v == 'undefined' ){
+      return null;
+    }
+    if( typeof v != 'object' ){
+      v = {value:v};
     }
     return v;
   }
@@ -213,10 +215,7 @@ export default class Select extends MenuItem {
   }
 
   getItems(){
-    let selectedValue = null;
-    if( this.state.selected && typeof this.state.selected.value != 'undefined' ){
-      selectedValue = this.state.selected.value;
-    }
+    let selectedValue = this.getValue();
     let items = [];
     let data = this.getOptionData();
     let grouped = data.length > 1;
@@ -259,6 +258,13 @@ export default class Select extends MenuItem {
     );
   }
 
+  getTabIndex(){
+    if( this.props.radio ){
+      return;
+    }
+    return super.getTabIndex();
+  }
+
   getMenuConfig(){
     return {
       obscure: true,
@@ -266,9 +272,25 @@ export default class Select extends MenuItem {
     };
   }
 
+  getKeyForValue(v){
+    let opts = this.getOptionData();
+    for( let group of opts ){
+      for( let option of group.options  ){
+        if( option.value === v ){
+          return option.key;
+        }
+      }
+    }
+    console.warn(`Select value does not have an associated key for ${v}`, opts);
+    return v;
+  }
+
   getLabel(){
     if( this.state.selected ){
-      return this.state.selected.key;
+      if( this.state.selected.key ){
+        return this.state.selected.key;
+      }
+      return this.getKeyForValue(this.state.selected.value);
     }
     return this.props.placeholder || 'Choose...';
   }
