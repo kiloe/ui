@@ -3,6 +3,10 @@ import View from './View';
 import CSS from './utils/css';
 
 CSS.register({
+  '.switch,.checkbox,.radio': {
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+  },
   '.switch': {
     overflow: 'visible',
   },
@@ -43,8 +47,8 @@ CSS.register({
     WebkitAppearance: 'none',
     MozAppearance: 'none',
     outline: 0,
-    width: '1rem',
-    height: '1rem',
+    width: '1.2rem',
+    height: '1.2rem',
   },
   '.checkbox input:before': {
     content: `''`,
@@ -59,13 +63,16 @@ CSS.register({
     transition: 'all 0.3s ease-in-out',
   },
   '.checkbox input:checked:before': {
-    transform: 'rotate(-50deg) translateY(.25rem)',
+    transform: 'rotate(-50deg) translateY(.15rem)',
     height: '.5rem',
     borderTopStyle: 'none',
     borderRightStyle: 'none',
   },
-  '.checkbox > .control + .text, .switch > .control + .text': {
-    marginLeft: '.5rem',
+  '.checkbox > .text, .switch > .text': {
+    paddingLeft: '.5rem',
+  },
+  '.row > .checkbox + .checkbox': {
+    marginLeft: '1rem',
   },
 
 });
@@ -162,10 +169,12 @@ export default class BoolField extends View {
       markerStyle.background = theme.getBackgroundColor(false, this.getLayer(), this.getTopLayer(), isLight ? 0 : -1);
     }
     let children = [
-      <input id={fid} type="checkbox" hidden={hideInput} checked={this.getValue()} onChange={this.onChange} />,
-      <label htmlFor={fid} className="control" style={controlStyle}>
-        <span className="marker" style={markerStyle} ></span>
-      </label>
+      <View row>
+        <input id={fid} type="checkbox" hidden={hideInput} checked={this.getValue()} onChange={this.onChange} />
+        <label htmlFor={fid} className="control" style={controlStyle}>
+          <span className="marker" style={markerStyle} ></span>
+        </label>
+      </View>
     ];
     if( this.props.label ){
       children.push(<Text htmlFor={fid}>{this.props.label}</Text>);

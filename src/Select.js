@@ -140,7 +140,6 @@ export default class Select extends MenuItem {
 
   select(opt){
     this.setState({selected: opt});
-    console.log('selected', opt);
   }
 
   // normalize options input to:
