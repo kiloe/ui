@@ -132,7 +132,6 @@ export default class Button extends View {
 
   static defaultProps = {
     ...View.defaultProps,
-    row: true,
     align: 'center',
     size: 'intrinsic',
     pad: true,
@@ -370,6 +369,10 @@ export default class Button extends View {
 
   getTabIndex(){
     return '-1';
+  }
+
+  isRow(){
+    return true;
   }
 
   getContent(){

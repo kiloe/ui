@@ -98,10 +98,13 @@ export default class BoolField extends View {
 
   getInitialValue(nextProps){
     let props = nextProps || this.props || {};
-    return props.value || false;
+    return props.value || props.checked;
   }
 
   getValue(){
+    if( this.props.checked != 'undefined' ){
+      return this.props.checked;
+    }
     return this.state.value;
   }
 

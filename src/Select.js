@@ -3,6 +3,7 @@ import MenuItem from './MenuItem';
 import SelectItem from './SelectItem';
 import CSS from './utils/css';
 import Text from './Text';
+import BoolField from './BoolField';
 
 CSS.register({
   '.select .alt': {
@@ -41,7 +42,9 @@ export default class Select extends MenuItem {
         ]),
       })),
       React.PropTypes.object,
-    ])
+    ]),
+    // radio renders the options as radio buttons rather than a dropdown
+    radio: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -137,6 +140,7 @@ export default class Select extends MenuItem {
 
   select(opt){
     this.setState({selected: opt});
+    console.log('selected', opt);
   }
 
   // normalize options input to:
@@ -210,14 +214,18 @@ export default class Select extends MenuItem {
   }
 
   getItems(){
-    let selectedValue = this.state.selected && this.state.selected.value;
+    let selectedValue = null;
+    if( this.state.selected && typeof this.state.selected.value != 'undefined' ){
+      selectedValue = this.state.selected.value;
+    }
     let items = [];
     let data = this.getOptionData();
     let grouped = data.length > 1;
+    let Item = this.props.radio ? BoolField : SelectItem;
     if( !this.props.required ){
-      items.push(<SelectItem
+      items.push(<Item
         key="__none"
-        checked={!selectedValue}
+        checked={selectedValue === null}
         label="None"
         onClick={this.select.bind(this,undefined)}
       />);
@@ -228,7 +236,7 @@ export default class Select extends MenuItem {
       }
       for( let opt of group.options ){
         let checked = selectedValue == opt.value;
-        items.push(<SelectItem
+        items.push(<Item
           key={opt.key}
           ref={checked ? this.gotSelectedRef.bind(this) : undefined}
           checked={checked}
@@ -278,6 +286,23 @@ export default class Select extends MenuItem {
 
   getTip(){
     return this.props.tip;
+  }
+
+  isRow(){
+    if( this.props.radio ){
+      if( this.props.row === true ){
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
+  getContent(){
+    if( this.props.radio ){
+      return this.getItems();
+    }
+    return super.getContent();
   }
 
 }

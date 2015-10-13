@@ -192,7 +192,6 @@ export default class View extends React.Component {
   }
 
   static defaultProps = {
-    row: false,
     raised: 0,
     disabled: false,
     size: 'fill',
@@ -312,7 +311,7 @@ export default class View extends React.Component {
   getChildContext(){
     return {
       root: this.getRoot(),
-      row: this.props.row,
+      row: this.isRow(),
       theme: this.getThemeConfig(),
       layer: this.getLayer(),
       topLayer: this.getTopLayer(),
@@ -321,6 +320,10 @@ export default class View extends React.Component {
       size: this.getSize(),
       registerLayer: this.getRegisterLayerHandler(),
     };
+  }
+
+  isRow(){
+    return this.props.row;
   }
 
   getRegisterLayerHandler(){
@@ -380,7 +383,7 @@ export default class View extends React.Component {
     if( this.context && this.context.row ){
       return this.context.row;
     }
-    return View.defaultProps.row;
+    return false;
   }
 
   // getClassNames builds and returns all CSS classes
@@ -403,7 +406,7 @@ export default class View extends React.Component {
     if ( this.props.divider ) {
       cs.divider = true;
     }
-    if( this.props.row ){
+    if( this.isRow() ){
       cs.row = true;
     }else{
       cs.col = true;

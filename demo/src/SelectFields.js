@@ -88,6 +88,24 @@ export default class SelectFields extends React.Component {
           Select option should appear over the selectbox when expanded.
         `
       },
+      {
+        title: 'Radio buttons',
+        src: Doc.jsx`
+          <Select radio options="English,French,Spanish" value="French"/>
+        `,
+        info:`
+          Radio buttons are just a different way of showing a Select
+        `
+      },
+      {
+        title: 'Radio buttons horizontally',
+        src: Doc.jsx`
+          <Select radio row required options="English,French,Spanish" value="French"/>
+        `,
+        info:`
+          Use row to show options in a row
+        `
+      },
     ];
     return (
       <View scroll>
