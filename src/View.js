@@ -406,6 +406,9 @@ export default class View extends React.Component {
     if ( this.props.divider ) {
       cs.divider = true;
     }
+    if( this.getRaise() > 0 ){
+      cs.raised = true;
+    }
     if( this.isRow() ){
       cs.row = true;
     }else{

@@ -226,7 +226,7 @@ export default class Select extends MenuItem {
         checked={selectedValue === null}
         label="None"
         onClick={this.select.bind(this,undefined)}
-        radio={this.props.radio}
+        round={this.props.radio}
       />);
     }
     for( let group of data ){
@@ -241,7 +241,7 @@ export default class Select extends MenuItem {
           checked={checked}
           label={opt.key}
           onClick={this.select.bind(this,opt)}
-          radio={this.props.radio}
+          round={this.props.radio}
         />);
       }
     }

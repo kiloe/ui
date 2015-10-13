@@ -17,6 +17,9 @@ CSS.register({
     borderStyle: 'solid',
     borderRadius: 2,
   },
+  '.button.raised,.button.outline': {
+    margin: '4px', // XXX: required to avoid overflow cropping box-shadow - is there a better way
+  },
   // spacing between adjacent buttons in row
   '.row > .button + .button':{
     marginLeft: '0.5rem'
@@ -173,9 +176,6 @@ export default class Button extends View {
   getClassNames(){
     let cs = super.getClassNames();
     cs.button = true;
-    if( this.getRaise() > 0 ){
-      cs.raised = true;
-    }
     // buttons without labels are round...
     // but since 'fill' would cause weird aspect ratios
     // 'fill' buttons are always square
