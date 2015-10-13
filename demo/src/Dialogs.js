@@ -39,6 +39,22 @@ export default class Dialogs extends React.Component {
         `
       },
       {
+        title: 'Modal',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Modal id="modalexample" shade pos={{top:100,left:50}}>
+            <View pad accent>
+              <Text>* Shade highlights the modal</Text>
+              <Text>* Shade prevents click events</Text>
+              <Button label="DISMISS" onClick={stopDemo} raised />
+            </View>
+          </Modal>
+        `,
+        info:`
+          Use 'shade' prop to dim the area the modal displays in and prevent clicks passing through.
+        `
+      },
+      {
         title: 'Dialog',
         clickToRun: true,
         src: Doc.jsx`

@@ -80,7 +80,7 @@ export default class Modal extends React.Component {
   updatePosition(){
     let ownerNode = this.getOwnerNode();
     let wrapper = this.refs.wrapper;
-    let pos = this.getPosition();
+    let pos = this.getRelativePosition();
     for(let k in pos){
       wrapper.style[k] = pos[k] + 'px';
     }
@@ -106,9 +106,9 @@ export default class Modal extends React.Component {
 
   // get the abspositioning based on alignment to owner
   // requires DOM so must be caleld when refs available.
-  getPosition(){
+  getRelativePosition(){
     let dir = this.props.direction || 'left';
-    let pos = this.props.pos || {};
+    let pos = {};
     let obscure = this.props.obscure;
     if( !this.props.owner ){
       return pos;
