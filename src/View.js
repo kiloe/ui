@@ -33,7 +33,7 @@ CSS.register({
     alignItems: 'stretch',
     alignContent: 'stretch',
     borderRadius: 1,
-    overflow: 'hidden', // required to give the 'clipping' behaviour that material should have
+    // overflow: 'hidden', // required to give the 'clipping' behaviour that material should have
     transition: {
       left: CSS.transitions.swift,
       right: CSS.transitions.swift,
@@ -53,7 +53,7 @@ CSS.register({
   },
   '.view.scroll': {
     position: 'relative',
-    overflow:'auto',
+    overflow:'auto !important',
     display: 'block', // XXX: unexpected layout? it might be this... it's here because otherwise fast-path scrolling doesn't want to work
     WebkitOverflowScrolling: 'touch',
   },
@@ -62,22 +62,27 @@ CSS.register({
   },
   '.view.z1': {
     boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+    overflow: 'hidden',
     zIndex:1,
   },
   '.view.z2': {
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+    overflow: 'hidden',
     zIndex:2,
   },
   '.view.z3': {
     boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
+    overflow: 'hidden',
     zIndex:3,
   },
   '.view.z4': {
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
+    overflow: 'hidden',
     zIndex:4,
   },
   '.view.z5': {
     boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
+    overflow: 'hidden',
     zIndex:5,
   },
   '.view.disabled': {

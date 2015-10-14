@@ -93,17 +93,19 @@ export default class Doc extends React.Component {
     } else {
       view = compile(src);
     }
-    let containerProps = this.props.container || {style:{padding:'2rem'}};
+    let containerProps = this.props.container || {};
+    containerProps.style = containerProps.style || {};
+    containerProps.style.padding = containerProps.style.padding || 20;
     return (
       <Card onClick={this.props.onClick}>
         <Text title>{this.props.title || 'set title prop!'}</Text>
-        <View raised {...containerProps} row>
+        <View {...containerProps} row layer={0}>
           {view}
         </View>
         <Text>
           <code style={{whiteSpace:'pre'}}>{src}</code>
         </Text>
-        <Text>
+        <Text raised>
           {this.props.info || this.props.children}
         </Text>
       </Card>

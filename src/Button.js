@@ -16,9 +16,7 @@ CSS.register({
     outline: 'none',
     borderStyle: 'solid',
     borderRadius: 2,
-  },
-  '.button.raised,.button.outline': {
-    margin: '4px', // XXX: required to avoid overflow cropping box-shadow - is there a better way
+    overflow: 'hidden',
   },
   // spacing between adjacent buttons in row
   '.row > .button + .button':{

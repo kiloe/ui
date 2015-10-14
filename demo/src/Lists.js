@@ -2,7 +2,6 @@ import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
 
-
 export default class ListDemo extends React.Component {
 
   primaryClick(e) {
@@ -21,13 +20,21 @@ export default class ListDemo extends React.Component {
     let data = [
       {
         title: 'Basic List',
-        container: {style:{width: '30rem', alignSelf: 'center'}},
+        container: {style:{width: '30rem', maxHeight: 400, alignSelf: 'center'}},
         src: Doc.jsx`
           <List raised>
-            <ListItem left={<StarIcon accent size={1.6} />} right={<Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />}><Text title lines={1}>Janet Perkins</Text></ListItem>
-            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/20b1836f8acccd107b4992a1a45a14bd?s=120" />}><Text title lines={1}>Mary Johnson</Text></ListItem>
-            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />}><Text title lines={1}>Peter Carlsson</Text></ListItem>
-            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/20b1836f8acccd107b4992a1a45a14bd?s=120" />}><Text title lines={1}>Trevor Hansen</Text></ListItem>
+            <ListItem left={<StarIcon accent size={1.6} />} right={<Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />}>
+              <Text title lines={1}>Janet Perkins</Text>
+            </ListItem>
+            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/20b1836f8acccd107b4992a1a45a14bd?s=120" />}>
+              <Text title lines={1}>Mary Johnson</Text>
+            </ListItem>
+            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />}>
+              <Text title lines={1}>Peter Carlsson</Text>
+            </ListItem>
+            <ListItem left={1.6} right={<Avatar src="https://s.gravatar.com/avatar/20b1836f8acccd107b4992a1a45a14bd?s=120" />}>
+              <Text title lines={1}>Trevor Hansen</Text>
+            </ListItem>
           </List>
         `,
         info:`
@@ -36,7 +43,7 @@ export default class ListDemo extends React.Component {
       },
       {
         title: 'Scroll List',
-        container: {style:{width: '30rem', alignSelf: 'center'}},
+        container: {style:{width: '30rem', maxHeight: 500, alignSelf: 'center'}},
         src: Doc.jsx`
 
           <List raised>
@@ -87,7 +94,7 @@ export default class ListDemo extends React.Component {
       },
       {
         title: 'Icon List',
-        container: {style:{width: '30rem', alignSelf: 'center'}},
+        container: {style:{width: '30rem', maxHeight:500, alignSelf: 'center'}},
         src: Doc.jsx`
 
           <List raised>
