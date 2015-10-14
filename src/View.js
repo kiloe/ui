@@ -201,6 +201,11 @@ export default class View extends React.Component {
   constructor(props, ...args){
     super(props, ...args);
     this._id = Math.random().toString(); // XXX: come up with something better
+    if( !this.isRoot() ){
+      if( !this.context || !this.context.root ){
+        console.warn('component is not root view but has no context', this.context);
+      }
+    }
   }
 
   componentDidMount(){
@@ -360,6 +365,7 @@ export default class View extends React.Component {
     let topLayer = Math.max(0, ...layers);
     if( topLayer != this.topLayer ){
       this.topLayer = topLayer;
+      console.log(topLayer);
       this.setState({topLayer: this.topLayer});
     }
   }

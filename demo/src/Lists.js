@@ -21,7 +21,7 @@ export default class ListDemo extends React.Component {
     let data = [
       {
         title: 'Basic List',
-        style: {maxWidth: '400px', alignSelf: 'center'},
+        container: {style:{width: '30rem', alignSelf: 'center'}},
         src: Doc.jsx`
           <List raised>
             <ListItem left={<StarIcon accent size={1.6} />} right={<Avatar src="https://s.gravatar.com/avatar/8d0bc8ef1d4bfc4ee8ae62fe13210254?s=120" />}><Text title lines={1}>Janet Perkins</Text></ListItem>
@@ -36,7 +36,7 @@ export default class ListDemo extends React.Component {
       },
       {
         title: 'Scroll List',
-        style: {maxWidth: '400px', alignSelf: 'center'},
+        container: {style:{width: '30rem', alignSelf: 'center'}},
         src: Doc.jsx`
 
           <List raised>
@@ -87,7 +87,7 @@ export default class ListDemo extends React.Component {
       },
       {
         title: 'Icon List',
-        style: {maxWidth: '400px', alignSelf: 'center'},
+        container: {style:{width: '30rem', alignSelf: 'center'}},
         src: Doc.jsx`
 
           <List raised>
