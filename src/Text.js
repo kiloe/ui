@@ -93,10 +93,10 @@ export default class Text extends View {
       return 2.4;
     }
     if( this.props.title ){
-      return 1.5;
+      return 1.3;
     }
     if( this.props.subheading ){
-      return 1.1;
+      return 1.2;
     }
     if( this.props.hint ){
       return 0.8;
