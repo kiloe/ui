@@ -93,18 +93,18 @@ export default class Doc extends React.Component {
     } else {
       view = compile(src);
     }
-    let padding = {padding:'2rem'};
+    let demoStyle = this.props.style || {padding:'2rem'};
     return (
       <Card onClick={this.props.onClick}>
         <Text title>{this.props.title || 'set title prop!'}</Text>
-        <View raised style={padding} row>
+        <View raised style={demoStyle} row>
           {view}
         </View>
         <Text>
           <code style={{whiteSpace:'pre'}}>{src}</code>
         </Text>
         <Text>
-          {this.props.children}
+          {this.props.info || this.props.children}
         </Text>
       </Card>
     );
