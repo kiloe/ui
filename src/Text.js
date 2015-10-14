@@ -136,7 +136,7 @@ export default class Text extends View {
       contentStyle.background = fadeTo('#FFF'); // XXX: needs to fade to parent's bg color somehow
       return super.render(<div className="content" style={contentStyle}>
         {this.props.children}
-        <span className="after" style={contentStyle}/>;
+        <span className="after" style={contentStyle}/>
       </div>);
     }
     let Tag = this.props.htmlFor ? React.DOM.label : React.DOM.div;
