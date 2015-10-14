@@ -21,7 +21,7 @@ export default class Dialog extends Modal {
     let style = {};
     style.padding = '1.5rem';
     return (
-      <View raised={2} style={style}>
+      <View raised={2} style={style} layer={0}>
         {this.props.children}
       </View>
     );

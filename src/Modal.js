@@ -61,6 +61,18 @@ export default class Modal extends React.Component {
     onClickOutside: React.PropTypes.func,
   }
 
+  static childContextTypes = {
+    registerLayer: React.PropTypes.func,
+    topLayer: React.PropTypes.number,
+  }
+
+  getChildContext(){
+    return {
+      registerLayer: null, // prevent modals affecting layer calc elsewhere
+      topLayer: 0,
+    };
+  }
+
   componentDidMount(){
     this.updatePosition();
   }
@@ -213,7 +225,7 @@ export default class Modal extends React.Component {
     }
     return (
       <div ref="wrapper" className="modal" style={style}>
-        <div ref="inner" className="inner" style={innerStyle}>
+        <div ref="inner" className="inner" layer={0} style={innerStyle}>
           {this.getContent()}
         </div>
       </div>

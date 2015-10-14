@@ -17,6 +17,7 @@ export default class Menu extends View {
 
   static defaultProps = {
     ...View.defaultProps,
+    layer: 0,
     raised: true,
     size: 'intrinsic',
     theme: {mode: 'light'},
