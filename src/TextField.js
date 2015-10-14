@@ -19,6 +19,7 @@ export default class TextField extends View {
     multiLine: React.PropTypes.bool,
     type: React.PropTypes.string,
     rows: React.PropTypes.number,
+    maxRows: React.PropTypes.number,
     //html's maxlength
     maxlength: React.PropTypes.number,
     required: React.PropTypes.bool,
