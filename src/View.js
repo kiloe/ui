@@ -201,11 +201,6 @@ export default class View extends React.Component {
   constructor(props, ...args){
     super(props, ...args);
     this._id = Math.random().toString(); // XXX: come up with something better
-    if( !this.isRoot() ){
-      if( !this.context || !this.context.root ){
-        console.warn('component is not root view but has no context', this.context);
-      }
-    }
   }
 
   componentDidMount(){
@@ -237,7 +232,7 @@ export default class View extends React.Component {
     if( !reg ){
       return;
     }
-    if( this.props.layer === 0 ){
+    if( this.isBottomLayer() ){
       return;
     }
     reg(this.getID(), this.getLayer());
@@ -331,21 +326,23 @@ export default class View extends React.Component {
     return this.props.row;
   }
 
+  isBottomLayer(){
+    return this.props.layer === 0 || this.isRoot();
+  }
+
   getRegisterLayerHandler(){
-    if( this.props.layer === 0 ){
+    if( this.isBottomLayer() ){
       if( !this._registerLayer ){
-        this._registerLayer = this.registerLayer.bind(this);
+        this._registerLayer = this.registerLayer;
       }
       return this._registerLayer;
     }
-    if( this.getRaise() ){
-      if( this.context && this.context.registerLayer ){
-        return this.context.registerLayer;
-      }
+    if( this.context && this.context.registerLayer ){
+      return this.context.registerLayer;
     }
   }
 
-  registerLayer(id, layerNumber){
+  registerLayer = (id, layerNumber) => {
     if( !this.childLayers ){
       this.childLayers = {};
     }
@@ -365,7 +362,6 @@ export default class View extends React.Component {
     let topLayer = Math.max(0, ...layers);
     if( topLayer != this.topLayer ){
       this.topLayer = topLayer;
-      console.log(topLayer);
       this.setState({topLayer: this.topLayer});
     }
   }
@@ -610,7 +606,7 @@ export default class View extends React.Component {
   }
 
   getTopLayer(){
-    if( this.props.layer === 0 ){
+    if( this.isBottomLayer() ){
       if( this.state && typeof this.state.topLayer == 'number' ){
         return this.state.topLayer;
       }
