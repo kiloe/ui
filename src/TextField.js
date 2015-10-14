@@ -4,6 +4,31 @@ import CSS from './utils/css';
 
 CSS.register({
 
+  // TODO: scrap this, I was just playing with how to move the placeholder, it's webkit only so not great
+  'input': {
+    border: 'none',
+    borderBottom: 'solid 1px red', //XXX:move to getStyle to set color
+    willChange: 'background-position',
+    transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
+    background: 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, red 96%)', //XXX: move to getStyle
+    backgroundPosition: '-100vw 0',
+    backgroundSize: '100vw 100%',
+    backgroundRepeat: 'no-repeat',
+  },
+  'input:focus, input:valid': {
+    boxShadow: 'none',
+    outline: 'none',
+    backgroundPosition: '0 0',
+  },
+  'input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder': {
+    transform: 'translateY(-20px)',
+    visibility: 'visible !important',
+  },
+  'input::-webkit-input-placeholder': {
+    transition: {
+      all: CSS.transitions.swift,
+    },
+  },
 
 });
 
@@ -78,7 +103,7 @@ export default class TextField extends View {
     return React.cloneElement(this.props.icon, props);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({value: event.target.value});
   }
 
@@ -95,7 +120,7 @@ export default class TextField extends View {
         placeholder={this.props.placeholder}
         name={this.props.name}
         type={this.props.type}
-        required={this.props.required}
+        required
         maxLength={this.props.maxlength}
         onChange={this.handleChange}
         disabled={this.props.disabled}
