@@ -13,8 +13,6 @@ export default class ListDemo extends React.Component {
     console.log('secondary click');
   }
 
-
-
   render(){
 
     let data = [

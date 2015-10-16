@@ -11,6 +11,7 @@ CSS.register({
   },
   '.button.menuitem > .text': {
     padding: '1rem',
+    whiteSpace: 'nowrap',
   },
   '.button.menuitem > .icon': {
     marginLeft: '0.5rem',
