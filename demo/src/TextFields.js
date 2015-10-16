@@ -70,7 +70,7 @@ export default class TextFieldDemo extends React.Component {
       {
         title: 'URL with validation',
         src: Doc.jsx`
-          <TextField placeholder="Website URL" type="url" />
+          <TextField type="url" />
         `,
       },
 

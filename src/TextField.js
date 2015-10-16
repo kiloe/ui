@@ -24,16 +24,13 @@ CSS.register({
     backgroundColor: 'transparent',
     color: 'inherit',
     lineHeight: '32px',
+    opacity: '0.9',
   },
   '.textField input:focus': {
     boxShadow: 'none',
     outline: 'none',
     backgroundPosition: '0 0',
-  },
-  '.textField input:focus::-webkit-input-placeholder': {
-    transform: 'translateY(-20px)',
-    visibility: 'visible !important',
-    fontSize: '1rem',
+    opacity: '1',
   },
   '.textField input::-webkit-input-placeholder': {
     transition: {
@@ -61,8 +58,32 @@ CSS.register({
     transform: 'translateY(-20px)',
     fontSize: '1rem',
   },
-  
-  
+  '.textField .fieldContainer': {
+    position: 'relative',
+  },
+  '.textField hr.colorBorder': {
+    borderStyle: 'none none solid',
+    borderBottomWidth: '2px',
+    position: 'absolute',
+    width: '100%',
+    bottom: '8px',
+    margin: '0px',
+    boxSizing: 'content-box',
+    height: '0px',
+    transform: 'scaleX(0)',
+    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+  },
+  '.textField hr.greyBorder': {
+    border: 'none',
+    borderBottom: 'solid 1px #e0e0e0',
+    position: 'absolute',
+    width: '100%',
+    bottom: '8px',
+    margin: '0',
+    MozBoxSizing: 'content-box',
+    boxSizing: 'content-box',
+    height: '0',
+  },
 
 });
 
@@ -113,6 +134,7 @@ export default class TextField extends View {
   getClassNames(){
     let cs = super.getClassNames();
     cs.textField = true;
+    if ( this.props.icon ) cs.withIcon = true;
     return cs;
   }
   
@@ -224,14 +246,23 @@ export default class TextField extends View {
     if ( this.isInvalid() ) color = 'red';
     else if ( this.state.focus ) color = this.getHighlightColor();
 
-    style.paddingBottom = ( this.state.focus ? '0px' : '1px' );    
-    let lineWidth = ( this.state.focus ? '2px' : '1px' );
-    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
+    //style.paddingBottom = ( this.state.focus ? '0px' : '1px' );    
+    //let lineWidth = ( this.state.focus ? '1px' : '1px' );
+    //style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
     style.color = this.getTextColor();
     //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
     
+    
+    
+    let errorMsg = this.isInvalid();
 
-    let field =
+    let fieldGroup = [];
+    if ( this.props.placeholder ) {
+      let placeholder = <div className={ "placeholder" + ( this.state.focus || this.state.value.length > 0 ? " title" : "" ) } style={{ color: color }}>{ this.props.placeholder }</div>;
+      fieldGroup.push( placeholder );
+    }
+    
+    fieldGroup.push(
       <input
         value={this.state.value}
         name={this.props.name}
@@ -243,20 +274,22 @@ export default class TextField extends View {
         onBlur={this.onBlur}
         disabled={this.props.disabled}
         style={ style }
-      />;
+      /> );
+    
+    fieldGroup.push( <hr className="greyBorder" style={{ borderStyle: (this.props.disabled ? 'dashed' : 'solid' ) }} /> );
+    fieldGroup.push( <hr className="colorBorder" style={{ borderColor: color, transform: 'scaleX(' + ( this.state.focus || errorMsg ? '1' : '0' ) + ')' }} /> );
+    
+    let field = <View className="fieldContainer" theme={{ mode: 'transparent' }}>{ fieldGroup }</View>;
     //maxLength={this.props.maxlength}
 
-    if ( this.props.placeholder ) {
-      let placeholder = <div className={ "placeholder" + ( this.state.focus || this.state.value.length > 0 ? " title" : "" ) } style={{ color: color }}>{ this.props.placeholder }</div>;
-      children.push( placeholder );
-    }
 
     if( this.props.icon ){
       children.push( <View row style={{ justifyContent: 'space-between' }} theme={{ mode: 'transparent' }}>{ this.getIcon() }{ field }</View> );
     }
     else children.push( field );
     
-    let errorMsg = this.isInvalid();
+    
+
     if ( errorMsg ) {
       children.push( <div className="error">{ errorMsg }</div> );
     }
