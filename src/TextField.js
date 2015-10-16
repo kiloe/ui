@@ -7,10 +7,10 @@ CSS.register({
   // TODO: scrap this, I was just playing with how to move the placeholder, it's webkit only so not great
   '.textField': {
     marginBottom: '6px',
-    borderBottom: '1px solid grey',
   },
   '.textField input': {
     border: 'none',
+    flex: '1',
     //willChange: 'background-position',
     //transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
     //backgroundPosition: '-100vw 0',
@@ -18,19 +18,18 @@ CSS.register({
     //backgroundRepeat: 'no-repeat',
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     fontSize: '1.3rem',
-    padding: '15px 0px 7px 0px',
+    padding: '8px 0px 1px 0px',
+    marginBottom: '6px',
     backgroundColor: 'transparent',
     color: 'inherit',
+    lineHeight: '32px',
   },
   '.textField input:focus': {
-     padding: '15px 0px 6px 0px',
-  },
-  '.textField input:focus, .textField input:valid': {
     boxShadow: 'none',
     outline: 'none',
     backgroundPosition: '0 0',
   },
-  '.textField input:focus::-webkit-input-placeholder, .textField input:valid::-webkit-input-placeholder': {
+  '.textField input:focus::-webkit-input-placeholder': {
     transform: 'translateY(-20px)',
     visibility: 'visible !important',
     fontSize: '1rem',
@@ -40,6 +39,18 @@ CSS.register({
       all: CSS.transitions.swift,
     },
   },
+  '.textField .error': {
+    color: 'red',
+    fontSize: '1rem',
+  },
+  '.textField .characterCount': {
+    fontSize: '1rem',
+    textAlign: 'right',
+  },
+  '.textField .icon': {
+    padding: '11px',
+  },
+  
 
 });
 
@@ -92,9 +103,11 @@ export default class TextField extends View {
     return cs;
   }
   
-  isValid(){
-    if ( this.props.required && this.state.value == '' ) return false; //required
-    return true;
+  isInvalid(){
+    if ( this.props.required && this.state.value == '' ) return "Required"; //required
+    //if ( this.state.value.length > this.props.maxlength ) return "Too long";
+    
+    return false;
   }
 
   getLayer(){
@@ -112,13 +125,7 @@ export default class TextField extends View {
   getStyle(){
     let style = super.getStyle();
     
-    let color = this.getTheme({ paletteMode: 'grey' }).getBackgroundColor();
-    if ( !this.isValid() ) color = 'red';
-    else if ( this.state.focus ) color = this.getTheme({ paletteMode: 'primary' }).getBackgroundColor();
-    
-    let lineWidth = ( this.state.focus ? '2px' : '1px' );
-    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
-    //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
+
     
     
     return style;
@@ -145,7 +152,7 @@ export default class TextField extends View {
   getError(){
     if ( this.props.error ) return this.props.error;
     
-    return false;
+    return this.isInvalid();
   }
 
   handleChange = (event) => {
@@ -162,25 +169,48 @@ export default class TextField extends View {
 
   render(){
     let children = [];
+    
+    let style = {};
+    let color = this.getTheme({ paletteMode: 'grey' }).getBackgroundColor();
+    if ( this.isInvalid() ) color = 'red';
+    else if ( this.state.focus ) color = this.getTheme({ paletteMode: 'primary' }).getBackgroundColor();
 
-    if( this.props.icon ){
-      children.push(this.getIcon());
-    }
+    style.paddingBottom = ( this.state.focus ? '0px' : '1px' );    
+    let lineWidth = ( this.state.focus ? '2px' : '1px' );
+    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
+    //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
+    
 
-    children.push(
+    let field =
       <input
         value={this.state.value}
         placeholder={this.props.placeholder}
         name={this.props.name}
         type={this.props.type}
-        required
-        maxLength={this.props.maxlength}
+        required={this.props.required}
         onChange={this.handleChange}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         disabled={this.props.disabled}
-      />
-      );
+        style={ style }
+      />;
+    //maxLength={this.props.maxlength}
+
+    if( this.props.icon ){
+      children.push( <View row style={{ justifyContent: 'space-between' }}>{ this.getIcon() }{ field }</View> );
+    }
+    else children.push( field );
+    
+    let errorMsg = this.isInvalid();
+    if ( errorMsg ) {
+      children.push( <div className="error">{ errorMsg }</div> );
+    }
+    
+    if ( this.props.maxlength > 0 ) {
+      let counterStyle = { color: this.getTheme({ paletteMode: 'grey' }).getBackgroundColor() };
+      if ( this.state.value.length > this.props.maxlength ) counterStyle.color = 'red'; // error
+      children.push( <div className="characterCount" style={counterStyle}>{ this.state.value.length } / { this.props.maxlength }</div> );
+    }
 
     return super.render(children);
 
