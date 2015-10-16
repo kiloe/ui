@@ -5,26 +5,32 @@ import CSS from './utils/css';
 CSS.register({
 
   // TODO: scrap this, I was just playing with how to move the placeholder, it's webkit only so not great
-  'input': {
+  '.textField': {
+    marginBottom: '6px',
+    borderBottom: '1px solid grey',
+  },
+  '.textField input': {
     border: 'none',
-    borderBottom: 'solid 1px red', //XXX:move to getStyle to set color
     willChange: 'background-position',
     transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
-    background: 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, red 96%)', //XXX: move to getStyle
-    backgroundPosition: '-100vw 0',
-    backgroundSize: '100vw 100%',
-    backgroundRepeat: 'no-repeat',
+    //backgroundPosition: '-100vw 0',
+    //backgroundSize: '100vw 100%',
+    //backgroundRepeat: 'no-repeat',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: '1.3rem',
+    padding: '15px 0px 7px 0px',
   },
-  'input:focus, input:valid': {
+  '.textField input:focus, .textField input:valid': {
     boxShadow: 'none',
     outline: 'none',
     backgroundPosition: '0 0',
   },
-  'input:focus::-webkit-input-placeholder, input:valid::-webkit-input-placeholder': {
+  '.textField input:focus::-webkit-input-placeholder, .textField input:valid::-webkit-input-placeholder': {
     transform: 'translateY(-20px)',
     visibility: 'visible !important',
+    fontSize: '1rem',
   },
-  'input::-webkit-input-placeholder': {
+  '.textField input::-webkit-input-placeholder': {
     transition: {
       all: CSS.transitions.swift,
     },
@@ -48,6 +54,7 @@ export default class TextField extends View {
     //html's maxlength
     maxlength: React.PropTypes.number,
     required: React.PropTypes.bool,
+    error: React.PropTypes.string,
     icon: React.PropTypes.oneOfType([
       React.PropTypes.element,
       React.PropTypes.func,
@@ -79,9 +86,24 @@ export default class TextField extends View {
     cs.textField = true;
     return cs;
   }
+  
+  isValid(){
+    if ( this.props.required && this.state.value == '' ) return false; //required
+    return true;
+  }
 
   getStyle(){
     let style = super.getStyle();
+    
+    let color = this.getTheme({ paletteMode: 'grey' }).getBackgroundColor();
+    if ( !this.isValid() ) color = 'red';
+    else if ( this.state.focus ) color = this.getTheme({ paletteMode: 'primary' }).getBackgroundColor();
+    
+    
+    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' 2px ' + color;
+    //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
+    
+    
     return style;
   }
 
@@ -94,7 +116,7 @@ export default class TextField extends View {
       key:'icon',
       size:'intrinsic',
       outline: this.props.outline,
-      color: this.getTextColor(),
+      color: ( this.state.focus ? this.getTheme({ paletteMode: 'primary' }).getBackgroundColor() : this.getTextColor() ),
     };
     if( this.props.icon instanceof Function ){
       let Icon = this.props.icon;
@@ -102,10 +124,24 @@ export default class TextField extends View {
     }
     return React.cloneElement(this.props.icon, props);
   }
+  
+  getError(){
+    if ( this.props.error ) return this.props.error;
+    
+    return false;
+  }
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
   }
+  
+  onFocus = (event) => {
+    this.setState({focus: true});
+  } 
+  
+  onBlur = (event) => {
+    this.setState({focus: false});
+  } 
 
   render(){
     let children = [];
@@ -123,6 +159,8 @@ export default class TextField extends View {
         required
         maxLength={this.props.maxlength}
         onChange={this.handleChange}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         disabled={this.props.disabled}
       />
       );
