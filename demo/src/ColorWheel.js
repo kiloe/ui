@@ -112,7 +112,7 @@ export default class ColorWheel extends View {
   render(){
     return super.render(
       <div className="color-wheel">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="650" height="650">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="350" height="350">
           <defs>
             <filter id="drop-shadow">
               <feGaussianBlur in="SourceAlpha" stdDeviation="3.2"></feGaussianBlur>
