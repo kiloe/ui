@@ -16,7 +16,7 @@ export default class TextFieldDemo extends React.Component {
       {
         title: 'Basic Text Field',
         src: Doc.jsx`
-          <TextField value="Pre-filled value" />
+          <TextField value="Pre-filled title value" placeholder="Title" />
         `,
         info:`
           With pre-filled value.
@@ -35,9 +35,9 @@ export default class TextFieldDemo extends React.Component {
         `,
       },
       {
-        title: 'Multi-line',
+        title: 'Multi-line with accent colour',
         src: Doc.jsx`
-          <TextField multiLine />
+          <TextField multiLine accent />
         `,
         info:`
           Not done yet.
@@ -46,7 +46,7 @@ export default class TextFieldDemo extends React.Component {
       {
         title: 'Text Field with character counter',
         src: Doc.jsx`
-          <TextField placeholder="Max 10" maxlength={10} />
+          <TextField placeholder="Username" maxlength={10} />
         `,
         info:`
           Not done yet.
@@ -65,6 +65,12 @@ export default class TextFieldDemo extends React.Component {
         title: 'Disabled',
         src: Doc.jsx`
           <TextField placeholder="This is disabled" disabled />
+        `,
+      },
+      {
+        title: 'URL with validation',
+        src: Doc.jsx`
+          <TextField placeholder="Website URL" type="url" />
         `,
       },
 

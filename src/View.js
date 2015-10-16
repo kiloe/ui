@@ -9,7 +9,7 @@ import Tooltip from './Tooltip';
 // import shallowCompare from 'react-addons-shallow-compare';
 
 const SIZES = ['fill', 'intrinsic'];
-const THEME_MODES = ['light', 'dark'];
+const THEME_MODES = ['light', 'dark', 'transparent'];
 const PALETTE_MODES = ['primary','accent','grey'];
 
 CSS.register({
