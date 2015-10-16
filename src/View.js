@@ -63,27 +63,27 @@ CSS.register({
   '.view.z1': {
     boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
     overflow: 'hidden',
-    zIndex:1,
+    // zIndex:1,
   },
   '.view.z2': {
     boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
     overflow: 'hidden',
-    zIndex:2,
+    // zIndex:2,
   },
   '.view.z3': {
     boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)',
     overflow: 'hidden',
-    zIndex:3,
+    // zIndex:3,
   },
   '.view.z4': {
     boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)',
     overflow: 'hidden',
-    zIndex:4,
+    // zIndex:4,
   },
   '.view.z5': {
     boxShadow: '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
     overflow: 'hidden',
-    zIndex:5,
+    // zIndex:5,
   },
   '.view.disabled': {
     pointerEvents: 'none',
@@ -800,32 +800,32 @@ export default class View extends React.Component {
       throw new Error('setModals only available to scrolling or root views');
     }
     if( !this._modals ){
-      this._modals = {};
+      this._modals = [];
     }
     let id = owner.getID();
-    if( !this._modals[id] ){
-      this._modals[id] = [];
+    let modals;
+    for( let m of this._modals ){
+      if( m.owner == id ){
+        modals = m.modals;
+      }
     }
-    this._modals[id].push(modal);
+    if( !modals ){
+      let m = {owner: id, modals: []};
+      this._modals.push(m);
+      modals = m.modals;
+    }
+    modals.push(modal);
     this.updateModalState();
   }
 
   updateModalState(){
     if( !this.props.scroll && !this.isRoot() ){
-      throw new Error('setModalState only available to scrolling or root views');
+      throw new Error('updateModalState only available to scrolling or root views');
     }
-    let modals = [];
-    for( let id in this._modals ){
-      for( let modal of this._modals[id] ){
-        if( !modal.props.id ){
-          throw new Error('Modals must have their key prop set to something unique (bit like key)');
-        }
-        modals.push(modal);
-      }
-    }
-    modals = modals.sort((a,b) => a.props.id > b.props.id);
-    this.modals = modals.reverse();
-    this.currentModalHash = this.getModalHash(modals);
+    this.modals = this._modals.reduce((modals,m) => {
+      return modals.concat(m.modals);
+    }, []);
+    this.currentModalHash = this.getModalHash(this.modals);
     setTimeout(() => {
       if( this.currentModalHash != this.lastRenderedModalHash ){
         this.forceUpdate();
@@ -859,26 +859,17 @@ export default class View extends React.Component {
     if( !this._modals ){
       return;
     }
-    let modals = this._modals[id];
-    // if nothing set, then nothing to be done
-    if( !modals ){
-      return;
-    }
-    // if kind not set, just delete everything
-    if( typeof relative == 'undefined' ){
-      delete this._modals[id];
-    } else {
-      // filter out kind
-      modals = modals
-        .filter(modal => fixed && modal.props.relative);
-      // if no modals left, delete the owner key
-      if( modals.length == 0 ){
-        delete this._modals[id];
-      } else {
-        // otherwise set new list
-        this._modals[id] = modals;
+    this._modals = this._modals.filter(m => {
+      if( m.owner != id ){
+        return true;
       }
-    }
+      if( typeof fixed == 'undefined' ){ // clear all
+        m.modals = [];
+      } else {
+        m.modals = m.modals.filter(modal => fixed && modal.props.relative);
+      }
+      return m.modals.length !== 0;
+    });
     this.updateModalState();
   }
 

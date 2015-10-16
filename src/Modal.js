@@ -10,7 +10,6 @@ CSS.register({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 10,
   },
 
   '.modal .inner': {
@@ -48,6 +47,8 @@ export default class Modal extends React.Component {
   static propTypes = {
     // id is a globally unique name for this modal - it is required because modals are weird, think of it like a React 'key' prop
     id: React.PropTypes.string.isRequired,
+    // index of the modal [private] pass in by Overlay
+    index: React.PropTypes.number,
     // should the modal cover (rather next offset from) the emitting element (think menus/select)
     obscure: React.PropTypes.bool,
     // direction the modal would prefur to appear relative to the owner
@@ -205,6 +206,9 @@ export default class Modal extends React.Component {
     let style = {};
     if( !this.props.shade ){
       style.pointerEvents = 'none';
+    }
+    if( typeof this.props.index != 'undefined' ){
+      style.zIndex = this.props.index;
     }
     if( this.props.owner ){ // attached to element (top/left will be set once DOM available)
       style.position = 'absolute';

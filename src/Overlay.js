@@ -7,6 +7,7 @@ import shallowEqual from './utils/shallowEqual';
 CSS.register({
   '.overlay': {
     height: '100%',
+    zIndex: 10,
   },
 });
 
@@ -112,6 +113,7 @@ export default class Overlay extends React.Component {
     let modals = React.Children.map(this.props.children, (modal,i) => {
       return React.cloneElement(modal, {
         ref: this.registerModalRef.bind(this,i),
+        index: i,
         ...modal.props,
       });
     });
