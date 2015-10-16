@@ -18,8 +18,8 @@ CSS.register({
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     animationFillMode: 'forwards',
     transformOrigin: '50% 50%',
-    // maxHeight: '100vh',
-    // maxWidth: '100vw',
+    maxHeight: '100vh',
+    maxWidth: '100vw',
   },
   '@keyframes modalScaleIn': `
     0% {
@@ -96,7 +96,7 @@ export default class Modal extends React.Component {
     for(let k in pos){
       wrapper.style[k] = pos[k] + 'px';
     }
-    // if onscuring then make sure we completely cover the owner
+    // if obscuring then make sure we completely cover the owner
     if( this.props.obscure ){
       if( ownerNode ){
         this.refs.inner.firstChild.style.minWidth = ownerNode.offsetWidth + 'px';
@@ -162,6 +162,12 @@ export default class Modal extends React.Component {
       }
     } else {
       console.warn(`invalid direction ${dir} for modal popup`);
+    }
+    // fix position if gone offscreen
+    let viewport = this.props.owner.getScrollParent().refs.view;
+    let wrapper = this.refs.wrapper;
+    if( (pos.left+wrapper.offsetWidth) > viewport.offsetWidth ){
+      pos.left -= ((pos.left+wrapper.offsetWidth) - viewport.offsetWidth);
     }
     return pos;
   }
