@@ -11,14 +11,19 @@ CSS.register({
   },
   '.textField input': {
     border: 'none',
-    willChange: 'background-position',
-    transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
+    //willChange: 'background-position',
+    //transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
     //backgroundPosition: '-100vw 0',
     //backgroundSize: '100vw 100%',
     //backgroundRepeat: 'no-repeat',
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     fontSize: '1.3rem',
     padding: '15px 0px 7px 0px',
+    backgroundColor: 'transparent',
+    color: 'inherit',
+  },
+  '.textField input:focus': {
+     padding: '15px 0px 6px 0px',
   },
   '.textField input:focus, .textField input:valid': {
     boxShadow: 'none',
@@ -92,6 +97,18 @@ export default class TextField extends View {
     return true;
   }
 
+  getLayer(){
+    return this.context.layer;
+  }
+
+  getRegisterLayerHandler(){
+    return; // don't bother registering text fields as layers
+  }
+  
+  getRaise(){
+    return 0;
+  }
+  
   getStyle(){
     let style = super.getStyle();
     
@@ -99,8 +116,8 @@ export default class TextField extends View {
     if ( !this.isValid() ) color = 'red';
     else if ( this.state.focus ) color = this.getTheme({ paletteMode: 'primary' }).getBackgroundColor();
     
-    
-    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' 2px ' + color;
+    let lineWidth = ( this.state.focus ? '2px' : '1px' );
+    style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
     //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
     
     
