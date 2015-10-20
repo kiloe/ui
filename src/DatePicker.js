@@ -39,12 +39,33 @@ class Day extends React.Component {
 // DatePicker is a calendar view  of dates
 export default class DatePicker extends React.Component {
 
-  constructor(){
-    super();
+  static propTypes = {
+    initialDate: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.date,
+      React.PropTypes.object, // moment
+    ]),
+    // after a date is selected the onSelected handler will be called with the 'moment'
+    onSelected: React.PropTypes.func,
+    // if cancel button is clicked the onCancel handler will be called
+    onCancel: React.PropTypes.func,
+  }
+
+  constructor(...args){
+    super(...args);
+    let initial = this.getInitialDate();
     this.state = {
-      viewing: moment(),
-      selected: moment(),
+      viewing: initial,
+      selected: initial,
     };
+  }
+
+  getInitialDate(){
+    let initial = this.props.initialDate;
+    if( !initial ){
+      return moment();
+    }
+    return moment(initial);
   }
 
   select(i){

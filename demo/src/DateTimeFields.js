@@ -14,6 +14,24 @@ export default class TextFieldDemo extends React.Component {
   render(){
     let data = [
       {
+        title: 'Time Picker (24hr)',
+        src: Doc.jsx`
+          <TimePicker />
+        `,
+        info:`
+          It picks times
+        `
+      },
+      {
+        title: 'Time Picker (AM/PM)',
+        src: Doc.jsx`
+          <TimePicker ampm />
+        `,
+        info:`
+          It picks times
+        `
+      },
+      {
         title: 'Date Picker',
         src: Doc.jsx`
           <DatePicker />
