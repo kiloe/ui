@@ -105,7 +105,7 @@ export default class DatePicker extends React.Component {
       <View size={25} raised>
         <View primary style={{padding:'1.5rem'}}>
           <Text>{this.state.selected.year()}</Text>
-          <Text headline>{this.state.selected.format('ddd, MMM M')}</Text>
+          <Text headline>{this.state.selected.format('ddd, MMM D')}</Text>
         </View>
         <View row>
           <Button icon={KeyboardArrowLeftIcon} onClick={this.setMonth.bind(this,-1)} />
