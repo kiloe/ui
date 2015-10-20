@@ -81,7 +81,6 @@ export default class TimePicker extends React.Component {
   }
 
   selectMin(min){
-    console.log('selectMin', min);
     this.setState({
       selected: moment(this.state.selected).minute(min)
     });
@@ -132,7 +131,6 @@ export default class TimePicker extends React.Component {
       if( n == 24 ){
         n = '00';
       }
-      console.log(n);
       let selectedHour = this.state.selected.hour();
       if( this.props.ampm ){
         if( selectedHour > 12 ){
