@@ -93,7 +93,10 @@ export default class TimePicker extends Picker {
   selectMin(min){
     this.setState({
       selected: moment(this.state.selected).minute(min),
-      selectingMins: this.props.quick ? false : this.state.selectingMins,
+    }, () => {
+      if( this.props.quick ){
+        this.onSelected();
+      }
     });
   }
 

@@ -85,7 +85,7 @@ export default class TextFieldDemo extends React.Component {
       {
         title: 'Text field with TimePicker',
         src: Doc.jsx`
-          <TextField placeholder="Time" picker={<TimePicker formatValue="h:m A" />} />
+          <TextField placeholder="Time" picker={<TimePicker formatValue="h:mm A" quick />} />
         `,
         info:`
           TimePicker for selecting a time
