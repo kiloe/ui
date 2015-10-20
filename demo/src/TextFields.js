@@ -73,6 +73,24 @@ export default class TextFieldDemo extends React.Component {
           <TextField type="url" />
         `,
       },
+      {
+        title: 'Text field with DatePicker',
+        src: Doc.jsx`
+          <TextField placeholder="Date" picker={DatePicker} />
+        `,
+        info:`
+          Assign a picker to use more complex modal selector thingys
+        `
+      },
+      {
+        title: 'Text field with TimePicker',
+        src: Doc.jsx`
+          <TextField placeholder="Time" picker={<TimePicker formatValue="h:m A" />} />
+        `,
+        info:`
+          TimePicker for selecting a time
+        `
+      },
 
     ];
     return (

@@ -15,8 +15,9 @@ export default class TextFieldDemo extends React.Component {
     let data = [
       {
         title: 'Time Picker (24hr)',
+        clickToRun: true,
         src: Doc.jsx`
-          <TimePicker />
+          <TimePicker onCancel={stopDemo} />
         `,
         info:`
           It picks times
@@ -24,17 +25,29 @@ export default class TextFieldDemo extends React.Component {
       },
       {
         title: 'Time Picker (AM/PM)',
+        clickToRun: true,
         src: Doc.jsx`
-          <TimePicker ampm />
+          <TimePicker ampm onCancel={stopDemo} />
         `,
         info:`
           It picks times
         `
       },
       {
-        title: 'Date Picker',
+        title: 'Quick Time Picker',
+        clickToRun: true,
         src: Doc.jsx`
-          <DatePicker />
+          <TimePicker quick onCancel={stopDemo} />
+        `,
+        info:`
+          Use quick when you want a picker like on android where you don't have to press OK
+        `
+      },
+      {
+        title: 'Date Picker',
+        clickToRun: true,
+        src: Doc.jsx`
+          <DatePicker onCancel={stopDemo} />
         `,
         info:`
           It picks dates
@@ -44,7 +57,7 @@ export default class TextFieldDemo extends React.Component {
     return (
       <View scroll>
         <View>
-          {data.map((x,i) => <Doc key={i} title={x.title} src={x.src}>{x.info}</Doc>)}
+          {data.map((props,i) => <Doc key={i} {...props} />)}
         </View>
       </View>
     );

@@ -837,7 +837,12 @@ export default class View extends React.Component {
     if( !modals ){
       return;
     }
-    return modals.map((m) => m.props.id).join(':');
+    return modals.map((m) => {
+      if( !m.props.id ){
+        console.warn('Modal found without an id prop', m);
+      }
+      return m.props.id;
+    }).join(':');
   }
 
   getModals(){

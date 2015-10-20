@@ -4,6 +4,7 @@ import moment from 'moment';
 import View from './View';
 import Text from './Text';
 import Button from './Button';
+import Picker from './Picker';
 import KeyboardArrowLeftIcon from './icons/KeyboardArrowLeftIcon';
 import KeyboardArrowRightIcon from './icons/KeyboardArrowRightIcon';
 
@@ -37,7 +38,7 @@ class Day extends React.Component {
 }
 
 // DatePicker is a calendar view  of dates
-export default class DatePicker extends React.Component {
+export default class DatePicker extends Picker {
 
   static propTypes = {
     initialDate: React.PropTypes.oneOfType([
@@ -49,6 +50,13 @@ export default class DatePicker extends React.Component {
     onSelected: React.PropTypes.func,
     // if cancel button is clicked the onCancel handler will be called
     onCancel: React.PropTypes.func,
+    // formatValue sets how the value is returned via onSelected
+    formatValue: React.PropTypes.string,
+  }
+
+  static defaultProps = {
+    ...Picker.defaultProps,
+    formatValue: 'LL',
   }
 
   constructor(...args){
@@ -106,7 +114,7 @@ export default class DatePicker extends React.Component {
       console.log('selected', this.state.selected.toString(), 'set an onSelected handler to recevie the value');
       return;
     }
-    this.props.onSelected(this.state.selected);
+    this.props.onSelected(this.state.selected.format(this.props.formatValue));
   }
 
   onCancel = () => {
@@ -117,29 +125,31 @@ export default class DatePicker extends React.Component {
     this.props.onCancel();
   }
 
-  render(){
+  getChildren(){
     let gridStyle = {
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
     };
     return (
-      <View size={25} raised>
-        <View primary style={{padding:'1.5rem'}}>
-          <Text>{this.state.selected.year()}</Text>
-          <Text headline>{this.state.selected.format('ddd, MMM D')}</Text>
-        </View>
-        <View row>
-          <Button icon={KeyboardArrowLeftIcon} onClick={this.setMonth.bind(this,-1)} />
-          <Text size="fill" style={{alignSelf:'center',textAlign:'center'}}>{this.state.viewing.format('MMMM YYYY')}</Text>
-          <Button icon={KeyboardArrowRightIcon} onClick={this.setMonth.bind(this,+1)}/>
-        </View>
-        <View row style={gridStyle}>
-          {moment.weekdaysMin().map((d,i) => <Day key={'dow'+i} subtle>{d[0]}</Day>)}
-          {this.getDays()}
-        </View>
-        <View row pad align="right">
-          <Button label="Cancel" onClick={this.onCancel} />
-          <Button label="OK" onClick={this.onSelected} />
+      <View row>
+        <View size={25} raised>
+          <View primary style={{padding:'1.5rem'}}>
+            <Text>{this.state.selected.year()}</Text>
+            <Text headline>{this.state.selected.format('ddd, MMM D')}</Text>
+          </View>
+          <View row>
+            <Button icon={KeyboardArrowLeftIcon} onClick={this.setMonth.bind(this,-1)} />
+            <Text size="fill" style={{alignSelf:'center',textAlign:'center'}}>{this.state.viewing.format('MMMM YYYY')}</Text>
+            <Button icon={KeyboardArrowRightIcon} onClick={this.setMonth.bind(this,+1)}/>
+          </View>
+          <View row style={gridStyle}>
+            {moment.weekdaysMin().map((d,i) => <Day key={'dow'+i} subtle>{d[0]}</Day>)}
+            {this.getDays()}
+          </View>
+          <View row pad align="right">
+            <Button label="Cancel" onClick={this.onCancel} />
+            <Button label="OK" onClick={this.onSelected} />
+          </View>
         </View>
       </View>
     );

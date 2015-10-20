@@ -9,6 +9,8 @@ export default class Dialog extends Modal {
 
   static propTypes = {
     ...Modal.propTypes,
+    // add default dialog padding
+    pad: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -17,13 +19,21 @@ export default class Dialog extends Modal {
     shade: true,
   }
 
+  getChildren(){
+    return this.props.children;
+  }
+
   getContent(){
     let style = {};
-    style.padding = '1.5rem';
+    if( this.props.pad ){
+      style.padding = '2rem';
+    }
     return (
-      <View raised={2} style={style} layer={0}>
-        {this.props.children}
-      </View>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+        <View layer={0} style={style}>
+          {this.getChildren()}
+        </View>
+      </div>
     );
   }
 

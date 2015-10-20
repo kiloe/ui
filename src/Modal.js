@@ -75,12 +75,16 @@ export default class Modal extends React.Component {
   }
 
   componentDidMount(){
+    setTimeout(() => {
+      document.body.addEventListener('click', this.onClickBody);
+    },1000);
     this.updatePosition();
   }
 
   componentWillUnmount(){
     document.body.removeEventListener('click', this.onClickBody);
   }
+
 
   shouldComponentUpdate(nextProps, nextState){
     if( !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState) ){
@@ -195,8 +199,16 @@ export default class Modal extends React.Component {
     }
   }
 
+  // track onClickOutside by listening to body
+  onClickBody = (e) => {
+    if( this.contains(e.target) ){
+      return;
+    }
+    this.onClickOutside(e);
+  }
+
   getContent(){
-    return React.Children.only(this.props.children);
+    return this.props.children;
   }
 
   render(){
@@ -231,6 +243,8 @@ export default class Modal extends React.Component {
       style.height = '100%';
       if( this.props.shade ){
         style.backgroundColor = 'rgba(0,0,0,0.2)';
+        innerStyle.WebkitFilter = 'drop-shadow(12px 12px 7px rgba(0,0,0,0.5))';
+        innerStyle.filter = 'drop-shadow(12px 12px 7px rgba(0,0,0,0.5))';
       }
     }
     return (

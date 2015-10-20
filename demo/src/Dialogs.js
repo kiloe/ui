@@ -58,11 +58,10 @@ export default class Dialogs extends React.Component {
         title: 'Dialog',
         clickToRun: true,
         src: Doc.jsx`
-          <Dialog id="dialogexample">
+          <Dialog id="dialogexample" pad>
             <Text title>Modal Dialog</Text>
             <Text>Any content can appear within a Dialog</Text>
             <Select radio required options={{'Yay Modals!':1,'Boo Modals':2}} value={1} />
-            <Divider style={{marginTop:'1rem'}} />
             <View row align="right">
               <Button label="Continue" primary outline subtle onClick={stopDemo} />
             </View>

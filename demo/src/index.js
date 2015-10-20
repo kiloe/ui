@@ -36,7 +36,7 @@ import Menus from './Menus';
 import SelectFields from './SelectFields';
 import Toggles from './Toggles';
 import Dialogs from './Dialogs';
-import DateTimeFields from './DateTimeFields';
+import Pickers from './Pickers';
 
 export default class App extends React.Component {
 
@@ -126,7 +126,7 @@ export default class App extends React.Component {
       case 'toggles'      :   return <Toggles />;
       case 'menus'        :   return <Menus />;
       case 'dialogs'      :   return <Dialogs />;
-      case 'datetime'     :   return <DateTimeFields />;
+      case 'pickers'     :   return <Pickers />;
     }
   }
 
@@ -184,16 +184,11 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="Text Fields" onClick={this.open('textfields')}/>
-            <Button icon={<AccessTimeIcon/>} align="left" label="DateTime Fields" onClick={this.open('datetime')}/>
+            <Button icon={<AccessTimeIcon/>} align="left" label="Pickers" onClick={this.open('pickers')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Select Fields" onClick={this.open('selecfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Toggle Fields" onClick={this.open('toggles')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
-            <View/>
-            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers A-C" />
-            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers D-G" />
-            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers H-M" />
-            <Button icon={<FormatPaintIcon/>} align="right" label="Paint Rollers N-Z" />
           </View>
         </Drawer>
         <View onClickCapture={this.clickBody.bind(this)}>

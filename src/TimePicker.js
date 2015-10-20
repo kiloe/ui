@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
+import Picker from './Picker';
 import View from './View';
 import Text from './Text';
 import Button from './Button';
@@ -36,7 +37,7 @@ class Hour extends React.Component {
 }
 
 // DatePicker is a calendar view  of dates
-export default class TimePicker extends React.Component {
+export default class TimePicker extends Picker {
 
   static propTypes = {
     // the initial time that will be pre-selected
@@ -47,10 +48,19 @@ export default class TimePicker extends React.Component {
     ]),
     // set ampm to use non-24hr clock
     ampm: React.PropTypes.bool,
+    // enable 'quick' to select on click rather than having to press next/ok
+    quick: React.PropTypes.bool,
     // after a time is selected the onSelected handler will be called with the 'moment'
     onSelected: React.PropTypes.func,
     // if cancel button is clicked the onCancel handler will be called
     onCancel: React.PropTypes.func,
+    // set the format of the value to return
+    formatValue: React.PropTypes.string,
+  }
+
+  static defaultProps = {
+    ...Picker.defaultProps,
+    formatValue: 'HH:mm',
   }
 
   constructor(...args){
@@ -76,13 +86,14 @@ export default class TimePicker extends React.Component {
     }
     this.setState({
       selected: moment(this.state.selected).hour(hr),
-      selectingMins: true,
+      selectingMins: this.props.quick,
     });
   }
 
   selectMin(min){
     this.setState({
-      selected: moment(this.state.selected).minute(min)
+      selected: moment(this.state.selected).minute(min),
+      selectingMins: this.props.quick ? false : this.state.selectingMins,
     });
   }
 
@@ -99,7 +110,7 @@ export default class TimePicker extends React.Component {
       console.log('selected', this.state.selected.toString(), 'set an onSelected handler to recevie the value');
       return;
     }
-    this.props.onSelected(this.state.selected);
+    this.props.onSelected(this.state.selected.format(this.props.formatValue));
   }
 
   onCancel = () => {
@@ -190,7 +201,7 @@ export default class TimePicker extends React.Component {
     }
   }
 
-  render(){
+  getChildren(){
     let format = 'HH:mm';
     if( this.props.ampm ){
       format = 'h:mm A';
@@ -208,23 +219,29 @@ export default class TimePicker extends React.Component {
     let ticks = this.state.selectingMins ?
       this.getMins() :
       this.getHours();
+    let btns;
+    if( !this.props.quick ){
+      btns = <View row pad align="right">
+        <Button label="Cancel" onClick={this.onCancel} />
+        <Button label="OK" onClick={this.onSelected} />
+      </View>;
+    }
     return (
-      <View size={25} raised>
-        <View primary style={{padding:'1.5rem'}}>
-          <Text headline>{this.state.selected.format(format)}</Text>
-        </View>
-        <View>
-          <svg style={{width:'100%', height:'100%'}} xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="350" height="350">
-            <circle cx="320" cy="320" r="300" style={{fill:faceColor}} />
-            <g className="clock-face" transform="translate(325,325)">
-              {ticks}
-            </g>
-          </svg>
-        </View>
-        {ampmButtons}
-        <View row pad align="right">
-          <Button label="Cancel" onClick={this.onCancel} />
-          <Button label="OK" onClick={this.onSelected} />
+      <View row>
+        <View size={25}>
+          <View primary style={{padding:'1.5rem'}}>
+            <Text headline>{this.state.selected.format(format)}</Text>
+          </View>
+          <View>
+            <svg style={{width:'100%', height:'100%'}} xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="350" height="350">
+              <circle cx="320" cy="320" r="300" style={{fill:faceColor}} />
+              <g className="clock-face" transform="translate(325,325)">
+                {ticks}
+              </g>
+            </svg>
+          </View>
+          {ampmButtons}
+          {btns}
         </View>
       </View>
     );
