@@ -129,6 +129,8 @@ export default class Button extends View {
     // * have a border of the stroke color
     // * if icon used: sets "outline" prop on icon (maybe?)
     outline: React.PropTypes.bool,
+    // force circular background
+    circular: React.PropTypes.bool,
   }
 
   static defaultProps = {
@@ -177,7 +179,7 @@ export default class Button extends View {
     // buttons without labels are round...
     // but since 'fill' would cause weird aspect ratios
     // 'fill' buttons are always square
-    if( !this.hasLabel() && this.props.size != 'fill' ){
+    if( (!this.hasLabel() && this.props.size != 'fill') || this.props.circular ){
       cs.circular = true;
     }
     if( this.props.subtle ){

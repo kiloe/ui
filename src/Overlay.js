@@ -97,15 +97,15 @@ export default class Overlay extends React.Component {
     return this._modals || [];
   }
 
-  map(fn){
-    let all = [];
-    for( let id of this.state.owners ){
-      for( let key of this.state.owners[id] ){
-        all.push(fn(this.state.owners[id][key]));
-      }
-    }
-    return all;
-  }
+  // map(fn){
+  //   let all = [];
+  //   for( let id of this.state.owners ){
+  //     for( let key of this.state.owners[id] ){
+  //       all.push(fn(this.state.owners[id][key]));
+  //     }
+  //   }
+  //   return all;
+  // }
 
   render(){
     // register refs for each modal

@@ -30,7 +30,8 @@
     "react-dom": "^0.14.0"
   },
   "dependencies": {
-    "classnames": "^2.1.5"
+    "classnames": "^2.1.5",
+    "moment": "^2.10.6"
   },
   "babel": {
     "stage": 0,

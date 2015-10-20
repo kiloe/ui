@@ -15,6 +15,7 @@ import ZoomOutIcon from '../../package/icons/ZoomOutIcon';
 import MoreVertIcon from '../../package/icons/MoreVertIcon';
 import AddCircleIcon from '../../package/icons/AddCircleIcon';
 import ArrowBackIcon from '../../package/icons/ArrowBackIcon';
+import AccessTimeIcon from '../../package/icons/AccessTimeIcon';
 import FullscreenIcon from '../../package/icons/FullscreenIcon';
 import ColorLensIcon from '../../package/icons/ColorLensIcon';
 import ViewAgendaIcon from '../../package/icons/ViewAgendaIcon';
@@ -35,6 +36,7 @@ import Menus from './Menus';
 import SelectFields from './SelectFields';
 import Toggles from './Toggles';
 import Dialogs from './Dialogs';
+import DateTimeFields from './DateTimeFields';
 
 export default class App extends React.Component {
 
@@ -124,6 +126,7 @@ export default class App extends React.Component {
       case 'toggles'      :   return <Toggles />;
       case 'menus'        :   return <Menus />;
       case 'dialogs'      :   return <Dialogs />;
+      case 'datetime'     :   return <DateTimeFields />;
     }
   }
 
@@ -181,6 +184,7 @@ export default class App extends React.Component {
             <Button icon={<AddCircleIcon/>} align="left" label="Cards" onClick={this.open('cards')} />
             <Button icon={<TextFormatIcon/>} align="left" label="Typography" onClick={this.open('typography')}/>
             <Button icon={<TextFormatIcon/>} align="left" label="Text Fields" onClick={this.open('textfields')}/>
+            <Button icon={<AccessTimeIcon/>} align="left" label="DateTime Fields" onClick={this.open('datetime')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Select Fields" onClick={this.open('selecfields')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Toggle Fields" onClick={this.open('toggles')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
