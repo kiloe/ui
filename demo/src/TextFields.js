@@ -40,7 +40,16 @@ export default class TextFieldDemo extends React.Component {
           <TextField multiLine accent />
         `,
         info:`
-          Not done yet.
+          
+        `
+      },
+      {
+        title: 'Multi-line with max 4 rows',
+        src: Doc.jsx`
+          <TextField multiLine maxRows={4} placeholder="Maximum 4 lines" />
+        `,
+        info:`
+          
         `
       },
       {
@@ -49,7 +58,7 @@ export default class TextFieldDemo extends React.Component {
           <TextField placeholder="Username" maxlength={10} />
         `,
         info:`
-          Not done yet.
+         
         `
       },
       {
@@ -58,7 +67,7 @@ export default class TextFieldDemo extends React.Component {
           <TextField icon={<TextFormatIcon/>} type="number" />
         `,
         info:`
-          Not done yet.
+          
         `
       },
       {

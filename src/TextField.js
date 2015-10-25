@@ -2,6 +2,10 @@ import React from 'react';
 import View from './View';
 import CSS from './utils/css';
 
+import ReactDOM from 'react-dom';
+
+const rowsHeight = 32;
+
 CSS.register({
 
   // TODO: scrap this, I was just playing with how to move the placeholder, it's webkit only so not great
@@ -9,30 +13,25 @@ CSS.register({
     marginBottom: '6px',
     position: 'relative',
   },
-  '.textField input': {
+  '.textField input, .textField textarea': {
     border: 'none',
     flex: '1',
-    //willChange: 'background-position',
-    //transition: 'all 0.3s cubic-bezier(.64,.09,.08,1)',
-    //backgroundPosition: '-100vw 0',
-    //backgroundSize: '100vw 100%',
-    //backgroundRepeat: 'no-repeat',
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     fontSize: '1.3rem',
-    padding: '8px 0px 1px 0px',
-    marginBottom: '6px',
+    padding: '0px',
+    margin: '8px 0px 7px 0px',
     backgroundColor: 'transparent',
     color: 'inherit',
     lineHeight: '32px',
     opacity: '0.9',
   },
-  '.textField input:focus': {
+  '.textField input:focus, .textField textarea:focus': {
     boxShadow: 'none',
     outline: 'none',
     backgroundPosition: '0 0',
     opacity: '1',
   },
-  '.textField input::-webkit-input-placeholder': {
+  '.textField input::-webkit-input-placeholder, .textField textarea::-webkit-input-placeholder': {
     transition: {
       all: CSS.transitions.swift,
     },
@@ -84,6 +83,15 @@ CSS.register({
     boxSizing: 'content-box',
     height: '0',
   },
+  '.textField textarea': {
+    width: '100%',
+    resize: 'none',
+  },
+  '.textField textarea.shadow': {
+    overflow: 'hidden',
+    position: 'absolute',
+    opacity: 0,
+  },
 
 });
 
@@ -133,8 +141,11 @@ export default class TextField extends View {
   }
 
   componentDidMount(){
-    this.setState({ value: this.props.value });
+    this.setState({ value: this.props.value, height: this.props.rows * rowsHeight });
+    if ( this.props.multiLine ) this._syncHeightWithShadow();
   }
+  
+
 
   getClassNames(){
     let cs = super.getClassNames();
@@ -220,8 +231,6 @@ export default class TextField extends View {
     let style = super.getStyle();
 
 
-
-
     return style;
   }
 
@@ -251,17 +260,44 @@ export default class TextField extends View {
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
+    if ( this.props.multiLine ) this._syncHeightWithShadow(event.target.value);
   }
 
   onFocus = () => {
-    this.setState({focus: true, showPicker: true});
+    this.setState({focus: true, showPicker: (this.props.picker !== undefined) });
   }
 
   onBlur = () => {
     if( this.state.showPicker ){
+      console.log('showPicker onBlur');
       return;
     }
     this.setState({focus: false});
+  }
+
+  _syncHeightWithShadow(newValue, e) {
+    let shadow = ReactDOM.findDOMNode(this.refs.shadow);
+
+    if (newValue !== undefined) {
+      shadow.value = newValue;
+    }
+    let newHeight = shadow.scrollHeight;
+    
+    if (this.props.maxRows > this.props.rows) {
+      newHeight = Math.min(this.props.maxRows * rowsHeight, newHeight);
+    }
+
+    newHeight = Math.max(newHeight, rowsHeight);
+
+    if (this.state.height !== newHeight) {
+      this.setState({
+        height: newHeight,
+      });
+
+      if (this.props.onHeightChange) {
+        this.props.onHeightChange(e, newHeight);
+      }
+    }
   }
 
   render(){
@@ -279,12 +315,9 @@ export default class TextField extends View {
     if ( this.isInvalid() ) color = 'red';
     else if ( this.state.focus ) color = this.getHighlightColor();
 
-    //style.paddingBottom = ( this.state.focus ? '0px' : '1px' );
-    //let lineWidth = ( this.state.focus ? '1px' : '1px' );
-    //style.borderBottom = (this.props.disabled ? 'dotted' : 'solid' ) + ' ' + lineWidth + ' ' + color;
     style.color = this.getTextColor();
-    //style.background = 'linear-gradient(to bottom, rgba(255,255,255,0) 96%, ' + color + ' 96%)';
-
+    
+    if ( this.props.multiLine ) style.height = this.state.height;
 
 
     let errorMsg = this.isInvalid();
@@ -295,19 +328,49 @@ export default class TextField extends View {
       fieldGroup.push( placeholder );
     }
 
-    fieldGroup.push(
-      <input key="input"
-        value={this.state.value}
-        name={this.props.name}
-        type={this.props.type}
-        required={this.props.required}
-        pattern={this.props.pattern}
-        onChange={this.handleChange}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}
-        disabled={this.props.disabled}
-        style={ style }
-      /> );
+    if ( this.props.multiLine ) {
+      fieldGroup.push(
+        <span key="textarea-container">
+          <textarea rows="1" key="input"
+            key="input"
+            value={this.state.value}
+            name={this.props.name}
+            type={this.props.type}
+            required={this.props.required}
+            pattern={this.props.pattern}
+            onChange={this.handleChange}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            disabled={this.props.disabled}
+            style={ style }
+          ></textarea>
+          <textarea
+            className="shadow"
+            ref="shadow"
+            key="shadow"
+            tabIndex="-1"
+            rows={this.props.rows}
+            readOnly={true}
+            value={this.state.value}
+             />
+        </span> );
+    
+    }
+    else {
+      fieldGroup.push(
+        <input key="input"
+          value={this.state.value}
+          name={this.props.name}
+          type={this.props.type}
+          required={this.props.required}
+          pattern={this.props.pattern}
+          onChange={this.handleChange}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          disabled={this.props.disabled}
+          style={ style }
+        /> );
+    }
 
     fieldGroup.push( <hr key="gborder" className="greyBorder" style={{ borderStyle: (this.props.disabled ? 'dashed' : 'solid' ) }} /> );
     fieldGroup.push( <hr key="cborder" className="colorBorder" style={{ borderColor: color, transform: 'scaleX(' + ( this.state.focus || errorMsg ? '1' : '0' ) + ')' }} /> );
