@@ -37,6 +37,7 @@ import SelectFields from './SelectFields';
 import Toggles from './Toggles';
 import Dialogs from './Dialogs';
 import Pickers from './Pickers';
+import Tabs from './Tabs';
 
 export default class App extends React.Component {
 
@@ -126,7 +127,8 @@ export default class App extends React.Component {
       case 'toggles'      :   return <Toggles />;
       case 'menus'        :   return <Menus />;
       case 'dialogs'      :   return <Dialogs />;
-      case 'pickers'     :   return <Pickers />;
+      case 'pickers'      :   return <Pickers />;
+      case 'tabs'         :   return <Tabs />;
     }
   }
 
@@ -189,6 +191,7 @@ export default class App extends React.Component {
             <Button icon={<MoreVertIcon/>} align="left" label="Toggle Fields" onClick={this.open('toggles')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Tabs" onClick={this.open('tabs')}/>
           </View>
         </Drawer>
         <View onClickCapture={this.clickBody.bind(this)}>
