@@ -7,8 +7,15 @@ import PlayArrowIcon from '../../package/icons/PlayArrowIcon';
 import * as babel from 'babel';
 import {exec} from './all';
 
-function compile(src){
-  return exec(babel.transform(src,{blacklist: ['strict']}).code);
+function compile(src, thisArg){
+  let code = babel.transform(src,{blacklist: ['strict']}).code;
+  // hackily return the first createElement bit.
+  code = code.replace(/React.createElement/, 'return React.createElement');
+  // wrap in a func so we can set thisArg
+  let fn = exec(`(function(){
+    ${code}
+  })`);
+  return fn.call(thisArg);
 }
 
 function val(v){
@@ -63,9 +70,9 @@ export default class Doc extends React.Component {
 
   static jsx = jsx
 
-  constructor(...args){
-    super(...args);
-    this.state = {};
+  constructor(props, ...args){
+    super(props, ...args);
+    this.state = props.state || {};
     this.id = Math.random().toString();
   }
 
@@ -91,7 +98,7 @@ export default class Doc extends React.Component {
     if( this.props.clickToRun && !this.state.running ){
       view = <Button icon={PlayArrowIcon} onClick={this.run} />;
     } else {
-      view = compile(src);
+      view = compile(src, this);
     }
     let containerProps = this.props.container || {};
     containerProps.style = containerProps.style || {};
