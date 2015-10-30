@@ -312,7 +312,11 @@ export default class TextField extends View {
 
     let style = {};
     let color = greyColor;
-    if ( this.isInvalid() ) color = 'red';
+    let counterStyle = { color: color };
+    if ( this.isInvalid() ) {
+      color = 'red';
+      counterStyle = { color: color };
+    }
     else if ( this.state.focus ) color = this.getHighlightColor();
 
     style.color = this.getTextColor();
@@ -391,7 +395,6 @@ export default class TextField extends View {
     }
 
     if ( this.props.maxlength > 0 ) {
-      let counterStyle = { color: color };
       children.push( <div key="cntr" className="characterCount" style={counterStyle}>{ this.state.value.length } / { this.props.maxlength }</div> );
     }
 

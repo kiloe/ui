@@ -46,7 +46,7 @@ export default class TextFieldDemo extends React.Component {
       {
         title: 'Multi-line with max 4 rows',
         src: Doc.jsx`
-          <TextField multiLine maxRows={4} placeholder="Maximum 4 lines" />
+          <TextField multiLine maxRows={4} placeholder="Maximum 4 lines" maxlength={200} />
         `,
         info:`
           

@@ -92,6 +92,26 @@ export default class Dialogs extends React.Component {
           Dialogs can be used within dialogs. The inner-most dialog will be on the top.
         `
       },
+      {
+        title: 'Tasty Snackbar - full width (mobile)',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Snackbar id="outter" size="fill" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
+        `,
+        info:`
+          Mmmm
+        `
+      },
+      {
+        title: 'Tasty Snackbar - floating (desktop)',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Snackbar id="outter" size="intrinsic" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
+        `,
+        info:`
+          Mmmm
+        `
+      },
     ];
 
     return (

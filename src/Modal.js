@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CSS from './utils/css';
 import shallowEqual from './utils/shallowEqual';
+import cx from 'classnames';
 
 // Modal
 
@@ -210,6 +211,12 @@ export default class Modal extends React.Component {
   getContent(){
     return this.props.children;
   }
+  
+  getClassNames(){
+    let cs = {};
+    cs.modal = true;
+    return cs;
+  }
 
   render(){
     let innerStyle = {};
@@ -248,7 +255,7 @@ export default class Modal extends React.Component {
       }
     }
     return (
-      <div ref="wrapper" className="modal" style={style}>
+      <div ref="wrapper" className={cx(this.getClassNames())} style={style}>
         <div ref="inner" className="inner" layer={0} style={innerStyle}>
           {this.getContent()}
         </div>
