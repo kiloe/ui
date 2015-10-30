@@ -14,6 +14,7 @@ CSS.register({
   },
 
   '.modal .inner': {
+    animationName: 'modalScaleIn',
     animationDuration: '300ms',
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
     animationFillMode: 'forwards',
@@ -35,6 +36,16 @@ CSS.register({
     0% {
       opacity: 0;
       transform: translateY(-10px) scaleY(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
+    }
+  `,
+  '@keyframes modalSlideUp': `
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scaleY(1);
     }
     100% {
       opacity: 1;
@@ -220,7 +231,7 @@ export default class Modal extends React.Component {
 
   render(){
     let innerStyle = {};
-    innerStyle.animationName = 'modalScaleIn';
+    //innerStyle.animationName = 'modalScaleIn';
     innerStyle.pointerEvents = 'auto';
     let style = {};
     if( !this.props.shade ){

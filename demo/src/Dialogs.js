@@ -96,7 +96,7 @@ export default class Dialogs extends React.Component {
         title: 'Tasty Snackbar - full width (mobile)',
         clickToRun: true,
         src: Doc.jsx`
-          <Snackbar id="outter" size="fill" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
+          <Snackbar onClickOutside={stopDemo} id="outter" size="fill" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
         `,
         info:`
           Mmmm
@@ -106,7 +106,7 @@ export default class Dialogs extends React.Component {
         title: 'Tasty Snackbar - floating (desktop)',
         clickToRun: true,
         src: Doc.jsx`
-          <Snackbar id="outter" size="intrinsic" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
+          <Snackbar onClickOutside={stopDemo} id="outter" size="intrinsic" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
         `,
         info:`
           Mmmm

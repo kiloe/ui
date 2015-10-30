@@ -6,6 +6,7 @@ import CSS from './utils/css';
 
 CSS.register({
   '.modal.snackbar .inner': {
+    animationName: 'modalSlideUp',
     backgroundColor: '#323232',
     color: 'rgba(255,255,255,0.85)',
     position: 'absolute',
