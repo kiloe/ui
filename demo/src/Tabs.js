@@ -22,6 +22,22 @@ export default class Tabs extends React.Component {
 
         `
       },
+      {
+        title: 'Icon Tabs',
+        state: {selected: 0},
+        src: Doc.jsx`
+          <Tabs selected={this.state.selected} onSelected={(idx) => this.setState({selected: idx})}>
+            <Tab icon={WhatshotIcon} />
+            <Tab icon={ThumbUpIcon} />
+            <Tab icon={MessageIcon} />
+            <Tab icon={StarsIcon} />
+            <Tab icon={SmsIcon} />
+          </Tabs>
+        `,
+        info:`
+
+        `
+      },
     ];
     return (
       <View scroll>
