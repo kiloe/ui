@@ -48,8 +48,12 @@ export default class Tabs extends View {
   getStyle(){
     let style = super.getStyle();
     style.position = 'relative';
-    style.marginBottom = '0.5rem';
+    style.marginBottom = this.getIndicatorSize() + 'rem';
     return style;
+  }
+
+  getIndicatorSize(){
+    return 0.2;
   }
 
   render(){
@@ -60,7 +64,7 @@ export default class Tabs extends View {
       left:0,
       background: theme.getBackgroundColor(),
       width: '100px',
-      height: '0.5rem',
+      height: this.getIndicatorSize() + 'rem',
       visibility: 'hidden', // unset in componentDidUpdate
     };
     let children = React.Children.map(this.props.children, (tab,i) => {
@@ -69,6 +73,7 @@ export default class Tabs extends View {
       };
       if( i == this.props.selected ){
         props.ref = 'selected';
+        props.color = theme.getBackgroundColor();
         // props.outline = true;
         // props.primary = true;
       }
