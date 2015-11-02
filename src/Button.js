@@ -235,6 +235,9 @@ export default class Button extends View {
   }
 
   getTextColor(){
+    if( this.props.color ){
+      return this.props.color;
+    }
     if( this.props.outline || this.props.subtle ){
       let textMode = this.props.subtle ? 'secondary' : 'primary';
       return this.getTheme().getColoredTextColor(false, this.getLayer(),this.getTopLayer(), textMode);
