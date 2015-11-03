@@ -57,6 +57,20 @@ export default class Tabs extends React.Component {
           Tabs can be dropdowns by using MenuItems
         `
       },
+      {
+        title: 'Columular Tabs',
+        state: {selected: 0},
+        src: Doc.jsx`
+          <Tabs row={false} selected={this.state.selected} onSelected={(idx) => this.setState({selected: idx})}>
+            <Tab label="item1" />
+            <Tab label="a longer item 2 thing" />
+            <Tab label="item3" />
+          </Tabs>
+        `,
+        info:`
+          Columnular Tabs don't exist in the Google Spec, but they are possible/useful so might as well make them work
+        `
+      },
     ];
     return (
       <View scroll>

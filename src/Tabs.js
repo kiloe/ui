@@ -34,8 +34,13 @@ export default class Tabs extends View {
   componentDidUpdate(){
     let indicatorEl = this.refs.indicator;
     let selectedEl = this.refs.selected.refs.view;
-    indicatorEl.style.left = selectedEl.offsetLeft + 'px';
-    indicatorEl.style.width = selectedEl.offsetWidth + 'px';
+    if( this.isRow() ){
+      indicatorEl.style.left = selectedEl.offsetLeft + 'px';
+      indicatorEl.style.width = selectedEl.offsetWidth + 'px';
+    } else {
+      indicatorEl.style.top = selectedEl.offsetTop + 'px';
+      indicatorEl.style.height = selectedEl.offsetHeight + 'px';
+    }
     indicatorEl.style.visibility = 'visible';
   }
 
@@ -60,13 +65,18 @@ export default class Tabs extends View {
     let theme = this.getTheme({paletteMode: 'primary'});
     let indicatorStyle = {
       position: 'absolute',
-      bottom: 0,
-      left:0,
       background: theme.getBackgroundColor(),
-      width: '100px',
-      height: this.getIndicatorSize() + 'rem',
       visibility: 'hidden', // unset in componentDidUpdate
     };
+    if( this.isRow() ){
+      indicatorStyle.bottom = 0;
+      indicatorStyle.width = '100%';
+      indicatorStyle.height = this.getIndicatorSize() + 'rem';
+    } else {
+      indicatorStyle.left = 0;
+      indicatorStyle.width = this.getIndicatorSize() + 'rem';
+      indicatorStyle.height = '100%';
+    }
     let children = React.Children.map(this.props.children, (tab,i) => {
       let props = {
         onClick: this.handleSelected.bind(this,i),
@@ -80,7 +90,7 @@ export default class Tabs extends View {
       return React.cloneElement(tab, props);
     });
     return super.render([
-      <View row>
+      <View row={this.isRow()}>
         {children}
       </View>,
       <div ref="indicator" className="indicator" style={indicatorStyle}></div>
