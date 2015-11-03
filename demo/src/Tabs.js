@@ -19,7 +19,7 @@ export default class Tabs extends React.Component {
           </Tabs>
         `,
         info:`
-
+          Tabs are stateless, use the onSelected callback to control the selected tab
         `
       },
       {
@@ -35,7 +35,26 @@ export default class Tabs extends React.Component {
           </Tabs>
         `,
         info:`
-
+          Tabs can be icons
+        `
+      },
+      {
+        title: 'Dropdowns in Tabs',
+        state: {selected: 0},
+        src: Doc.jsx`
+          <Tabs selected={this.state.selected} onSelected={(idx) => this.setState({selected: idx})}>
+            <Tab label="Hot" />
+            <Tab label="Messages" />
+            <Tab label="Favorites" />
+            <Tab label="More">
+              <MenuItem label="Another Thing" />
+              <MenuItem label="Another Thing" />
+              <MenuItem label="Another Thing" />
+            </Tab>
+          </Tabs>
+        `,
+        info:`
+          Tabs can be dropdowns by using MenuItems
         `
       },
     ];

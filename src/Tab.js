@@ -22,4 +22,23 @@ export default class Tab extends MenuItem {
     return cs;
   }
 
+  getMenuConfig(){
+    let parent = this.refs.view.parentNode.parentNode;
+    return {
+      obscure: true,
+      direction: 'bottom',
+      pos: this.refs.view ? {
+        top: parent.offsetTop,
+        left: parent.offsetLeft + this.refs.view.offsetLeft,
+      } : null,
+    };
+  }
+
+  getTip(){
+    if( this.hasMenu() ){
+      return <div>▼</div>;
+    }
+    return super.getTip();
+  }
+
 }

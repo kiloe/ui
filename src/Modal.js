@@ -137,7 +137,7 @@ export default class Modal extends React.Component {
   // requires DOM so must be caleld when refs available.
   getRelativePosition(){
     let dir = this.props.direction || 'left';
-    let pos = {};
+    let pos = this.props.pos || {};
     let obscure = this.props.obscure;
     if( !this.props.owner ){
       return pos;
@@ -154,13 +154,17 @@ export default class Modal extends React.Component {
       ownerWrapperLeft = ownerWrapper.offsetLeft;
     }
     if( dir == 'left' ){
-      pos.top = ownerWrapperTop + ownerNode.offsetTop;
+      if( typeof pos.top == 'undefined' ){
+        pos.top = ownerWrapperTop + ownerNode.offsetTop;
+      }
       pos.right = ownerWrapperLeft + ownerNode.offsetLeft;
       if( !obscure ){
         pos.right += ownerNode.offsetWidth;
       }
     } else if( dir == 'right' ){
-      pos.top = ownerWrapperTop + ownerNode.offsetTop;
+      if( typeof pos.top == 'undefined' ){
+        pos.top = ownerWrapperTop + ownerNode.offsetTop;
+      }
       pos.left = ownerWrapperLeft + ownerNode.offsetLeft + ownerNode.offsetWidth;
       if( obscure ){
         pos.left -= ownerNode.offsetWidth;
@@ -172,10 +176,14 @@ export default class Modal extends React.Component {
         pos.bottom -= ownerNode.offsetHeight;
       }
     } else if( dir == 'bottom' ){
-      pos.top = ownerWrapperTop + ownerNode.offsetTop;
-      pos.left = ownerWrapperLeft + ownerNode.offsetLeft;
-      if( !obscure ){
-        pos.top -= ownerNode.offsetHeight;
+      if( typeof pos.top == 'undefined' ){
+        pos.top = ownerWrapperTop + ownerNode.offsetTop;
+        if( !obscure ){
+          pos.top -= ownerNode.offsetHeight;
+        }
+      }
+      if( typeof pos.left == 'undefined' ){
+        pos.left = ownerWrapperLeft + ownerNode.offsetLeft;
       }
     } else {
       console.warn(`invalid direction ${dir} for modal popup`);
@@ -201,6 +209,9 @@ export default class Modal extends React.Component {
 
   // is node inside this modal
   contains(node){
+    if( !this.refs.inner ){
+      return;
+    }
     return this.refs.inner.contains(node);
   }
 
@@ -222,7 +233,7 @@ export default class Modal extends React.Component {
   getContent(){
     return this.props.children;
   }
-  
+
   getClassNames(){
     let cs = {};
     cs.modal = true;

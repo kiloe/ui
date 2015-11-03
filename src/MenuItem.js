@@ -65,6 +65,9 @@ export default class MenuItem extends Button {
   }
 
   getClickHandler(){
+    if( this.hasMenu() ){
+      return this.toggleCascadingMenu;
+    }
     if( this.props.onClick ){
       return this.props.onClick;
     }
@@ -73,6 +76,9 @@ export default class MenuItem extends Button {
 
   toggleCascadingMenu = (e) => {
     this.toggleMenu(e);
+    if( this.props.onClick ){
+      this.props.onClick(e);
+    }
   }
 
   getMenuConfig(){
