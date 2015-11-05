@@ -58,9 +58,11 @@ export default class Snackbar extends Modal {
   
   getContent(){
     let style = {};
+    let action = '';
+    if ( this.props.actionText && this.props.action ) action = ( <Text className="action" accent align="right" onClick={this.props.action}>{this.props.actionText.toUpperCase()}</Text> );
     return (
       <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-        <div>{this.props.text}</div> <Text className="action" accent align="right" onClick={this.props.action}>{this.props.actionText.toUpperCase()}</Text>
+        <div>{this.props.text}</div> {action}
       </div>
     );
   }
