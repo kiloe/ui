@@ -1,10 +1,16 @@
 import React from 'react';
 import View from './View';
 import CSS from './utils/css';
+import Step from './Step';
 
 
 CSS.register({
-
+  '.stepper': {
+    position: 'relative',
+  },
+  '.stepper.horizontal': {
+    justifyContent: 'space-around',
+  },
 
 });
 
@@ -21,13 +27,14 @@ export default class Stepper extends View {
     // Steps must be completed in order
     linear: React.PropTypes.bool,
     // The children have to be Step elements. Also has to be an array, meaning that having 1 step isn't allow. XXX: Can you think of any reason you'd ever want just one step?
-    children: eact.PropTypes.arrayOf(React.PropTypes.instanceOf(Step)),
+    //children: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Step)),
   }
 
   static defaultProps = {
     ...View.defaultProps,
-    direction: 'horizontal',
+    type: 'horizontal',
     linear: true,
+    row: true,
   }
 
   constructor(...args){
@@ -41,6 +48,7 @@ export default class Stepper extends View {
 
   getClassNames(){
     let cs = super.getClassNames();
+    cs.stepper = true;
     cs.linear = this.props.linear;
     cs[ this.props.type ] = true;
     return cs;
@@ -52,6 +60,9 @@ export default class Stepper extends View {
   }
 
   render(){
-    return super.render(this.getContent());
+    let children = []
+
+    children.push( this.getContent() );
+    return super.render( children );
   }
 }

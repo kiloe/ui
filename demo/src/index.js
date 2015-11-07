@@ -38,6 +38,7 @@ import Toggles from './Toggles';
 import Dialogs from './Dialogs';
 import Pickers from './Pickers';
 import Tabs from './Tabs';
+import Steppers from './Steppers';
 
 export default class App extends React.Component {
 
@@ -129,6 +130,7 @@ export default class App extends React.Component {
       case 'dialogs'      :   return <Dialogs />;
       case 'pickers'      :   return <Pickers />;
       case 'tabs'         :   return <Tabs />;
+      case 'steppers'         :   return <Steppers />;
     }
   }
 
@@ -192,6 +194,7 @@ export default class App extends React.Component {
             <Button icon={<MoreVertIcon/>} align="left" label="Menus" onClick={this.open('menus')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Dialogs" onClick={this.open('dialogs')}/>
             <Button icon={<MoreVertIcon/>} align="left" label="Tabs" onClick={this.open('tabs')}/>
+            <Button icon={<MoreVertIcon/>} align="left" label="Steppers" onClick={this.open('steppers')}/>
           </View>
         </Drawer>
         <View onClickCapture={this.clickBody.bind(this)}>
