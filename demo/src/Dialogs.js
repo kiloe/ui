@@ -103,13 +103,23 @@ export default class Dialogs extends React.Component {
         `
       },
       {
-        title: 'Tasty Snackbar - floating (desktop)',
+        title: 'Snackbar - floating (desktop)',
         clickToRun: true,
         src: Doc.jsx`
           <Snackbar onClickOutside={stopDemo} id="outter" size="intrinsic" text="This is a message" actionText="Undo" action={function() { console.log( "Undoing!" ); }} />
         `,
         info:`
-          Mmmm
+          
+        `
+      },
+      {
+        title: 'Snackbar without an action',
+        clickToRun: true,
+        src: Doc.jsx`
+          <Snackbar onClickOutside={stopDemo} size="fill" id="outter" text="This is a longer message without any action." />
+        `,
+        info:`
+          
         `
       },
     ];
