@@ -1,9 +1,41 @@
 import React from 'react';
 import View from './View';
 import CSS from './utils/css';
+import TextField from './TextField';
+import Select from './Select';
 
 
 CSS.register({
+
+  '.table': {
+    width: '100%',
+    borderSpacing: '0',
+  },
+  '.table thead tr': {
+    height: '56px',
+  },
+  '.table thead th': {
+    color: 'rgba(0,0,0,0.54)',
+    fontSize: '12px',
+    textAlign: 'left',
+  },
+  '.table tbody td': {
+    color: 'rgba(0,0,0,0.87)',
+    fontSize: '13px',
+    borderTop: '2px solid rgba(0,0,0,0.1)',
+  },
+  '.table tbody tr': {
+    height: '48px',
+  },
+  '.table tbody tr:hover': {
+    backgroundColor: '#EEEEEE',
+  },
+  '.table thead th, .table tbody td': {
+    paddingLeft: '24px',
+  },
+  '.table thead th:last-child, .table tbody td:last-child': {
+    paddingRight: '24px',
+  },
 
 
 });
@@ -16,24 +48,29 @@ export default class DataTable extends View {
   static propTypes = {
     ...View.propTypes,
 
-    // Column headings: { colKey: "Heading Title", ... }
-    // If headings isn't supplied then colKeys are used as the headings (unless showHeadings is false).
-    headings: React.PropTypes.objectOf( React.PropTypes.string ),
+    // Column config, ordered.
+    columns: React.PropTypes.arrayOf( React.PropTypes.shape({
+      // The key in the row objects in data prop
+      key: React.PropTypes.string,
+      // Column headings. If headings isn't supplied then colKeys are used as the headings (unless showHeadings is false).
+      label: React.PropTypes.string,
+      // For any additional info (or if the heading is too long)
+      tip: React.PropTypes.string,
+      // Any columns that are assigned a TextField or Select editor are therefore editable
+      editor: React.PropTypes.oneOfType([ React.PropTypes.instanceOf(TextField), React.PropTypes.instanceOf(Select) ]),
+      // Format string for any columns either for numbers (using Numeral.js) or date/time (using Moment.js)
+      format: React.PropTypes.string,
+      // Prevent automatic data type detection by setting the type for every cell in a column.
+      types: React.PropTypes.oneOf(['string','number','date']),
+    }) ),
+
     // An array of rows: [ { id: ID, colKey: value, ... }, { id: ID, colKey: value, ... }, ... ]
     // If there's no id key, that row isn't interactive or editable. XXX: Right?
     // Any keys in data that aren't in headings are ignored.
     // We don't need to worry about id key/value being displayed in the table because it (probably) won't have an entry in headings prop.
     data: React.PropTypes.arrayOf( React.PropTypes.object ),
-    // For any additional info (or if the heading is too long): { colKey: tooltipString, ... }
-    headingTooltips: React.PropTypes.objectOf( React.PropTypes.string ),
-    // Any columns that are assigned (by the colKey) a TextField or Select editor are therefore editable
-    editors: React.PropTypes.objectOf( React.PropTypes.oneOfType([ React.PropTypes.instanceOf(TextField), React.PropTypes.instanceOf(Select) ]) ),
     // An array of row IDs (number or string) which should be selected. All other rows aren't selected, obviously.
     selected: React.PropTypes.arrayOf( React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]) ),
-    // Format string for any columns (by the colKey) either for numbers (using Numeral.js) or date/time (using Moment.js)
-    formats: React.PropTypes.objectOf( React.PropTypes.string ),
-    // Prevent automatic data type detection by setting the type for every cell in a column (by colKey).
-    types: React.PropTypes.objectOf( React.PropTypes.oneOf(['string','number','date']) ),
 
     // The page number (starting with 1).
     page: React.PropTypes.number,
@@ -99,6 +136,7 @@ export default class DataTable extends View {
 
   getClassNames(){
     let cs = super.getClassNames();
+    cs.table = true;
     return cs;
   }
 
@@ -113,6 +151,25 @@ export default class DataTable extends View {
 
 
   render(){
-    return super.render();
+
+    // If no column prop, populate it with the keys from the first data row
+    let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
+
+    let th = columns.map( (col,i) => <th key={i}>{col.label}</th> );
+    let tr = this.props.data.map( (row,i) => <tr key={i}>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr> );
+
+
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            {th}
+          </tr>
+        </thead>
+        <tbody>
+          {tr}
+        </tbody>
+      </table>
+    );
   }
 }
