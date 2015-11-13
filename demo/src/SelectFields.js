@@ -35,7 +35,7 @@ export default class SelectFields extends React.Component {
           }} />
         `,
         info:`
-          Use an Object to build the key/values of simple lists when you don't case about the order.
+          Use an Object to build the key/values of simple lists when you don't care about the order.
         `
       },
       {
