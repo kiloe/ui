@@ -3,6 +3,7 @@ import View from './View';
 import CSS from './utils/css';
 import TextField from './TextField';
 import Select from './Select';
+import cx from 'classnames';
 
 
 CSS.register({
@@ -12,6 +13,7 @@ CSS.register({
     borderSpacing: '0',
   },
   '.table thead tr': {
+    width: '100%',
     height: '56px',
   },
   '.table thead th': {
@@ -30,11 +32,20 @@ CSS.register({
   '.table tbody tr:hover': {
     backgroundColor: '#EEEEEE',
   },
+  '.table tbody tr.selected': {
+    backgroundColor: '#F5F5F5',
+  },
   '.table thead th, .table tbody td': {
     paddingLeft: '24px',
   },
   '.table thead th:last-child, .table tbody td:last-child': {
     paddingRight: '24px',
+  },
+  '.table.hideHeadings thead': {
+    display: 'none',
+  },
+  '.table.hideCheckboxes thead th.checkbox, .table.hideCheckboxes tbody td.checkbox': {
+    display: 'none',
   },
 
 
@@ -81,6 +92,8 @@ export default class DataTable extends View {
     sort: React.PropTypes.string,
     // The order: asc or desc
     order: React.PropTypes.oneOf(['asc','desc']),
+    // The status of the 'select all' checkbox
+    selectAll: React.PropTypes.bool,
 
     // If true, there is a heading row.
     showHeadings: React.PropTypes.bool,
@@ -90,13 +103,10 @@ export default class DataTable extends View {
     multiSelectable: React.PropTypes.bool,
 
     // Called when the user selects or deselects a row
-    // function( rowID [, selectedStatus] )
-    // If selectedStatus bool isn't supplied then the parent just has to toggle it.
+    // function( rowID , selectedStatus )
     onToggleRow: React.PropTypes.func,
-    // Called when the user edits a value
-    // function( rowID, colKey, newValue )
-    // XXX: Or we could just have the callback functions given to the TextField or Select elements in the editors prop.
-    onValueUpdate: React.PropTypes.func,
+    // Called when the user clicks the Toggle in the header to select or deselect all.
+    onSelectAll: React.PropTypes.func,
     // Called when the user clicks a column header to sort the table.
     // function( colKey )
     // If no function is supplied then sorting is disabled for the table.
@@ -115,10 +125,17 @@ export default class DataTable extends View {
     showCheckboxes: true,
     multiSelectable: true,
     order: "asc",
+    selected: [],
+    selectAll: false,
+    onToggleRow: function() {},
+    onSelectAll: function() {},
   }
 
   constructor(...args){
     super(...args);
+  }
+  componentDidMount(){
+    console.log( this.props );
   }
 
 
@@ -137,6 +154,8 @@ export default class DataTable extends View {
   getClassNames(){
     let cs = super.getClassNames();
     cs.table = true;
+    cs.hideHeadings = !this.props.showHeadings;
+    cs.hideCheckboxes = !this.props.showCheckboxes;
     return cs;
   }
 
@@ -148,7 +167,11 @@ export default class DataTable extends View {
     return style;
   }
 
-
+  onToggleRow(rowID,selected,event) {
+    //console.log( this.props.onToggleRow );
+    //if ( this.props.onToggleRow )
+    this.props.onToggleRow( rowID, selected );
+  }
 
   render(){
 
@@ -156,13 +179,16 @@ export default class DataTable extends View {
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
     let th = columns.map( (col,i) => <th key={i}>{col.label}</th> );
-    let tr = this.props.data.map( (row,i) => <tr key={i}>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr> );
+    let tr = this.props.data.map( (row,i) => <tr key={i} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkbox"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
 
 
     return (
-      <table className="table">
+      <table
+      className={cx(this.getClassNames())}
+      >
         <thead>
           <tr>
+            <th className="checkbox"><Toggle checked={this.props.selectAll} onChange={ this.props.onSelectAll.bind(this,this.props.data.map( k => k.id ) ) } /></th>
             {th}
           </tr>
         </thead>
