@@ -4,11 +4,14 @@ import CSS from './utils/css';
 import TextField from './TextField';
 import Select from './Select';
 import cx from 'classnames';
+import ArrowDropDownIcon from '../package/icons/ArrowDropDownIcon';
+import ArrowDropUpIcon from '../package/icons/ArrowDropUpIcon';
 
 
 CSS.register({
 
   '.table': {
+    display: 'table',
     width: '100%',
     borderSpacing: '0',
   },
@@ -44,8 +47,14 @@ CSS.register({
   '.table.hideHeadings thead': {
     display: 'none',
   },
-  '.table.hideCheckboxes thead th.checkbox, .table.hideCheckboxes tbody td.checkbox': {
+  '.table.hideCheckboxes thead th.checkboxCell, .table.hideCheckboxes tbody td.checkboxCell': {
     display: 'none',
+  },
+  '.table .checkboxCell .checkbox': {
+    backgroundColor: 'transparent !important', //XXX: temporary
+  },
+  '.table .colHeader': {
+    cursor: 'pointer',
   },
 
 
@@ -129,6 +138,7 @@ export default class DataTable extends View {
     selectAll: false,
     onToggleRow: function() {},
     onSelectAll: function() {},
+    onSort: function() {},
   }
 
   constructor(...args){
@@ -173,13 +183,27 @@ export default class DataTable extends View {
     this.props.onToggleRow( rowID, selected );
   }
 
+  _sortByCol( sort, order ) {
+    var sortOrder = 1;
+    if(order == "desc") {
+      sortOrder = -1;
+    }
+    return function (a,b) {
+      var result = (a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0;
+      return result * sortOrder;
+    }
+  }
+
   render(){
+
+    let data = this.props.data.slice(0);
+    if ( this.props.sort ) data.sort( this._sortByCol( this.props.sort, this.props.order ) );
 
     // If no column prop, populate it with the keys from the first data row
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
-    let th = columns.map( (col,i) => <th key={i}>{col.label}</th> );
-    let tr = this.props.data.map( (row,i) => <tr key={i} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkbox"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
+    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className="colHeader" tip={col.tip} size="intrinsic" row align="left">{(this.props.sort==col.key?(this.props.order=='asc'?<ArrowDropDownIcon size="intrinsic" />:<ArrowDropUpIcon size="intrinsic" />):[])}{col.label}</View></th> );
+    let tr = data.map( (row,i) => <tr key={'row-'+row.id} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
 
 
     return (
@@ -188,7 +212,7 @@ export default class DataTable extends View {
       >
         <thead>
           <tr>
-            <th className="checkbox"><Toggle checked={this.props.selectAll} onChange={ this.props.onSelectAll.bind(this,this.props.data.map( k => k.id ) ) } /></th>
+            <th className="checkboxCell"><Toggle checked={this.props.selectAll} onChange={ this.props.onSelectAll.bind(this,this.props.data.map( k => k.id ) ) } /></th>
             {th}
           </tr>
         </thead>

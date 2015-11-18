@@ -34,6 +34,14 @@ export default class DataTables extends React.Component {
                 this.setState({ selectAll: true, selected: rowIDs, previouslySelected: this.state.selected });
               }
             }}
+            onSort={(colKey) => {
+              if ( colKey == this.state.sort ) this.setState( { order: ( this.state.order == 'asc' ? 'desc' : 'asc' ) } );
+              else {
+                this.setState( { sort: colKey, order: 'asc' } );
+              }
+            }}
+            sort={this.state.sort}
+            order={this.state.order}
             selectAll={this.state.selectAll}
             data={ [ { id: 232, dessert: 'Bakewell tart', type: 'pastry' }, { id: 111, dessert: 'Chocolate Sundae', type: 'ice cream' }, { id: 9, dessert: 'Soggy biscuit', type: 'pastry' } ] }
             selected={this.state.selected}
