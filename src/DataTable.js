@@ -6,6 +6,8 @@ import Select from './Select';
 import cx from 'classnames';
 import ArrowDropDownIcon from '../package/icons/ArrowDropDownIcon';
 import ArrowDropUpIcon from '../package/icons/ArrowDropUpIcon';
+//import ArrowDownwardIcon from '../package/icons/ArrowDownwardIcon';
+//import ArrowUpwardIcon from '../package/icons/ArrowUpwardIcon';
 
 
 CSS.register({
@@ -54,6 +56,11 @@ CSS.register({
     cursor: 'pointer',
     left: '-1.92rem',
     position: 'relative',
+    fontSize: '12px !important',
+    color: 'rgba(0,0,0,0.54) !important',
+  },
+  '.table .colHeader.sortedBy': {
+    color: 'rgba(0,0,0,0.87) !important',
   },
   '.table .colHeader .asc, .table .colHeader .desc': {
     display: 'none',
@@ -224,7 +231,7 @@ export default class DataTable extends View {
 
     // If no column prop, populate it with the keys from the first data row
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
-    let headingStyle = { fontSize: '12px', color: 'rgba(0,0,0,0.54)' };
+    let headingStyle = {}; // fontSize: '12px', color: 'rgba(0,0,0,0.54)' };
 
     let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy":"colHeader"} tip={col.tip} size="intrinsic" row align="left" style={headingStyle}><ArrowDropDownIcon size="intrinsic" className="asc" /><ArrowDropUpIcon size="intrinsic" className="desc" />{col.label}</View></th> );
     let tr = data.map( (row,i) => <tr key={'row-'+row.id} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
