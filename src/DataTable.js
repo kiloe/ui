@@ -56,6 +56,26 @@ CSS.register({
   '.table .colHeader': {
     cursor: 'pointer',
   },
+  '.table .colHeader .asc, .table .colHeader .desc': {
+    display: 'none',
+  },
+  '.table.sortedAsc .colHeader.sortedBy .asc, .table.sortedDesc .colHeader.sortedBy .desc': {
+    display: 'flex',
+  },
+  '.table.sortedAsc .colHeader.sortedBy:hover .asc, .table.sortedDesc .colHeader.sortedBy:hover .desc': {
+    display: 'none',
+  },
+  '.table.sortedAsc .colHeader.sortedBy:hover .desc, .table.sortedDesc .colHeader.sortedBy:hover .asc, .table .colHeader:not(.sortedBy):hover .asc': {
+    display: 'flex',
+    opacity: 0.26,
+  },
+  '.table .colHeader:not(.sortedBy) .asc': {
+    display: 'flex',
+    visibility: 'hidden',
+  },
+  '.table .colHeader:not(.sortedBy):hover .asc': {
+    visibility: 'visible',
+  },
 
 
 });
@@ -166,6 +186,10 @@ export default class DataTable extends View {
     cs.table = true;
     cs.hideHeadings = !this.props.showHeadings;
     cs.hideCheckboxes = !this.props.showCheckboxes;
+    cs.sorted = (this.props.sort != undefined);
+    cs.sortedAsc = (this.props.order=='asc');
+    cs.sortedDesc = (this.props.order=='desc');
+
     return cs;
   }
 
@@ -202,7 +226,7 @@ export default class DataTable extends View {
     // If no column prop, populate it with the keys from the first data row
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
-    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className="colHeader" tip={col.tip} size="intrinsic" row align="left">{(this.props.sort==col.key?(this.props.order=='asc'?<ArrowDropDownIcon size="intrinsic" />:<ArrowDropUpIcon size="intrinsic" />):[])}{col.label}</View></th> );
+    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy":"colHeader"} tip={col.tip} size="intrinsic" row align="left"><ArrowDropDownIcon size="intrinsic" className="asc" /><ArrowDropUpIcon size="intrinsic" className="desc" />{col.label}</View></th> );
     let tr = data.map( (row,i) => <tr key={'row-'+row.id} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
 
 
