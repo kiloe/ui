@@ -39,13 +39,14 @@ node_modules: package.json
 
 #--------------------------------------
 
-icons: | node_modules
+material-design-icons:
 	git clone https://github.com/google/material-design-icons.git
+
+icons: material-design-icons | node_modules
 	mkdir -p src/$@.build
 	for filename in `ls material-design-icons/**/svg/production/*.svg`; do \
 		node svg_to_icon.js $$filename; \
 	done
-	rm -rf material-design-icons
 	mv src/$@.build src/$@
 
 #--------------------------------------
