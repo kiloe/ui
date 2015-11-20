@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "classnames": "^2.1.5",
-    "moment": "^2.10.6"
+    "moment": "^2.10.6",
+    "numeral": "^1.5.3"
   },
   "babel": {
     "stage": 0,

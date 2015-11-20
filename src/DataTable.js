@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import numeral from 'numeral';
 import View from './View';
 import CSS from './utils/css';
 import TextField from './TextField';
@@ -87,6 +89,9 @@ CSS.register({
   '.table .colHeader:not(.sortedBy):hover .asc': {
     visibility: 'visible',
   },
+  '.table tbody td.type-number, .table tbody td.type-date': {
+    textAlign: 'right',
+  }
 
 
 });
@@ -190,14 +195,31 @@ export default class DataTable extends View {
 
 
   // Data type auto-detection should take place on the value before it's formatted.
-  // Type detection: 1. Check for number/currency/percentage (with one regex?). 2. Check for date/time using Moment.js isValid(). 3. Otherwise, assume it's a string.
+  // Type detection:
+  //   1. Check for number/currency/percentage (with one regex?).
+  //   2. Check for date/time using Moment.js isValid().
+  //   3. Otherwise, assume it's a string.
   // Number formatting should use http://numeraljs.com/ and should apply to numbers and currency/percentage (which are just formatted numbers anyway).
   // Currency and percentage values should be left as they are (e.g. "£4", "45.3%",) unless that column is formatted, in which case we ignore the currency/percent and just take the numeric value.
   // Date/time formatting should use Moment.js
   // Try to replicate the types and behaviour of Google Sheets.
-  detectDataType( value ) {
+  // For numbers: Need to sort by value (so "£4" would be 4)?
+  _detectDataType( value ) {
+    if ( !!value.toString().trim().match(/(?=.)^\-?[\$\£\€]?(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)?(\.[0-9]+)?$/) ) {
+      return "number";
+    }
+    else if ( moment(new Date(value.toString().trim())).isValid() ) {
+      return "date";
+    }
+    else {
+      return "string";
+    }
+  }
 
-
+  _formatField( value, type, format ) {
+    if ( type == "number" && format ) return numeral(value).format(format);
+    else if ( type == "date" && format ) return moment(new Date(value),format);
+    else return value;
   }
 
 
@@ -236,7 +258,7 @@ export default class DataTable extends View {
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
     let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy":"colHeader"} tip={col.tip} size="intrinsic" row align="left"><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
-    let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}><Text lines={1}>{ row[col.key] }</Text></td> ) }</tr>, this );
+    let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j} className={"type-" + (col.type||this._detectDataType( row[col.key] ))}>{ col.format ? this._formatField( row[col.key], (col.type||this._detectDataType( row[col.key] )), col.format ) : row[col.key] }</td>, this ) }</tr>, this );
 
 
     return (

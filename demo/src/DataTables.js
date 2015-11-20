@@ -23,7 +23,7 @@ export default class DataTables extends React.Component {
             columns={[
               {key: 'num', label: 'Number', tip: 'The original number', type:'number'},
               {key: 'square', label: 'Square', tip: 'Power of 2'},
-              {key: 'cube', label: 'Cube', tip: 'Power of 3'},
+              {key: 'cube', label: 'Cube($)', tip: 'Power of 3', format: "$0,0.00" },
               {key: 'random', label: 'Random', tip: 'A random number between 0 and 100'},
               {key: 'text', label: 'Text', tip: 'A string the length of the number'},
             ]}
@@ -80,7 +80,7 @@ export default class DataTables extends React.Component {
         src: Doc.jsx`
           <DataTable
             columns={[
-              {key: 'dessert', label: 'Dessert Name', tip: 'yummy name', type:'text'},
+              {key: 'dessert', label: 'Dessert Name', tip: 'yummy name', type:'string'},
               {key: 'type', label: 'Type', tip: 'wtf is a dessert type??'},
             ]}
             showHeadings={false}
