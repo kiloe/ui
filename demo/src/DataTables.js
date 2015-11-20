@@ -7,18 +7,25 @@ export default class DataTables extends React.Component {
 
 
 
+//[ { id: 232, dessert: 'Bakewell tart', type: 'pastry' }, { id: 111, dessert: 'Chocolate Sundae', type: 'ice cream' }, { id: 9, dessert: 'Soggy biscuit', type: 'pastry' } ]
+//
+//              {key: 'dessert', label: 'Dessert Name', tip: 'yummy name', type:'text'},
+//              {key: 'type', label: 'Type', tip: 'wtf is a dessert type??'},
 
   render(){
 
     let data = [
       {
         title: 'Simple table',
-        state: { selected: [232], selectAll: false, data: [ { id: 232, dessert: 'Bakewell tart', type: 'pastry' }, { id: 111, dessert: 'Chocolate Sundae', type: 'ice cream' }, { id: 9, dessert: 'Soggy biscuit', type: 'pastry' } ] },
+        state: { selected: [2,4], selectAll: false, page: 2, rowsPerPage: 5, data: [ 1,2,3,4,5,6,7,8,9,10,11,12 ].map( (n) => ({ id: n, num: n, square: n*n, cube: n*n*n, random: Math.floor(Math.random() * 100), text: "Tiramisu chupa chups cupcake cheesecake candy canes cookie. Gingerbread cheesecake topping sweet gingerbread. Muffin tart brownie. Halvah lollipop pastry cake. Muffin marzipan chocolate sweet. Ice cream toffee tootsie roll cookie. Danish chocolate cookie ice cream. Soufflé jelly beans candy gummi bears croissant. Jelly-o bonbon cookie.".substr(n).trim() }) ) },
         src: Doc.jsx`
           <DataTable
             columns={[
-              {key: 'dessert', label: 'Dessert Name', tip: 'yummy name', type:'text'},
-              {key: 'type', label: 'Type', tip: 'wtf is a dessert type??'},
+              {key: 'num', label: 'Number', tip: 'The original number', type:'number'},
+              {key: 'square', label: 'Square', tip: 'Power of 2'},
+              {key: 'cube', label: 'Cube', tip: 'Power of 3'},
+              {key: 'random', label: 'Random', tip: 'A random number between 0 and 100'},
+              {key: 'text', label: 'Text', tip: 'A string the length of the number'},
             ]}
             onToggleRow={(rowID) => {
               let selected = this.state.selected.slice(0);
@@ -35,16 +42,21 @@ export default class DataTables extends React.Component {
               }
             }}
             onSort={(colKey) => {
-              let order = 'asc';
-              if ( colKey == this.state.sort ) order = ( this.state.order == 'asc' ? 'desc' : 'asc' );
-              this.setState( { sort: colKey, order: order, data: this.state.data.slice(0).sort( function( sort, order, a, b ) { return ((a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0) * (order == "desc"?-1:1); }.bind(this,colKey,order) ) } );
+              let order = ( colKey == this.state.sort && this.state.order == 'asc' ? 'desc' : 'asc' );
+              this.setState( { page: 1, sort: colKey, order: order, data: this.state.data.slice(0).sort( function( sort, order, a, b ) { return ((a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0) * (order == "desc"?-1:1); }.bind(this,colKey,order) ) } );
 
+            }}
+            onPage={(page,rowsPerPage) => {
+              this.setState( { page: page, rowsPerPage: rowsPerPage } );
             }}
             sort={this.state.sort}
             order={this.state.order}
             selectAll={this.state.selectAll}
-            data={ this.state.data }
+            data={ this.state.data.slice( (this.state.page-1)*this.state.rowsPerPage, this.state.page*this.state.rowsPerPage ) }
             selected={this.state.selected}
+            totalRows={this.state.data.length}
+            page={this.state.page}
+            rowsPerPage={this.state.rowsPerPage}
          />
         `,
         info:`

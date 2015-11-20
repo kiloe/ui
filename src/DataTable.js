@@ -8,6 +8,8 @@ import cx from 'classnames';
 //import ArrowDropUpIcon from '../package/icons/ArrowDropUpIcon';
 import ArrowDownwardIcon from '../package/icons/ArrowDownwardIcon';
 import ArrowUpwardIcon from '../package/icons/ArrowUpwardIcon';
+import KeyboardArrowLeftIcon from '../package/icons/KeyboardArrowLeftIcon';
+import KeyboardArrowRightIcon from '../package/icons/KeyboardArrowRightIcon';
 
 
 CSS.register({
@@ -17,11 +19,14 @@ CSS.register({
     width: '100%',
     borderSpacing: '0',
   },
-  '.table thead tr': {
+  '.table thead tr, .table tfoot tr': {
     width: '100%',
     height: '56px',
   },
-  '.table thead th': {
+  '.table tfoot td': {
+    fontSize: '12px',
+    color: 'rgba(0,0,0,0.54)',
+    borderTop: '2px solid rgba(0,0,0,0.1)',
   },
   '.table tbody td': {
     color: 'rgba(0,0,0,0.87)',
@@ -117,12 +122,16 @@ export default class DataTable extends View {
     data: React.PropTypes.arrayOf( React.PropTypes.object ),
     // An array of row IDs (number or string) which should be selected. All other rows aren't selected, obviously.
     selected: React.PropTypes.arrayOf( React.PropTypes.oneOfType([ React.PropTypes.number, React.PropTypes.string ]) ),
+    // How many rows are there in total. If totalRows > data.length, then paging is enabled.
+    totalRows: React.PropTypes.number,
 
     // The page number (starting with 1).
     page: React.PropTypes.number,
     // The maximum number of rows per page.
     // If data.length > rowsPerPage then paging is enabled and a footer is displayed.
     rowsPerPage: React.PropTypes.number,
+    // For the drop-down options of how many rows per page.
+    rowsPerPageOptions: React.PropTypes.arrayOf( React.PropTypes.number ),
     // The colKey to sort by.
     sort: React.PropTypes.string,
     // The order: asc or desc
@@ -147,6 +156,9 @@ export default class DataTable extends View {
     // If no function is supplied then sorting is disabled for the table.
     // It's up to the parent to do the sorting and choose/toggle the order (asc/desc).
     onSort: React.PropTypes.func,
+    // Called when the user changes the page or rowsPerPage
+    // function( page, rowsPerPage )
+    onPage: React.PropTypes.func,
 
 
 
@@ -156,6 +168,7 @@ export default class DataTable extends View {
     ...View.defaultProps,
     page: 1,
     rowsPerPage: 50,
+    rowsPerPageOptions: [10,25,50,100],
     showHeadings: true,
     showCheckboxes: true,
     multiSelectable: true,
@@ -165,13 +178,14 @@ export default class DataTable extends View {
     onToggleRow: function() {},
     onSelectAll: function() {},
     onSort: function() {},
+    onPage: function() {},
   }
 
   constructor(...args){
     super(...args);
   }
   componentDidMount(){
-    console.log( this.props );
+    //console.log( this.props );
   }
 
 
@@ -222,7 +236,7 @@ export default class DataTable extends View {
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
     let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy":"colHeader"} tip={col.tip} size="intrinsic" row align="left"><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
-    let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}>{ row[col.key] }</td> ) }</tr>, this );
+    let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j}><Text lines={1}>{ row[col.key] }</Text></td> ) }</tr>, this );
 
 
     return (
@@ -238,6 +252,11 @@ export default class DataTable extends View {
         <tbody>
           {tr}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={columns.length+1}><View row style={{ justifyContent: 'flex-end', alignItems: 'center' }}><Text>{(this.props.page-1)*this.props.rowsPerPage+1}-{(this.props.page-1)*this.props.rowsPerPage+this.props.data.length} of {this.props.totalRows}</Text><Button icon={KeyboardArrowLeftIcon} onClick={ this.props.onPage.bind(this,this.props.page-1,this.props.rowsPerPage ) } disabled={(this.props.page==1)} /><Button icon={KeyboardArrowRightIcon} onClick={ this.props.onPage.bind(this,this.props.page+1,this.props.rowsPerPage ) } disabled={(this.props.page*this.props.rowsPerPage >= this.props.totalRows)} /></View></td>
+          </tr>
+        </tfoot>
       </table>
     );
   }
