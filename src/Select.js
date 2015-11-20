@@ -45,12 +45,14 @@ export default class Select extends MenuItem {
     ]),
     // radio renders the options as radio buttons rather than a dropdown
     radio: React.PropTypes.bool,
+    onChange: React.PropTypes.func,
   }
 
   static defaultProps = {
     ...MenuItem.defaultProps,
     divider: true,
     tip: '▼',
+    onChange: function() { },
   }
 
   constructor(...args){
@@ -139,6 +141,7 @@ export default class Select extends MenuItem {
 
   select(opt){
     this.setState({selected: opt});
+    this.props.onChange( opt.key );
   }
 
   // normalize options input to:

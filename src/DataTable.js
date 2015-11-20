@@ -254,7 +254,7 @@ export default class DataTable extends View {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={columns.length+1}><View row style={{ justifyContent: 'flex-end', alignItems: 'center' }}><Text>{(this.props.page-1)*this.props.rowsPerPage+1}-{(this.props.page-1)*this.props.rowsPerPage+this.props.data.length} of {this.props.totalRows}</Text><Button icon={KeyboardArrowLeftIcon} onClick={ this.props.onPage.bind(this,this.props.page-1,this.props.rowsPerPage ) } disabled={(this.props.page==1)} /><Button icon={KeyboardArrowRightIcon} onClick={ this.props.onPage.bind(this,this.props.page+1,this.props.rowsPerPage ) } disabled={(this.props.page*this.props.rowsPerPage >= this.props.totalRows)} /></View></td>
+            <td colSpan={columns.length+1}><View row style={{ justifyContent: 'flex-end', alignItems: 'center' }}><Text>Rows per page:</Text><Select required value={this.props.rowsPerPage.toString()} options={this.props.rowsPerPageOptions.map( n => n.toString() ) } onChange={ this.props.onPage.bind(this,1) } /><Text>{(this.props.page-1)*this.props.rowsPerPage+1}-{(this.props.page-1)*this.props.rowsPerPage+this.props.data.length} of {this.props.totalRows}</Text><Button icon={KeyboardArrowLeftIcon} onClick={ this.props.onPage.bind(this,this.props.page-1,this.props.rowsPerPage ) } disabled={(this.props.page==1)} /><Button icon={KeyboardArrowRightIcon} onClick={ this.props.onPage.bind(this,this.props.page+1,this.props.rowsPerPage ) } disabled={(this.props.page*this.props.rowsPerPage >= this.props.totalRows)} /></View></td>
           </tr>
         </tfoot>
       </table>

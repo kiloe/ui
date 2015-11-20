@@ -17,7 +17,7 @@ export default class DataTables extends React.Component {
     let data = [
       {
         title: 'Simple table',
-        state: { selected: [2,4], selectAll: false, page: 2, rowsPerPage: 5, data: [ 1,2,3,4,5,6,7,8,9,10,11,12 ].map( (n) => ({ id: n, num: n, square: n*n, cube: n*n*n, random: Math.floor(Math.random() * 100), text: "Tiramisu chupa chups cupcake cheesecake candy canes cookie. Gingerbread cheesecake topping sweet gingerbread. Muffin tart brownie. Halvah lollipop pastry cake. Muffin marzipan chocolate sweet. Ice cream toffee tootsie roll cookie. Danish chocolate cookie ice cream. Soufflé jelly beans candy gummi bears croissant. Jelly-o bonbon cookie.".substr(n).trim() }) ) },
+        state: { selected: [2,4], selectAll: false, page: 1, rowsPerPage: 5, data: Array.apply(0, Array(100)).map( (v,n) => ({ id: n, num: n, square: n*n, cube: n*n*n, random: Math.floor(Math.random() * 100), text: "Tiramisu chupa chups cupcake cheesecake candy canes cookie. Gingerbread cheesecake topping sweet gingerbread. Muffin tart brownie. Halvah lollipop pastry cake. Muffin marzipan chocolate sweet. Ice cream toffee tootsie roll cookie. Danish chocolate cookie ice cream. Soufflé jelly beans candy gummi bears croissant. Jelly-o bonbon cookie.".substr(n,n).trim() }) ) },
         src: Doc.jsx`
           <DataTable
             columns={[
@@ -47,7 +47,7 @@ export default class DataTables extends React.Component {
 
             }}
             onPage={(page,rowsPerPage) => {
-              this.setState( { page: page, rowsPerPage: rowsPerPage } );
+              this.setState( { page: page, rowsPerPage: parseInt(rowsPerPage) } );
             }}
             sort={this.state.sort}
             order={this.state.order}
@@ -57,6 +57,7 @@ export default class DataTables extends React.Component {
             totalRows={this.state.data.length}
             page={this.state.page}
             rowsPerPage={this.state.rowsPerPage}
+            rowsPerPageOptions={[5,10,25]}
          />
         `,
         info:`
