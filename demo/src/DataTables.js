@@ -37,22 +37,7 @@ export default class DataTables extends React.Component {
             onSort={(colKey) => {
               let order = 'asc';
               if ( colKey == this.state.sort ) order = ( this.state.order == 'asc' ? 'desc' : 'asc' );
-              this.setState( { sort: colKey, order: order } );
-
-              let data = this.state.data.slice(0);
-              data.sort(
-                function( sort, order, a, b ) {
-                  var sortOrder = 1;
-                  if(order == "desc") {
-                    sortOrder = -1;
-                  }
-                  var result = (a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0;
-                  return result * sortOrder;
-
-                }.bind(this,colKey,order)
-              );
-
-              this.setState( { data: data } );
+              this.setState( { sort: colKey, order: order, data: this.state.data.slice(0).sort( function( sort, order, a, b ) { return ((a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0) * (order == "desc"?-1:1); }.bind(this,colKey,order) ) } );
 
             }}
             sort={this.state.sort}
