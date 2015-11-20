@@ -13,7 +13,7 @@ export default class DataTables extends React.Component {
     let data = [
       {
         title: 'Simple table',
-        state: { selected: [232], selectAll: false },
+        state: { selected: [232], selectAll: false, data: [ { id: 232, dessert: 'Bakewell tart', type: 'pastry' }, { id: 111, dessert: 'Chocolate Sundae', type: 'ice cream' }, { id: 9, dessert: 'Soggy biscuit', type: 'pastry' } ] },
         src: Doc.jsx`
           <DataTable
             columns={[
@@ -35,15 +35,30 @@ export default class DataTables extends React.Component {
               }
             }}
             onSort={(colKey) => {
-              if ( colKey == this.state.sort ) this.setState( { order: ( this.state.order == 'asc' ? 'desc' : 'asc' ) } );
-              else {
-                this.setState( { sort: colKey, order: 'asc' } );
-              }
+              let order = 'asc';
+              if ( colKey == this.state.sort ) order = ( this.state.order == 'asc' ? 'desc' : 'asc' );
+              this.setState( { sort: colKey, order: order } );
+
+              let data = this.state.data.slice(0);
+              data.sort(
+                function( sort, order, a, b ) {
+                  var sortOrder = 1;
+                  if(order == "desc") {
+                    sortOrder = -1;
+                  }
+                  var result = (a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0;
+                  return result * sortOrder;
+
+                }.bind(this,colKey,order)
+              );
+
+              this.setState( { data: data } );
+
             }}
             sort={this.state.sort}
             order={this.state.order}
             selectAll={this.state.selectAll}
-            data={ [ { id: 232, dessert: 'Bakewell tart', type: 'pastry' }, { id: 111, dessert: 'Chocolate Sundae', type: 'ice cream' }, { id: 9, dessert: 'Soggy biscuit', type: 'pastry' } ] }
+            data={ this.state.data }
             selected={this.state.selected}
          />
         `,
