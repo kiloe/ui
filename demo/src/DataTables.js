@@ -16,7 +16,7 @@ export default class DataTables extends React.Component {
 
     let data = [
       {
-        title: 'Simple table',
+        title: 'Numbers, dates and text',
         state: { selected: [2,4], selectAll: false, page: 1, rowsPerPage: 5, data: Array.apply(0, Array(100)).map( (v,n) => ({ id: n, num: n, square: n*n, cube: n*n*n, date: "2015-12-"+n, date2: "2015-12-"+n, random: Math.floor(Math.random() * 100), text: "Tiramisu chupa chups cupcake cheesecake candy canes cookie. Gingerbread cheesecake topping sweet gingerbread. Muffin tart brownie. Halvah lollipop pastry cake. Muffin marzipan chocolate sweet. Ice cream toffee tootsie roll cookie. Danish chocolate cookie ice cream. Soufflé jelly beans candy gummi bears croissant. Jelly-o bonbon cookie.".substr(n,n).trim() }) ) },
         src: Doc.jsx`
           <DataTable
@@ -24,9 +24,9 @@ export default class DataTables extends React.Component {
               {key: 'num', label: 'Number', tip: 'Type: "number"', type:'number'},
               {key: 'cube', label: 'Cube ($)', tip: 'Type: "number", format: "$0,0.00"', type: 'number', format: "$0,0.00" },
               {key: 'date', label: 'Day of Dec (date)', tip: 'Type: "date", format: "Do MMM"', type: 'date', format: "Do MMM" },
-              {key: 'date2', label: 'Day of Dec (auto)', tip: 'format: "Do MMM"', format: "Do MMM" },
+              {key: 'date2', label: 'Day of Dec (auto)', tip: 'format: "MMMM D"', format: "MMMM D" },
               {key: 'random', label: 'Random', tip: 'Type: "text". A random number between 0 and 100', type: 'text' },
-              {key: 'text', label: 'Text', tip: 'A string the length of the number'},
+              {key: 'text', label: 'Text', tip: 'A string the length of the number', width: '25%'},
             ]}
             onToggleRow={(rowID) => {
               let selected = this.state.selected.slice(0);
@@ -62,7 +62,7 @@ export default class DataTables extends React.Component {
          />
         `,
         info:`
-
+        Testing paging and column types.
         `
       },
       {

@@ -191,9 +191,16 @@ export default class DataTable extends View {
 
   constructor(...args){
     super(...args);
+    this.state = this.state || {};
+    this._columnWidths = {};
   }
   componentDidMount(){
-    //console.log( this.props );
+
+    let totalWidth = this.refs.checkboxCol.offsetWidth + Object.keys( this._columnWidths ).reduce( ((sum,key) => sum + this._columnWidths[key]).bind(this), 0);
+    let percentages = {};
+    Object.keys( this._columnWidths ).forEach( ( (key) => percentages[key] = (this._columnWidths[key]/totalWidth*100) ).bind(this) );
+
+    this.setState( { colWidths: percentages } );
   }
 
 
@@ -263,17 +270,23 @@ export default class DataTable extends View {
     // If no column prop, populate it with the keys from the first data row
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
-    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy type-" + col.type:"colHeader type-" + col.type} tip={col.tip} size="intrinsic" row align={col.type=='number'||col.type=='date'?"right":"left"}><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
+    let th = columns.map( (col,i) => <th key={'th-'+i} ref={ function(key,c) { if (c) this._columnWidths[key] = c.offsetWidth }.bind(this,col.key||i)} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy type-" + col.type:"colHeader type-" + col.type} tip={col.tip} size="intrinsic" row align={col.type=='number'||col.type=='date'?"right":"left"}><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
     let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j} className={"type-" + (col.type||this._detectDataType( row[col.key] ))}>{ col.format ? this._formatField( row[col.key], (col.type||this._detectDataType( row[col.key] )), col.format ) : row[col.key] }</td>, this ) }</tr>, this );
 
+    let cols = columns.map( ( (col,i) => <col key={'col-'+i} width={(this.state.colWidths?this.state.colWidths[col.key]+'%':col.width)} /> ).bind(this) );
 
     return (
       <table
       className={cx(this.getClassNames())}
+      ref={(c) => this._table = c}
       >
+        <colgroup>
+          <col />
+          {cols}
+        </colgroup>
         <thead>
           <tr>
-            <th className="checkboxCell"><Toggle checked={this.props.selectAll} onChange={ this.props.onSelectAll.bind(this,this.props.data.map( k => k.id ) ) } /></th>
+            <th className="checkboxCell" ref="checkboxCol"><Toggle checked={this.props.selectAll} onChange={ this.props.onSelectAll.bind(this,this.props.data.map( k => k.id ) ) } /></th>
             {th}
           </tr>
         </thead>
