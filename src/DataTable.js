@@ -61,10 +61,12 @@ CSS.register({
   },
   '.table .colHeader': {
     cursor: 'pointer',
-    left: '-1.5rem',
     position: 'relative',
     fontSize: '12px !important',
     color: 'rgba(0,0,0,0.54) !important',
+  },
+  '.table .colHeader:not(.type-date):not(.type-number)': {
+    left: '-1.5rem',
   },
   '.table .colHeader.sortedBy': {
     color: 'rgba(0,0,0,0.87) !important',
@@ -91,7 +93,8 @@ CSS.register({
   },
   '.table tbody td.type-number, .table tbody td.type-date': {
     textAlign: 'right',
-  }
+  },
+
 
 
 });
@@ -218,7 +221,10 @@ export default class DataTable extends View {
 
   _formatField( value, type, format ) {
     if ( type == "number" && format ) return numeral(value).format(format);
-    else if ( type == "date" && format ) return moment(new Date(value),format);
+    else if ( type == "date" && format ) {
+      //console.log(  moment(new Date(value),format) );
+      return moment(new Date(value)).format(format);
+    }
     else return value;
   }
 
@@ -257,7 +263,7 @@ export default class DataTable extends View {
     // If no column prop, populate it with the keys from the first data row
     let columns = this.props.columns || Object.keys(this.props.data[0]).map( k => ({ key: k, label: k }) );
 
-    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy":"colHeader"} tip={col.tip} size="intrinsic" row align="left"><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
+    let th = columns.map( (col,i) => <th key={i} onClick={this.props.onSort.bind(this,col.key)}><View className={this.props.sort==col.key?"colHeader sortedBy type-" + col.type:"colHeader type-" + col.type} tip={col.tip} size="intrinsic" row align={col.type=='number'||col.type=='date'?"right":"left"}><ArrowDownwardIcon size={1.25} className="asc" /><ArrowUpwardIcon size={1.25} className="desc" />{col.label}</View></th> );
     let tr = data.map( (row,i) => <tr key={'row-'+(row.id||i)} className={(this.props.selected.indexOf(row.id)>=0?"selected":"")}><td className="checkboxCell"><Toggle checked={this.props.selected.indexOf(row.id)>=0} onChange={ this.onToggleRow.bind(this,row.id) } /></td>{ columns.map( (col,j) => <td key={j} className={"type-" + (col.type||this._detectDataType( row[col.key] ))}>{ col.format ? this._formatField( row[col.key], (col.type||this._detectDataType( row[col.key] )), col.format ) : row[col.key] }</td>, this ) }</tr>, this );
 
 
