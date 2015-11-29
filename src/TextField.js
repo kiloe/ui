@@ -122,6 +122,7 @@ export default class TextField extends View {
       React.PropTypes.func,
       React.PropTypes.node,
     ]),
+    onChange: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -132,6 +133,7 @@ export default class TextField extends View {
     type: 'text',
     rows: 1,
     required: false,
+    onChange: function() { },
   }
 
   constructor(...args){
@@ -144,7 +146,7 @@ export default class TextField extends View {
     this.setState({ value: this.props.value, height: this.props.rows * rowsHeight });
     if ( this.props.multiLine ) this._syncHeightWithShadow();
   }
-  
+
 
 
   getClassNames(){
@@ -261,6 +263,7 @@ export default class TextField extends View {
   handleChange = (event) => {
     this.setState({value: event.target.value});
     if ( this.props.multiLine ) this._syncHeightWithShadow(event.target.value);
+    this.props.onChange( event.target.value, event );
   }
 
   onFocus = () => {
@@ -282,7 +285,7 @@ export default class TextField extends View {
       shadow.value = newValue;
     }
     let newHeight = shadow.scrollHeight;
-    
+
     if (this.props.maxRows > this.props.rows) {
       newHeight = Math.min(this.props.maxRows * rowsHeight, newHeight);
     }
@@ -320,7 +323,7 @@ export default class TextField extends View {
     else if ( this.state.focus ) color = this.getHighlightColor();
 
     style.color = this.getTextColor();
-    
+
     if ( this.props.multiLine ) style.height = this.state.height;
 
 
@@ -358,7 +361,7 @@ export default class TextField extends View {
             value={this.state.value}
              />
         </span> );
-    
+
     }
     else {
       fieldGroup.push(

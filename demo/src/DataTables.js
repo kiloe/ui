@@ -25,7 +25,7 @@ export default class DataTables extends React.Component {
               {key: 'cube', label: 'Cube ($)', tip: 'Type: "number", format: "$0,0.00"', type: 'number', format: "$0,0.00" },
               {key: 'date', label: 'Day of Dec (date)', tip: 'Type: "date", format: "Do MMM"', type: 'date', format: "Do MMM" },
               {key: 'date2', label: 'Day of Dec (auto)', tip: 'format: "MMMM D"', format: "MMMM D" },
-              {key: 'random', label: 'Random', tip: 'Type: "text". A random number between 0 and 100', type: 'text' },
+              {key: 'random', label: 'Random', tip: 'Type: "string". A random number between 0 and 100', type: 'string' },
               {key: 'text', label: 'Text', tip: 'A string the length of the number', width: '25%'},
             ]}
             onToggleRow={(rowID) => {
@@ -59,6 +59,57 @@ export default class DataTables extends React.Component {
             page={this.state.page}
             rowsPerPage={this.state.rowsPerPage}
             rowsPerPageOptions={[5,10,25]}
+         />
+        `,
+        info:`
+        Testing paging and column types.
+        `
+      },
+      {
+        title: 'Editors',
+        state: { page: 1, rowsPerPage: 25, data: Array.apply(0, Array(100)).map( (v,n) => ({ id: n, num: n, type: (n%2).toString(), note: 'Note for #'+n }) ) },
+        src: Doc.jsx`
+          <DataTable
+            columns={[
+              {key: 'num', label: 'Number', tip: 'Type: "number"', type:'number'},
+              {key: 'type', label: 'Type', tip: 'Selector', type: 'number', editor: <Select options={['0','1','2']} /> },
+              {key: 'note', label: 'Note', tip: 'Text editor', type: 'string', editor: <TextField /> },
+            ]}
+            onUpdateData={(rowID,colKey,value) => {
+              let data = this.state.data.slice(0);
+              data.forEach( (d,i) => { if ( d.id == rowID ) { d[colKey] = value; data[i] = d; } } ); //XXX: redo this
+              this.setState( { data: data } );
+            }}
+            onToggleRow={(rowID) => {
+              let selected = this.state.selected.slice(0);
+              if ( selected.indexOf(rowID) < 0 ) selected.push(rowID); //add it please
+              else selected.splice( selected.indexOf(rowID), 1 ); //remove it, yo!
+              this.setState({selected: selected})
+            }}
+            onSelectAll={(rowIDs) => {
+              if ( this.state.selectAll ) { //Off
+                this.setState({ selectAll: false, selected: (rowIDs.length == this.state.previouslySelected.length ? [] : this.state.previouslySelected ) });
+              }
+              else { //On
+                this.setState({ selectAll: true, selected: rowIDs, previouslySelected: this.state.selected });
+              }
+            }}
+            onSort={(colKey) => {
+              let order = ( colKey == this.state.sort && this.state.order == 'asc' ? 'desc' : 'asc' );
+              this.setState( { page: 1, sort: colKey, order: order, data: this.state.data.slice(0).sort( function( sort, order, a, b ) { return ((a[sort] < b[sort]) ? -1 : (a[sort] > b[sort]) ? 1 : 0) * (order == "desc"?-1:1); }.bind(this,colKey,order) ) } );
+
+            }}
+            onPage={(page,rowsPerPage) => {
+              this.setState( { page: page, rowsPerPage: parseInt(rowsPerPage) } );
+            }}
+            sort={this.state.sort}
+            order={this.state.order}
+            selectAll={this.state.selectAll}
+            data={ this.state.data.slice( (this.state.page-1)*this.state.rowsPerPage, this.state.page*this.state.rowsPerPage ) }
+            selected={this.state.selected}
+            totalRows={this.state.data.length}
+            page={this.state.page}
+            rowsPerPage={this.state.rowsPerPage}
          />
         `,
         info:`
