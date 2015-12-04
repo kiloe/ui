@@ -7,29 +7,33 @@ CSS.register({
 
   '.gridtile': {
     margin: '0',
-    flexDirection: 'row',
+    flexDirection: 'column',
     display: 'flex',
     flexGrow: '0',
+    position: 'relative',
   },
   '.gridtile .tile-content': {
     width: '100%',
     height: '100%',
+    left: '0px',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
   },
-  '.gridtile.header .tile-content > *, .gridtile.footer .tile-content > *': {
-    position: 'absolute',
+  '.gridtile .tile-action': {
+    left: '0px',
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
-  '.gridtile.header .tile-content > *': {
+  '.gridtile.header .tile-action': {
     top: '0px',
   },
-  '.gridtile.footer .tile-content > *': {
+  '.gridtile.footer .tile-action': {
     bottom: '0px',
   },
-
+  '.gridlist.inner .gridtile .tile-action': {
+    position: 'absolute',
+  },
 
 
 });
@@ -59,7 +63,6 @@ export default class GridTile extends View {
   getStyle(){
     let style = super.getStyle();
     style.flexBasis = this.props.width;
-    style.height = this.props.height;
     //style.backgroundImage = 'url(' + this.props.image + ')';
     style.justifyContent = 'flex-start';
    // style.margin = '-' + (this.props.spacing||1) + 'px';
@@ -84,8 +87,10 @@ export default class GridTile extends View {
     let children = [];
     let style = {};
     style.backgroundImage = 'url(' + this.props.image + ')';
+    style.height = this.props.height;
 
-    children.push( <div className="tile-content" style={style}><div>{ this.props.children }</div></div> );
+    children.push( <div className="tile-content" style={style}></div> );
+    children.push( <div className="tile-action">{ this.props.children }</div> );
 
     return super.render(children);
   }
