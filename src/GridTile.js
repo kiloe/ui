@@ -16,6 +16,18 @@ CSS.register({
     height: '100%',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    position: 'relative',
+  },
+  '.gridtile .tile-content .header, .gridtile .tile-content .footer': {
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  '.gridtile .tile-content .header': {
+    top: '0px',
+  },
+  '.gridtile .tile-content .footer': {
+    bottom: '0px',
   },
 
 });
@@ -31,7 +43,6 @@ export default class GridTile extends View {
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
     width: React.PropTypes.string,
     height: React.PropTypes.string,
-    //spacing: React.PropTypes.number,
 
 
   }
@@ -69,10 +80,8 @@ export default class GridTile extends View {
     let children = [];
     let style = {};
     style.backgroundImage = 'url(' + this.props.image + ')';
-    //style.padding = (this.props.spacing||1)/2 + 'px';
-    //style.margin = (this.props.spacing||1)/2 + 'px';
 
-    children.push( <div className="tile-content" style={style} /> );
+    children.push( <div className="tile-content" style={style}><div className="header">{ this.props.header }</div><div className="footer">{ this.props.footer }</div></div> );
 
     return super.render(children);
   }

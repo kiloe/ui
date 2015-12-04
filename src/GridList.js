@@ -44,7 +44,7 @@ export default class GridList extends List {
     //children: React.PropTypes.arrayOf(React.PropTypes.instanceOf(GridTile)),
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
     tileHeight: React.PropTypes.string,
-    tileSpacing: React.PropTypes.oneOf(['thin','thick']),
+    spacing: React.PropTypes.oneOf(['thin','thick']),
     defaultImage: React.PropTypes.string,
 
   }
@@ -54,14 +54,16 @@ export default class GridList extends List {
     columns: 1,
     row: true,
     scroll: false,
-    tileSpacing: 'thin',
+    spacing: 'thin',
   }
 
   getClassNames(){
     let cs = super.getClassNames();
     cs.gridlist = true;
-    cs['space-thin'] = (this.props.tileSpacing == 'thin');
-    cs['space-thick'] = (this.props.tileSpacing == 'thick');
+    cs['space-thin'] = (this.props.spacing == 'thin');
+    cs['space-thick'] = (this.props.spacing == 'thick');
+    cs.inner = (this.props.actionPosition == 'inner');
+    cs.outer = (this.props.actionPosition == 'outer');
 
     return cs;
   }
@@ -81,7 +83,6 @@ export default class GridList extends List {
         image: this.props.defaultImage,
         height: this.props.tileHeight,
         actionPosition: this.props.actionPosition,
-        spacing: this.props.tileSpacing,
       }, child.props); //The props should be overridden by the GridTile element
 
       return React.cloneElement(child, newProps );

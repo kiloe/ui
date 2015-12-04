@@ -131,7 +131,7 @@ export default class Text extends View {
     if( this.props.lines > 0 ){
       let contentStyle = {};
       contentStyle.height = (this.getLineHeight() * this.props.lines) + 'rem';
-      contentStyle.background = fadeTo('#FFF'); // XXX: needs to fade to parent's bg color somehow
+      if ( this.getThemeConfig().mode != "transparent" ) contentStyle.background = fadeTo('#FFF'); // XXX: needs to fade to parent's bg color somehow
       return super.render(<div className="content" style={contentStyle}>
         {this.props.children}
         <span className="after" style={contentStyle}/>
