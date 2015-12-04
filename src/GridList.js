@@ -13,22 +13,22 @@ CSS.register({
     //alignItems: 'stretch',
     //alignContent: 'stretch',
   },
-  '.gridlist.space-thin': {
+  '.gridlist.padding-thin': {
     margin: '-1px 0 0 -1px',
   },
-  '.gridlist.space-thin > *': {
+  '.gridlist.padding-thin > *': {
     margin: '1px 0 0 0',
   },
-  '.gridlist.space-thin .gridtile > *': {
+  '.gridlist.padding-thin .gridtile > *': {
     margin: '0 0 0 1px',
   },
-  '.gridlist.space-thick': {
+  '.gridlist.padding-thick': {
     margin: '-4px 0 0 -4px',
   },
-  '.gridlist.space-thick > *': {
+  '.gridlist.padding-thick > *': {
     margin: '4px 0 0 0',
   },
-  '.gridlist.space-thick .gridtile > *': {
+  '.gridlist.padding-thick .gridtile > *': {
     margin: '0 0 0 4px',
   },
 
@@ -44,8 +44,10 @@ export default class GridList extends List {
     //children: React.PropTypes.arrayOf(React.PropTypes.instanceOf(GridTile)),
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
     tileHeight: React.PropTypes.string,
-    spacing: React.PropTypes.oneOf(['thin','thick']),
+    padding: React.PropTypes.oneOf(['thin','thick']),
     defaultImage: React.PropTypes.string,
+    header: React.PropTypes.bool,
+    footer: React.PropTypes.bool,
 
   }
 
@@ -54,14 +56,14 @@ export default class GridList extends List {
     columns: 1,
     row: true,
     scroll: false,
-    spacing: 'thin',
+    padding: 'thin',
   }
 
   getClassNames(){
     let cs = super.getClassNames();
     cs.gridlist = true;
-    cs['space-thin'] = (this.props.spacing == 'thin');
-    cs['space-thick'] = (this.props.spacing == 'thick');
+    cs['padding-thin'] = (this.props.padding == 'thin');
+    cs['padding-thick'] = (this.props.padding == 'thick');
     cs.inner = (this.props.actionPosition == 'inner');
     cs.outer = (this.props.actionPosition == 'outer');
 
@@ -83,6 +85,8 @@ export default class GridList extends List {
         image: this.props.defaultImage,
         height: this.props.tileHeight,
         actionPosition: this.props.actionPosition,
+        header: this.props.header,
+        footer: this.props.footer,
       }, child.props); //The props should be overridden by the GridTile element
 
       return React.cloneElement(child, newProps );

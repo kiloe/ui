@@ -18,17 +18,19 @@ CSS.register({
     backgroundPosition: 'center',
     position: 'relative',
   },
-  '.gridtile .tile-content .header, .gridtile .tile-content .footer': {
+  '.gridtile.header .tile-content > *, .gridtile.footer .tile-content > *': {
     position: 'absolute',
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
-  '.gridtile .tile-content .header': {
+  '.gridtile.header .tile-content > *': {
     top: '0px',
   },
-  '.gridtile .tile-content .footer': {
+  '.gridtile.footer .tile-content > *': {
     bottom: '0px',
   },
+
+
 
 });
 
@@ -38,8 +40,8 @@ export default class GridTile extends View {
     ...View.propTypes,
 
     image: React.PropTypes.string,
-    header: React.PropTypes.instanceOf(ListItem),
-    footer: React.PropTypes.instanceOf(ListItem),
+    header: React.PropTypes.bool,
+    footer: React.PropTypes.bool,
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
     width: React.PropTypes.string,
     height: React.PropTypes.string,
@@ -70,6 +72,8 @@ export default class GridTile extends View {
   getClassNames(){
     let cs = super.getClassNames();
     cs.gridtile = true;
+    cs.header = this.props.header;
+    cs.footer = this.props.footer;
 
     return cs;
   }
@@ -81,7 +85,7 @@ export default class GridTile extends View {
     let style = {};
     style.backgroundImage = 'url(' + this.props.image + ')';
 
-    children.push( <div className="tile-content" style={style}><div className="header">{ this.props.header }</div><div className="footer">{ this.props.footer }</div></div> );
+    children.push( <div className="tile-content" style={style}><div>{ this.props.children }</div></div> );
 
     return super.render(children);
   }
