@@ -12,6 +12,9 @@ CSS.register({
     flexGrow: '0',
     position: 'relative',
   },
+  '.gridtile.header': {
+    flexDirection: 'column-reverse',
+  },
   '.gridtile .tile-content': {
     width: '100%',
     height: '100%',
