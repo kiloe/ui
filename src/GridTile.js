@@ -50,7 +50,7 @@ export default class GridTile extends View {
     actionBackground: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string,
-    colspan: React.PropTypes.number, // XXX: might change the name of this
+    //colspan: React.PropTypes.number, // XXX: might change the name of this
 
 
   }
@@ -58,7 +58,7 @@ export default class GridTile extends View {
   static defaultProps = {
     ...View.defaultProps,
 
-    colspan: 1,
+    scale: 1,
     //actionPosition: 'inner',
     //spacing: 1,
   }
@@ -96,7 +96,7 @@ export default class GridTile extends View {
 
 
     let newChildren = React.Children.map(this.props.children, function(child) {
-      return React.cloneElement(child, { transparent: true } );
+      return React.cloneElement(child, { transparent: true, scale: 1 } );
     }.bind(this));
 
 

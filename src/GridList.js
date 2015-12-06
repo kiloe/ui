@@ -83,7 +83,7 @@ export default class GridList extends List {
     let newChildren = React.Children.map(this.props.children, function(child) {
 
       let newProps = Object.assign( {
-        width: (100/this.props.columns*child.props.colspan)+'%',
+        width: (100/this.props.columns*child.props.scale)+'%',
         image: this.props.defaultImage,
         height: this.props.tileHeight,
         actionPosition: this.props.actionPosition,

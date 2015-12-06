@@ -1,6 +1,7 @@
 import React from 'react';
 import Doc from './Doc';
 import View from '../../package/View';
+import Toggle from '../../package/Toggle';
 import Select from '../../package/Select';
 import TextField from '../../package/TextField';
 
@@ -11,12 +12,13 @@ export default class GridLists extends React.Component {
     super(...args);
     this.state = {
       columns: 4,
-      tileHeight: 300,
+      tileHeight: 250,
       padding: "thick",
       header: false,
       footer: true,
       actionPosition: 'inner',
       actionBackground: 'grey',
+      square: true,
     };
   }
 
@@ -38,7 +40,6 @@ export default class GridLists extends React.Component {
 
 
     let flags = {
-
       columns: parseInt(this.state.columns),
       tileHeight: this.state.tileHeight + "px",
       padding: this.state.padding,
@@ -64,28 +65,32 @@ export default class GridLists extends React.Component {
     });*/
     let filterStyle = { alignItems: 'center' };
     let filters = [];
+    filters.push( <View row style={filterStyle} key="square"><Toggle label="Square?" onChange={this.set.bind(this, 'square')} value={this.state.square} /></View> );
     filters.push( <View row style={filterStyle} key="columns">Cols: <Select required options={['1','2','3','4','5','6','7','8']} value={this.state.columns.toString()} onChange={this.set.bind(this, 'columns')} /></View> );
     filters.push( <View row style={filterStyle} key="tileHeight">Height: <TextField type="number" value={this.state.tileHeight.toString()} onChange={this.set.bind(this, 'tileHeight')} /></View> );
     filters.push( <View row style={filterStyle} key="padding">Padding: <Select required options={['thin','thick']} value={this.state.padding} onChange={this.set.bind(this, 'padding')} /></View> );
     filters.push( <View row style={filterStyle} key="position">Pos: <Select required options={['header','footer']} value={this.state.header?'header':'footer'} onChange={this.set.bind(this, 'position')} /><Select required options={['inner','outer']} value={this.state.actionPosition} onChange={this.set.bind(this, 'actionPosition')} /></View> );
     filters.push( <View row style={filterStyle} key="actionBackground">BG: <Select required options={[ 'none', 'gradient', 'grey', 'white' ]} value={this.state.actionBackground} onChange={this.set.bind(this, 'actionBackground')} /></View> );
 
-
+    let containerStyle = {};
+    if ( this.state.square ) containerStyle = {width: (this.state.tileHeight*this.state.columns)+'px', alignSelf: 'center'};
 
     let data = [
       {
         title: 'Albums',
+        container: {style: containerStyle},
         src: Doc.jsx`
           <GridList
             ${flags}
             defaultImage="http://d1q6eq3loekzbe.cloudfront.net/static/img/default_album.png"
           >
-            <GridTile colspan={2} image="https://images.rapgenius.com/7a9bf37d2eb6a00249c3991467c1d8ad.1000x1000x1.jpg"><ListItem left={<StarIcon accent size={1.6} />}><Text title lines={1}>Nostalgia, Ultra</Text><Text lines={1}>Frank Ocean</Text></ListItem></GridTile>
+            <GridTile scale={2} onClick={c => console.log('Primary action') } image="https://images.rapgenius.com/7a9bf37d2eb6a00249c3991467c1d8ad.1000x1000x1.jpg"><ListItem left={<StarIcon accent size={1.6} onClick={e => { e.stopPropagation(); console.log('Secondary action'); } } />}><Text title lines={1}>Nostalgia, Ultra</Text><Text lines={1}>Frank Ocean</Text></ListItem></GridTile>
             <GridTile image="http://cdn3.pitchfork.com/news/46955/0b786473.jpg"><ListItem left={<StarIcon accent size={1.6} />}><Text title lines={1}>Channel Orange</Text><Text lines={1}>Frank Ocean</Text></ListItem></GridTile>
 
             <GridTile image="http://www.kinomania.ru/images/soundtracks/1366.jpg"><ListItem left><Text title lines={1}>Home Alone OST</Text></ListItem></GridTile>
-            <GridTile />
-            <GridTile />
+            <GridTile image="https://upload.wikimedia.org/wikipedia/en/e/eb/Hounds_of_love.jpg"><ListItem left={<StarIcon accent size={1.6} />}><Text title lines={1}>The Hounds Of Love</Text><Text lines={1}>Kate Bush</Text></ListItem></GridTile>
+            <GridTile image="https://upload.wikimedia.org/wikipedia/en/7/7f/Sway_Demo_cover.gif"><ListItem left><Text title lines={1}>This Is My Demo</Text><Text lines={1}>Sway</Text></ListItem></GridTile>
+            <GridTile image="http://ecx.images-amazon.com/images/I/51oKH4Yi2cL.jpg"><ListItem left><Text title lines={1}>The Book of Mormon</Text></ListItem></GridTile>
             <GridTile />
           </GridList>
         `,
