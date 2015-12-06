@@ -11,13 +11,13 @@ export default class GridLists extends React.Component {
   constructor(...args){
     super(...args);
     this.state = {
-      columns: 4,
+      columns: 2,
       tileHeight: 250,
       padding: "thick",
       header: false,
       footer: true,
       actionPosition: 'inner',
-      actionBackground: 'grey',
+      actionBackground: 'gradient',
       square: true,
     };
   }
@@ -58,11 +58,6 @@ export default class GridLists extends React.Component {
     },{});
 
 
-
-    /*let filters = Object.keys(this.state).map(k => {
-      let v = this.state[k];
-      return <span key={k}><input type="checkbox" onChange={this.set.bind(this, k, !v)} checked={v} />{k}</span>;
-    });*/
     let filterStyle = { alignItems: 'center' };
     let filters = [];
     filters.push( <View row style={filterStyle} key="square"><Toggle label="Square?" onChange={this.set.bind(this, 'square')} value={this.state.square} /></View> );
@@ -95,7 +90,7 @@ export default class GridLists extends React.Component {
           </GridList>
         `,
         info:`
-
+          Use the options below to see the various combinations of settings
         `
       },
 

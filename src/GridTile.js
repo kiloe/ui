@@ -46,14 +46,22 @@ export default class GridTile extends View {
   static propTypes = {
     ...View.propTypes,
 
+    // The background image of the tile
     image: React.PropTypes.string,
+    // If true, the action area will be at the top
     header: React.PropTypes.bool,
+    // If true, the action area will be at the bottom
     footer: React.PropTypes.bool,
+    // The action area can either be inside the tile image or outside.
+    // Note that if "outer" is used then the action area isn't included in the 'height' of the tile
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
+    // CSS string for the background of the action area. Used for setting gradients or transparent blocks
     actionBackground: React.PropTypes.string,
+    // The width of each tile (px or %)
+    // Note that the 'scale' prop can affect this
     width: React.PropTypes.string,
+    // The height of each tile (excluding "outer" action areas)
     height: React.PropTypes.string,
-    //colspan: React.PropTypes.number, // XXX: might change the name of this
 
 
   }
@@ -61,18 +69,14 @@ export default class GridTile extends View {
   static defaultProps = {
     ...View.defaultProps,
 
+    // Scale is effectively the same as 'colspan' in tables
     scale: 1,
-    //actionPosition: 'inner',
-    //spacing: 1,
   }
 
   getStyle(){
     let style = super.getStyle();
     style.flexBasis = this.props.width;
-    //style.backgroundImage = 'url(' + this.props.image + ')';
     style.justifyContent = 'flex-start';
-   // style.margin = '-' + (this.props.spacing||1) + 'px';
-    //style.border = (this.props.spacing||1) + 'px solid white';
 
     return style;
   }
@@ -99,9 +103,9 @@ export default class GridTile extends View {
 
 
     let newChildren = React.Children.map(this.props.children, function(child) {
+      // Make sure they're all transparent and don't inherit the scale
       return React.cloneElement(child, { transparent: true, scale: 1 } );
     }.bind(this));
-
 
     children.push( <div className="tile-content" style={contentStyle}></div> );
     children.push( <div className="tile-action" style={actionStyle}>{ newChildren }</div> );

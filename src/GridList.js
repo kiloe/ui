@@ -10,8 +10,6 @@ CSS.register({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    //alignItems: 'stretch',
-    //alignContent: 'stretch',
   },
   '.gridlist.padding-thin': {
     margin: '-1px 0 0 -1px',
@@ -40,14 +38,21 @@ export default class GridList extends List {
   static propTypes = {
     ...List.propTypes,
 
+    // The number of Grid Tiles per row. This works by giving the appropriate % width to all child tiles.
     columns: React.PropTypes.number,
-    //children: React.PropTypes.arrayOf(React.PropTypes.instanceOf(GridTile)),
+    // The action area position of child tiles (see GridTile)
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
+    // The action area background of the child tiles (see GridTile)
     actionBackground: React.PropTypes.string,
+    // The height of the child tiles (see GridTile)
     tileHeight: React.PropTypes.string,
+    // The padding between tiles. Either 1px or 4px (from the spec)
     padding: React.PropTypes.oneOf(['thin','thick']),
+    // When no image is provided to a child tile, this is used.
     defaultImage: React.PropTypes.string,
+    // The action area location of the child tiles (see GridTile)
     header: React.PropTypes.bool,
+    // The action area location of the child tiles (see GridTile)
     footer: React.PropTypes.bool,
 
   }
