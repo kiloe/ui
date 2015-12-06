@@ -47,8 +47,10 @@ export default class GridTile extends View {
     header: React.PropTypes.bool,
     footer: React.PropTypes.bool,
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
+    actionBackground: React.PropTypes.string,
     width: React.PropTypes.string,
     height: React.PropTypes.string,
+    colspan: React.PropTypes.number, // XXX: might change the name of this
 
 
   }
@@ -56,6 +58,7 @@ export default class GridTile extends View {
   static defaultProps = {
     ...View.defaultProps,
 
+    colspan: 1,
     //actionPosition: 'inner',
     //spacing: 1,
   }
@@ -85,12 +88,20 @@ export default class GridTile extends View {
 
   render(){
     let children = [];
-    let style = {};
-    style.backgroundImage = 'url(' + this.props.image + ')';
-    style.height = this.props.height;
+    let contentStyle = {};
+    let actionStyle = {};
+    contentStyle.backgroundImage = 'url(' + this.props.image + ')';
+    contentStyle.height = this.props.height;
+    actionStyle.background = this.props.actionBackground;
 
-    children.push( <div className="tile-content" style={style}></div> );
-    children.push( <div className="tile-action">{ this.props.children }</div> );
+
+    let newChildren = React.Children.map(this.props.children, function(child) {
+      return React.cloneElement(child, { transparent: true } );
+    }.bind(this));
+
+
+    children.push( <div className="tile-content" style={contentStyle}></div> );
+    children.push( <div className="tile-action" style={actionStyle}>{ newChildren }</div> );
 
     return super.render(children);
   }

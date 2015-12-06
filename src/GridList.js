@@ -43,6 +43,7 @@ export default class GridList extends List {
     columns: React.PropTypes.number,
     //children: React.PropTypes.arrayOf(React.PropTypes.instanceOf(GridTile)),
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
+    actionBackground: React.PropTypes.string,
     tileHeight: React.PropTypes.string,
     padding: React.PropTypes.oneOf(['thin','thick']),
     defaultImage: React.PropTypes.string,
@@ -57,6 +58,7 @@ export default class GridList extends List {
     row: true,
     scroll: false,
     padding: 'thin',
+
   }
 
   getClassNames(){
@@ -81,12 +83,13 @@ export default class GridList extends List {
     let newChildren = React.Children.map(this.props.children, function(child) {
 
       let newProps = Object.assign( {
-        width: (100/this.props.columns)+'%',
+        width: (100/this.props.columns*child.props.colspan)+'%',
         image: this.props.defaultImage,
         height: this.props.tileHeight,
         actionPosition: this.props.actionPosition,
         header: this.props.header,
         footer: this.props.footer,
+        actionBackground: this.props.actionBackground,
       }, child.props); //The props should be overridden by the GridTile element
 
       return React.cloneElement(child, newProps );
