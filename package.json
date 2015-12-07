@@ -1,7 +1,7 @@
 {
   "name": "kiloe-ui",
   "private": true,
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "material design style ui components for react",
   "main": "index.js",
   "repository": {
