@@ -107,7 +107,7 @@ unwatch:
 
 publish: package
 	npm version patch
-	sed '/private/d' < package.json > $@
+	sed '/private/d' < package.json > package/package.json
 	cd package && npm publish
 
 #--------------------------------------
