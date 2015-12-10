@@ -59,10 +59,13 @@ export default class GridList extends List {
 
   static defaultProps = {
     ...List.defaultProps,
-    columns: 1,
+    columns: 2,
     row: true,
     scroll: false,
     padding: 'thin',
+    tileHeight: '20rem',
+    actionPosition: "inner",
+    defaultImage: "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=", // black bg
 
   }
 

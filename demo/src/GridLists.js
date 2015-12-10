@@ -12,7 +12,7 @@ export default class GridLists extends React.Component {
     super(...args);
     this.state = {
       columns: 2,
-      tileHeight: 250,
+      tileHeight: 25,
       padding: "thick",
       header: false,
       footer: true,
@@ -41,7 +41,7 @@ export default class GridLists extends React.Component {
 
     let flags = {
       columns: parseInt(this.state.columns),
-      tileHeight: this.state.tileHeight + "px",
+      tileHeight: this.state.tileHeight + "rem",
       padding: this.state.padding,
       footer: this.state.footer,
       header: this.state.header,
@@ -68,7 +68,7 @@ export default class GridLists extends React.Component {
     filters.push( <View row style={filterStyle} key="actionBackground">BG: <Select required options={[ 'none', 'gradient', 'grey', 'white' ]} value={this.state.actionBackground} onChange={this.set.bind(this, 'actionBackground')} /></View> );
 
     let containerStyle = {};
-    if ( this.state.square ) containerStyle = {width: (this.state.tileHeight*this.state.columns)+'px', alignSelf: 'center'};
+    if ( this.state.square ) containerStyle = {width: (this.state.tileHeight*this.state.columns)+'rem', alignSelf: 'center'};
 
     let data = [
       {
@@ -85,7 +85,7 @@ export default class GridLists extends React.Component {
             <GridTile image="http://www.kinomania.ru/images/soundtracks/1366.jpg"><ListItem left><Text title lines={1}>Home Alone OST</Text></ListItem></GridTile>
             <GridTile image="https://upload.wikimedia.org/wikipedia/en/e/eb/Hounds_of_love.jpg"><ListItem left={<StarIcon accent size={1.6} />}><Text title lines={1}>The Hounds Of Love</Text><Text lines={1}>Kate Bush</Text></ListItem></GridTile>
             <GridTile image="https://upload.wikimedia.org/wikipedia/en/7/7f/Sway_Demo_cover.gif"><ListItem left><Text title lines={1}>This Is My Demo</Text><Text lines={1}>Sway</Text></ListItem></GridTile>
-            <GridTile image="http://ecx.images-amazon.com/images/I/51oKH4Yi2cL.jpg"><ListItem left><Text title lines={1}>The Book of Mormon</Text></ListItem></GridTile>
+            <GridTile image="http://ecx.images-amazon.com/images/I/51oKH4Yi2cL.jpg"><Text title lines={1}>The Book of Mormon</Text></GridTile>
             <GridTile />
           </GridList>
         `,

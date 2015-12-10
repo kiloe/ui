@@ -18,24 +18,27 @@ CSS.register({
   '.gridtile .tile-content': {
     width: '100%',
     height: '100%',
-    left: '0px',
+    left: '0rem',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
   },
   '.gridtile .tile-action': {
-    left: '0px',
+    left: '0rem',
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   '.gridtile.header .tile-action': {
-    top: '0px',
+    top: '0rem',
   },
   '.gridtile.footer .tile-action': {
-    bottom: '0px',
+    bottom: '0rem',
   },
   '.gridlist.inner .gridtile .tile-action': {
     position: 'absolute',
+  },
+  '.gridtile .tile-action > .text': {
+    padding: '1.33rem',
   },
 
 
@@ -57,7 +60,7 @@ export default class GridTile extends View {
     actionPosition: React.PropTypes.oneOf(['inner','outer']),
     // CSS string for the background of the action area. Used for setting gradients or transparent blocks
     actionBackground: React.PropTypes.string,
-    // The width of each tile (px or %)
+    // The width of each tile (rem or %)
     // Note that the 'scale' prop can affect this
     width: React.PropTypes.string,
     // The height of each tile (excluding "outer" action areas)
