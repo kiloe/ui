@@ -1,12 +1,27 @@
 import React from 'react';
 import View from './View';
+import CSS from './utils/css';
+
+CSS.register({
+  '.list .overlay': {
+    position: 'absolute',
+  },
+});
 
 export default class List extends View {
+
+
 
   static defaultProps = {
     ...View.defaultProps,
     scroll: true,
     row: false,
+  }
+
+  getClassNames(){
+    let cs = super.getClassNames();
+    cs.list = true;
+    return cs;
   }
 
   getStyle(){

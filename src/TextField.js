@@ -24,6 +24,7 @@ CSS.register({
     color: 'inherit',
     lineHeight: '32px',
     opacity: '0.9',
+    width: '100%',
   },
   '.textField input:focus, .textField textarea:focus': {
     boxShadow: 'none',
@@ -379,8 +380,8 @@ export default class TextField extends View {
         /> );
     }
 
-    fieldGroup.push( <hr key="gborder" className="greyBorder" style={{ borderStyle: (this.props.disabled ? 'dashed' : 'solid' ) }} /> );
-    fieldGroup.push( <hr key="cborder" className="colorBorder" style={{ borderColor: color, transform: 'scaleX(' + ( this.state.focus || errorMsg ? '1' : '0' ) + ')' }} /> );
+    fieldGroup.push( <hr key="gborder" className="greyBorder" style={{ borderStyle: (this.props.disabled ? 'dashed' : 'solid' ), borderWidth: '1px' }} /> );
+    if (!this.props.disabled) fieldGroup.push( <hr key="cborder" className="colorBorder" style={{ borderColor: color, transform: 'scaleX(' + ( this.state.focus || errorMsg ? '1' : '0' ) + ')' }} /> );
 
     let field = <View key="field" className="fieldContainer" theme={{ mode: 'transparent' }}>{ fieldGroup }</View>;
     //maxLength={this.props.maxlength}

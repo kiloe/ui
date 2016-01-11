@@ -50,6 +50,7 @@ CSS.register({
     MozUserSelect: 'none',
     msUserSelect: 'none',
     UserSelect: 'none',
+    maxWidth: '100%',
   },
   '.view.scroll': {
     position: 'relative',
@@ -651,12 +652,12 @@ export default class View extends React.Component {
     return scale;
   }
 
-  // Get a referance to the Modal for displaying content relative to root view
+  // Get a reference to the Modal for displaying content relative to root view
   getFixedOverlay(){
     return this.getRoot().refs.fixedOverlay;
   }
 
-  // Get a referance to the overlay for displaying content relative to scroll view
+  // Get a reference to the overlay for displaying content relative to scroll view
   getRelativeOverlay(){
     return this.getScrollParent().refs.relativeOverlay;
   }
