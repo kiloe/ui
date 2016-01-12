@@ -5,7 +5,7 @@ import CSS from './utils/css';
 CSS.register({
   '.menu': {
     alignSelf: 'center',
-  },
+  }
 });
 
 export default class Menu extends View {

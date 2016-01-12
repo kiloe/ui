@@ -3,9 +3,6 @@ import View from './View';
 import CSS from './utils/css';
 
 CSS.register({
-  '.list .overlay': {
-    position: 'absolute',
-  },
 });
 
 export default class List extends View {

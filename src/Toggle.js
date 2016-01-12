@@ -73,7 +73,7 @@ CSS.register({
     cursor: 'pointer',
     appearance: 'none',
     WebkitAppearance: 'none',
-    MozAppearance: 'none',
+    MozAppearance: 'radio', // XXX: Fix for Firefox
     outline: 0,
     width: '1.2rem',
     height: '1.2rem',

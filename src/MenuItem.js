@@ -8,6 +8,7 @@ import Menu from './Menu';
 CSS.register({
   '.button.menuitem': {
     textTransform: 'none',
+    height: '4rem', // XXX: trying to sort height in Firefox
   },
   '.button.menuitem > .text': {
     padding: '1rem',

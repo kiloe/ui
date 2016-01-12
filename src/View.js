@@ -58,6 +58,9 @@ CSS.register({
     display: 'block', // XXX: unexpected layout? it might be this... it's here because otherwise fast-path scrolling doesn't want to work
     WebkitOverflowScrolling: 'touch',
   },
+  '.view.scroll .overlay': {
+    position: 'absolute',
+  },
   '.view.row': {
     flexDirection: 'row'
   },
