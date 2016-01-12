@@ -6,7 +6,7 @@ import shallowEqual from './utils/shallowEqual';
 // Overlay
 CSS.register({
   '.overlay': {
-    height: '100%',
+    //height: '100%', // XXX: Removed for now as it breaks things on Firefox
     zIndex: 10,
   },
 });
