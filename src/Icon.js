@@ -7,7 +7,17 @@ CSS.register({
     position: 'relative',
     alignItems: 'center',
     overflow: 'visible',
-  }
+    width: '100%',
+    display: 'block',
+    height: 'auto',
+    position: 'relative',
+    //paddingTop: '100%',
+  },
+  '.view.icon svg': {
+  	position: 'absolute',
+    top: '0',
+    left: '0',
+	},
 });
 
 export default class Icon extends View {
