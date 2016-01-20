@@ -1,5 +1,12 @@
 import React from 'react';
 import Dialog from './Dialog';
+import CSS from './utils/css';
+
+CSS.register({
+  '.picker .view.text .content': {
+    textOverflow: 'clip',
+  },
+});
 
 // Picker is the base class / API for Pickers.
 // Pickers are modal dialogs for selecting a single value.
@@ -17,6 +24,11 @@ export default class Picker extends Dialog {
     id: 'picker',
   }
 
+  getClassNames(){
+    let cs = super.getClassNames();
+    cs.picker = true;
+    return cs;
+  }
   onClickOutside = () => {
     this.onCancel();
   }

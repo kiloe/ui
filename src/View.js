@@ -51,6 +51,7 @@ CSS.register({
     msUserSelect: 'none',
     UserSelect: 'none',
     maxWidth: '100%',
+    WebkitBackfaceVisibility: 'hidden', // this fixes some severe flickering in Safari but it might have some side-effects...
   },
   '.view.scroll': {
     position: 'relative',
@@ -95,6 +96,16 @@ CSS.register({
   '.view.divider': {
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
+  },
+  '.view svg': {
+  	//position: 'absolute',
+    top: '0',
+    left: '0',
+    maxWidth: '100%',
+    maxHeight: '100%',
+	},
+  '.view.icon svg': {
+  	position: 'absolute',
   },
 });
 

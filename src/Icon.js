@@ -11,13 +11,11 @@ CSS.register({
     display: 'block',
     height: 'auto',
     position: 'relative',
-    //paddingTop: '100%',
+    paddingTop: '30px', // XXX: This needs fixing. It was to sort out SVG icons being displayed properly in Safari.
+                        // There's an issue with Safari where the SVGs aren't displayed if the width/height is a %,
+                        // so I found a fix which used padding-top: 100% but that caused other issues. This works for now.
   },
-  '.view.icon svg': {
-  	position: 'absolute',
-    top: '0',
-    left: '0',
-	},
+
 });
 
 export default class Icon extends View {
