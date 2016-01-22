@@ -11,9 +11,11 @@ CSS.register({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    WebkitTransformStyle: 'preserve-3d',
+    WebkitBackfaceVisibility: 'hidden',
   },
 
-  '.modal .inner': {
+  '.modal > .inner': {
     animationName: 'modalScaleIn',
     animationDuration: '300ms',
     animationTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -21,6 +23,8 @@ CSS.register({
     transformOrigin: '50% 50%',
     maxHeight: '100vh',
     maxWidth: '100vw',
+    WebkitTransformStyle: 'preserve-3d',
+    WebkitBackfaceVisibility: 'hidden',
   },
   '@keyframes modalScaleIn': `
     0% {

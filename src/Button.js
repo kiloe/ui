@@ -12,6 +12,7 @@ CSS.register({
     letterSpacing: '0',
     willChange: 'box-shadow, transform',
     WebkitTransition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
+    WebkitBackfaceVisibility: 'hidden', // this fixes some severe flickering in Safari but it might have some side-effects...
     transition: 'box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)',
     outline: 'none',
     borderStyle: 'solid',
@@ -47,6 +48,7 @@ CSS.register({
     right: 0,
     bottom:0,
     transition: 'opacity 0.2s ease-in-out',
+    WebkitBackfaceVisibility: 'hidden', // this fixes some severe flickering in Safari but it might have some side-effects...
     opacity: '0',
   },
   '.button:hover .button-hover': {
@@ -85,6 +87,7 @@ CSS.register({
     backgroundRepeat: 'no-repeat',
     backgroundColor: 'transparent',
     transition: '1s opacity ease, 0.5s background-size ease-in 0.3s',
+    WebkitBackfaceVisibility: 'hidden', // this fixes some severe flickering in Safari but it might have some side-effects...
     opacity: 0,
   },
   '.button:focus::after': {
