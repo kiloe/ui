@@ -236,7 +236,7 @@ export default class TimePicker extends Picker {
             <Text headline>{this.state.selected.format(format)}</Text>
           </View>
           <View>
-            <svg style={{width:'400px', height:'400px'}} xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="350" height="350">
+            <svg style={{}} xmlns="http://www.w3.org/2000/svg" xmlnsXink="http://www.w3.org/1999/xlink" viewBox="0 0 650 650" preserveAspectRatio="xMidYMid meet" width="350" height="350">
               <circle cx="320" cy="320" r="300" style={{fill:faceColor}} />
               <g className="clock-face" transform="translate(325,325)">
                 {ticks}

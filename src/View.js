@@ -512,7 +512,7 @@ export default class View extends React.Component {
       style[this.isInRow() ? 'height' : 'width'] = 'auto';
     }
     else if( this.isIntrinsic() ){
-      style[this.isInRow() ? 'width' : 'height'] = '-webkit-max-content';
+      style[this.isInRow() ? 'width' : 'height'] = 'auto'; //'-webkit-max-content'; // XXX: Changed this for Safari - hoping it doesn't break anything else
       style.flex = '0 0 auto';
     }
 
