@@ -41,6 +41,9 @@ CSS.register({
   '.button .button-bg': {
     zIndex: -1,
   },
+  '.button > .text': {
+    zIndex: 1,
+  },
   '.button .button-hover, .button .button-focus, .button .button-press': {
     position: 'absolute',
     top: 0,
