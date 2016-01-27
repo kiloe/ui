@@ -339,7 +339,8 @@ export default class TextField extends View {
     if ( this.props.multiLine ) {
       fieldGroup.push(
         <span key="textarea-container">
-          <textarea rows="1" key="input"
+          <textarea
+            rows="1"
             key="input"
             value={this.state.value}
             name={this.props.name}
