@@ -37,8 +37,9 @@ export default class Avatar extends Image {
   getStyle(){
     let style = super.getStyle();
 
-    //style.width = this.getSize()+'rem';
-    //style.height = this.getSize()+'rem';
+    // I just put these back in as Avatars were broken in Chrome. Not sure why.
+    style.width = this.getSize()+'rem';
+    style.height = this.getSize()+'rem';
 
 
 

@@ -13,6 +13,9 @@ CSS.register({
   },
   '.select.open': {
   },
+  '.select': {
+    zIndex: 0,
+  },
 });
 
 // A select field is basically a Text area with a Menu on top
