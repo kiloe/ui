@@ -74,6 +74,13 @@ export default class Icon extends View {
     return this.getTheme().getBorderWidth();
   }
 
+
+  getStyle(){
+    let style = super.getStyle();
+    style.width = '100%'; //or unset?
+    return style;
+  }
+
   render(){
     let style = {
       padding: this.getBorderWidth(),
