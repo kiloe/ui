@@ -15,7 +15,7 @@ CSS.register({
   },
   '.textField input, .textField textarea': {
     border: 'none',
-    flex: '1',
+    flex: '1 1 auto',
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     fontSize: '1.3rem',
     padding: '0px',
