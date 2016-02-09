@@ -77,7 +77,8 @@ export default class Icon extends View {
 
   getStyle(){
     let style = super.getStyle();
-    style.width = '100%'; //or unset?
+    style.width = '';
+    style.minWidth = '2rem';
     return style;
   }
 
